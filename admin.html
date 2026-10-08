@@ -1,20 +1,11 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>إدارة شرح دروسي</title>
 
-
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -28,94 +19,77 @@ body{
     min-height:100vh;
 }
 
-header{
-    background:#101722;
-    border-bottom:1px solid #202b3c;
-    padding:20px;
+button,
+input,
+textarea,
+select{
+    font-family:inherit;
 }
 
-.header-inner{
-    width:92%;
-    max-width:1250px;
-    margin:auto;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    gap:15px;
+button{
+    cursor:pointer;
+    border:0;
 }
 
-.logo{
-    font-size:28px;
-    font-weight:bold;
-}
-
-.logo span{
-    color:#4da3ff;
-}
-
-.header-user{
-    color:#aaa;
-    font-size:14px;
+.hidden{
+    display:none !important;
 }
 
 .container{
-    width:92%;
-    max-width:1250px;
-    margin:25px auto;
+    width:min(1200px,94%);
+    margin:30px auto;
 }
 
 .card{
-    background:#111827;
-    border:1px solid #202b3c;
+    background:#101722;
+    border:1px solid #243247;
     border-radius:18px;
-    padding:24px;
-    margin-bottom:20px;
-}
-
-h1{
-    font-size:27px;
-    margin-bottom:8px;
-}
-
-h2{
+    padding:22px;
     margin-bottom:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.22);
 }
 
-h3{
-    margin-bottom:8px;
+.logo{
+    font-size:30px;
+    font-weight:900;
 }
 
-.subtitle{
-    color:#aaa;
-    line-height:1.7;
+.logo span{
+    color:#3b82f6;
+}
+
+h1,h2,h3{
+    margin-bottom:10px;
+}
+
+p{
+    color:#a8b3c2;
+    line-height:1.8;
+}
+
+label{
+    display:block;
+    color:#d8e0ea;
+    margin:14px 0 7px;
+    font-weight:bold;
 }
 
 input,
-select,
-textarea{
+textarea,
+select{
     width:100%;
-    border:none;
-    outline:none;
-
-    background:#080d15;
-
-    color:#fff;
-
-    border:1px solid #253247;
-
+    padding:12px;
     border-radius:10px;
+    border:1px solid #2a3a50;
+    background:#0a1019;
+    color:#fff;
+    outline:none;
+}
 
-    padding:13px;
-
-    font-size:15px;
-
-    margin-top:7px;
-
-    margin-bottom:15px;
+input:focus,
+textarea:focus,
+select:focus{
+    border-color:#3b82f6;
 }
 
 textarea{
@@ -123,489 +97,301 @@ textarea{
     resize:vertical;
 }
 
-label{
-    display:block;
-    color:#ddd;
-    margin-bottom:4px;
+.auth-card{
+    width:min(470px,94%);
+    margin:70px auto;
 }
 
-button{
-    border:none;
-    cursor:pointer;
+.tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:20px 0;
+}
 
+.tabs button{
+    flex:1;
+    min-width:130px;
+    padding:12px;
     border-radius:10px;
+    background:#182231;
+    color:#d1d9e4;
+}
 
-    padding:12px 18px;
-
-    font-size:15px;
-
-    color:#fff;
-
+.tabs button.active{
     background:#2563eb;
+    color:#fff;
 }
 
-button:hover{
-    opacity:.9;
+.btn{
+    padding:11px 15px;
+    border-radius:10px;
+    color:#fff;
+    margin-top:10px;
 }
 
-.btn-green{
-    background:#16a34a;
-}
-
-.btn-red{
-    background:#dc2626;
-}
-
-.btn-gray{
-    background:#475569;
-}
-
-.btn-orange{
-    background:#d97706;
-}
-
-.btn-full{
+.full{
     width:100%;
 }
 
-.hidden{
-    display:none !important;
-}
-
-.auth-box{
-    max-width:500px;
-    margin:55px auto;
-}
-
-.auth-tabs{
-    display:flex;
-    gap:10px;
-    margin-bottom:20px;
-}
-
-.auth-tab{
-    flex:1;
-    background:#0b1220;
-    border:1px solid #253247;
-}
-
-.auth-tab.active{
+.blue{
     background:#2563eb;
+}
+
+.green{
+    background:#16a34a;
+}
+
+.red{
+    background:#dc2626;
+}
+
+.orange{
+    background:#d97706;
+}
+
+.gray{
+    background:#374151;
 }
 
 .alert{
-    padding:13px;
+    padding:12px 14px;
     border-radius:10px;
-    margin-bottom:15px;
-    line-height:1.6;
+    margin:12px 0;
+    line-height:1.7;
 }
 
-.alert-error{
-    background:rgba(220,38,38,.12);
-    border:1px solid #7f1d1d;
-    color:#fecaca;
-}
-
-.alert-success{
-    background:rgba(22,163,74,.12);
-    border:1px solid #166534;
+.alert.ok{
+    background:#12351f;
+    border:1px solid #237b42;
     color:#bbf7d0;
 }
 
-.stats-grid{
-    display:grid;
+.alert.err{
+    background:#3b1717;
+    border:1px solid #a12f2f;
+    color:#fecaca;
+}
 
-    grid-template-columns:
-        repeat(5,1fr);
+.topbar{
+    background:#0c121c;
+    border-bottom:1px solid #243247;
+    padding:18px 0;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
 
+.topbar-inner{
+    width:min(1200px,94%);
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
     gap:15px;
+    flex-wrap:wrap;
+}
+
+.user-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#2563eb;
+    font-weight:900;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:14px;
 }
 
 .stat{
-    background:#080d15;
-    border:1px solid #253247;
-    border-radius:15px;
-    padding:20px;
+    background:#0b111b;
+    border:1px solid #243247;
+    border-radius:14px;
+    padding:18px;
+    text-align:center;
 }
 
-.stat-name{
-    color:#aaa;
-    margin-bottom:8px;
-}
-
-.stat-value{
+.stat-number{
+    display:block;
     font-size:30px;
+    margin-top:8px;
+    color:#60a5fa;
+    font-weight:900;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:15px;
+}
+
+.item{
+    background:#0b111b;
+    border:1px solid #243247;
+    border-radius:12px;
+    padding:14px;
+}
+
+.item-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+}
+
+.item-title{
+    font-size:17px;
     font-weight:bold;
 }
 
-.form-grid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap:15px;
+.small{
+    color:#93a0b0;
+    font-size:13px;
+    line-height:1.7;
+    margin-top:5px;
 }
 
-.form-grid .full{
-    grid-column:1/-1;
-}
-
-.lesson-row,
-.admin-row,
-.activity-row{
-    background:#080d15;
-    border:1px solid #253247;
-    border-radius:14px;
-    padding:18px;
-    margin-bottom:12px;
-}
-
-.top-row{
+.badges{
     display:flex;
-    justify-content:space-between;
-    gap:15px;
-    align-items:flex-start;
-}
-
-.meta{
-    color:#aaa;
-    font-size:14px;
-    line-height:1.8;
+    flex-wrap:wrap;
+    gap:6px;
     margin-top:8px;
-}
-
-.actions{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-}
-
-.permissions{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-    margin:10px 0 15px;
-}
-
-.check{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    color:#ddd;
-}
-
-.check input{
-    width:auto;
-    margin:0;
-}
-
-.empty{
-    color:#888;
-    text-align:center;
-    padding:25px;
-}
-
-.nav{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    margin-bottom:20px;
-}
-
-.nav button{
-    background:#111827;
-    border:1px solid #253247;
-}
-
-.nav button.active{
-    background:#2563eb;
-}
-
-.section{
-    display:none;
-}
-
-.section.active{
-    display:block;
 }
 
 .badge{
     display:inline-block;
-
-    background:#1e293b;
-
-    color:#cbd5e1;
-
-    border-radius:999px;
-
-    padding:5px 9px;
-
-    margin:2px;
-
+    background:#172235;
+    color:#bfdbfe;
+    border-radius:20px;
+    padding:5px 8px;
     font-size:12px;
 }
 
-.activity-action{
-    color:#4da3ff;
-    font-weight:bold;
+.actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
 }
 
-.activity-date{
-    color:#777;
-    font-size:13px;
+.empty{
+    text-align:center;
+    color:#7d8998;
+    padding:20px;
+}
+
+.permission{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#d5dce6;
+    margin:10px 0;
+}
+
+.permission input{
+    width:auto;
 }
 
 .modal{
     position:fixed;
-
     inset:0;
-
-    background:rgba(0,0,0,.75);
-
+    background:rgba(0,0,0,.8);
     display:flex;
-
-    justify-content:center;
-
     align-items:center;
-
+    justify-content:center;
     padding:20px;
-
-    z-index:9999;
+    z-index:50;
 }
 
 .modal-box{
-    width:100%;
-
-    max-width:550px;
-
+    width:min(600px,100%);
     background:#111827;
-
-    border:1px solid #253247;
-
+    border:1px solid #2a3a50;
     border-radius:18px;
-
-    padding:24px;
-
+    padding:22px;
     max-height:90vh;
-
     overflow:auto;
 }
 
-.modal-title{
-    font-size:23px;
-    font-weight:bold;
-    margin-bottom:18px;
+.activity{
+    border-right:4px solid #2563eb;
 }
 
-.modal-buttons{
-    display:flex;
-    gap:10px;
-    margin-top:10px;
-}
-
-.small{
-    font-size:13px;
-    color:#888;
-}
-
-footer{
-    text-align:center;
-    color:#666;
-    padding:30px;
-}
-
-@media(max-width:900px){
-
-    .stats-grid{
-        grid-template-columns:
-            repeat(2,1fr);
+@media(max-width:950px){
+    .stats{
+        grid-template-columns:repeat(2,1fr);
     }
 
+    .grid{
+        grid-template-columns:1fr;
+    }
 }
 
-@media(max-width:700px){
-
-    .form-grid{
+@media(max-width:600px){
+    .stats{
         grid-template-columns:1fr;
     }
 
-    .form-grid .full{
-        grid-column:auto;
-    }
-
-    .top-row{
+    .item-top{
         flex-direction:column;
     }
-
 }
-
-@media(max-width:550px){
-
-    .stats-grid{
-        grid-template-columns:1fr;
-    }
-
-    .header-inner{
-        flex-direction:column;
-        align-items:flex-start;
-    }
-
-}
-
 </style>
-
 </head>
-
 
 <body>
 
+<!-- =====================================================
+     صفحة الدخول
+===================================================== -->
 
-<header>
+<div id="authPage" class="container">
 
-    <div class="header-inner">
+    <div class="card auth-card">
 
         <div class="logo">
             شرح <span>دروسي</span>
         </div>
 
-        <div
-            id="headerUser"
-            class="header-user"
-        >
-            إدارة الموقع
-        </div>
+        <h1>🔐 إدارة شرح دروسي</h1>
 
-    </div>
-
-</header>
-
-
-<!-- =========================================
-     تسجيل الدخول
-========================================= -->
-
-<div
-    id="authArea"
-    class="container"
->
-
-    <div class="card auth-box">
-
-        <h1>
-            🔐 إدارة شرح دروسي
-        </h1>
-
-        <p class="subtitle">
-            لوحة تحكم خاصة بالموقع والإداريين.
+        <p>
+            لوحة التحكم الخاصة بإدارة الموقع.
         </p>
 
-        <br>
+        <div id="authMessage" class="alert hidden"></div>
 
-
-        <div
-            id="authMessage"
-            class="hidden"
-        ></div>
-
-
-        <div class="auth-tabs">
+        <div class="tabs">
 
             <button
                 id="setupTab"
-                class="auth-tab active"
-                onclick="showAuthMode('setup')"
+                class="active"
+                onclick="switchAuth('setup')"
             >
-                إنشاء أول أدمن
+                👑 إنشاء أول أدمن
             </button>
-
 
             <button
                 id="loginTab"
-                class="auth-tab"
-                onclick="showAuthMode('login')"
-            >
-                تسجيل الدخول
-            </button>
-
-        </div>
-
-
-        <div id="setupForm">
-
-            <label>
-                اسم المستخدم
-            </label>
-
-            <input
-                id="setupUsername"
-                type="text"
-                placeholder="مثال: admin"
-            >
-
-
-            <label>
-                كلمة المرور
-            </label>
-
-            <input
-                id="setupPassword"
-                type="password"
-                placeholder="8 أحرف على الأقل"
-            >
-
-
-            <label>
-                تأكيد كلمة المرور
-            </label>
-
-            <input
-                id="setupPassword2"
-                type="password"
-                placeholder="أعد كتابة كلمة المرور"
-            >
-
-
-            <button
-                class="btn-green btn-full"
-                onclick="setupAdmin()"
-            >
-                👑 إنشاء حساب الأدمن
-            </button>
-
-        </div>
-
-
-        <div
-            id="loginForm"
-            class="hidden"
-        >
-
-            <label>
-                اسم المستخدم
-            </label>
-
-            <input
-                id="loginUsername"
-                type="text"
-                placeholder="اسم المستخدم"
-            >
-
-
-            <label>
-                كلمة المرور
-            </label>
-
-            <input
-                id="loginPassword"
-                type="password"
-                placeholder="كلمة المرور"
-            >
-
-
-            <button
-                class="btn-full"
-                onclick="loginAdmin()"
+                onclick="switchAuth('login')"
             >
                 🔑 تسجيل الدخول
             </button>
@@ -613,10 +399,76 @@ footer{
         </div>
 
 
-        <br>
+        <!-- إنشاء أول أدمن -->
 
-        <div class="small">
-            كلمات المرور لا تظهر في سجل التعديلات.
+        <div id="setupForm">
+
+            <label>اسم المستخدم</label>
+
+            <input
+                id="setupUsername"
+                type="text"
+                placeholder="اسم المستخدم"
+                autocomplete="username"
+            >
+
+            <label>كلمة المرور</label>
+
+            <input
+                id="setupPassword"
+                type="password"
+                placeholder="8 أحرف على الأقل"
+                autocomplete="new-password"
+            >
+
+            <label>تأكيد كلمة المرور</label>
+
+            <input
+                id="setupPassword2"
+                type="password"
+                placeholder="أعد كتابة كلمة المرور"
+                autocomplete="new-password"
+            >
+
+            <button
+                class="btn green full"
+                onclick="createFirstAdmin()"
+            >
+                👑 إنشاء الحساب
+            </button>
+
+        </div>
+
+
+        <!-- تسجيل الدخول -->
+
+        <div id="loginForm" class="hidden">
+
+            <label>اسم المستخدم</label>
+
+            <input
+                id="loginUsername"
+                type="text"
+                placeholder="اسم المستخدم"
+                autocomplete="username"
+            >
+
+            <label>كلمة المرور</label>
+
+            <input
+                id="loginPassword"
+                type="password"
+                placeholder="كلمة المرور"
+                autocomplete="current-password"
+            >
+
+            <button
+                class="btn blue full"
+                onclick="loginAdmin()"
+            >
+                🔑 تسجيل الدخول
+            </button>
+
         </div>
 
     </div>
@@ -624,348 +476,446 @@ footer{
 </div>
 
 
-<!-- =========================================
+<!-- =====================================================
      لوحة التحكم
-========================================= -->
+===================================================== -->
 
-<div
-    id="dashboardArea"
-    class="container hidden"
->
+<div id="dashboardPage" class="hidden">
 
+    <div class="topbar">
 
-    <div class="card">
+        <div class="topbar-inner">
 
-        <h1>
-            👋 لوحة تحكم شرح دروسي
-        </h1>
+            <div>
 
-        <p class="subtitle">
-            من هنا تستطيع إدارة الدروس والإداريين ومتابعة التعديلات.
-        </p>
+                <div class="logo">
+                    شرح <span>دروسي</span>
+                </div>
 
-        <br>
+                <div class="small">
+                    لوحة تحكم الإدارة
+                </div>
 
-        <div class="actions">
-
-            <button
-                class="btn-gray"
-                onclick="openPublicSite()"
-            >
-                🌐 فتح الموقع
-            </button>
+            </div>
 
 
-            <button
-                class="btn-red"
-                onclick="logoutAdmin()"
-            >
-                🚪 تسجيل الخروج
-            </button>
+            <div class="user-box">
+
+                <div
+                    id="adminAvatar"
+                    class="avatar"
+                >
+                    أ
+                </div>
+
+                <div>
+
+                    <div id="adminName">
+                        -
+                    </div>
+
+                    <div class="small">
+                        مدير النظام
+                    </div>
+
+                </div>
+
+                <button
+                    class="btn red"
+                    onclick="logoutAdmin()"
+                    style="margin-top:0"
+                >
+                    🚪 خروج
+                </button>
+
+            </div>
 
         </div>
 
     </div>
 
 
-    <!-- التنقل -->
-
-    <div class="nav">
-
-        <button
-            class="active"
-            data-section="dashboard"
-            onclick="showSection('dashboard', this)"
-        >
-            📊 الرئيسية
-        </button>
-
-
-        <button
-            data-section="lessons"
-            onclick="showSection('lessons', this)"
-        >
-            📚 الدروس
-        </button>
-
-
-        <button
-            id="adminsNav"
-            data-section="admins"
-            onclick="showSection('admins', this)"
-        >
-            👥 الإداريون
-        </button>
-
-
-        <button
-            id="activityNav"
-            data-section="activity"
-            onclick="showSection('activity', this)"
-        >
-            📋 سجل التعديلات
-        </button>
-
-
-        <button
-            data-section="password"
-            onclick="showSection('password', this)"
-        >
-            🔑 كلمة المرور
-        </button>
-
-    </div>
-
-
-    <!-- =========================================
-         الرئيسية
-    ========================================== -->
-
-    <section
-        id="section-dashboard"
-        class="section active"
-    >
+    <div class="container">
 
         <div class="card">
 
-            <h2>
-                📊 إحصائيات الموقع
-            </h2>
+            <h1>
+                👋 لوحة تحكم شرح دروسي
+            </h1>
+
+            <p>
+                تحكم في المنهج والدروس والإداريين والإعدادات والإحصائيات.
+            </p>
+
+            <div class="actions">
+
+                <button
+                    class="btn gray"
+                    onclick="window.open('/','_blank')"
+                >
+                    🌐 فتح الموقع
+                </button>
+
+                <button
+                    class="btn blue"
+                    onclick="loadAll()"
+                >
+                    🔄 تحديث
+                </button>
+
+            </div>
+
+        </div>
 
 
-            <div class="stats-grid">
+        <!-- التبويبات -->
 
-                <div class="stat">
+        <div class="tabs">
 
-                    <div class="stat-name">
-                        الزوار
-                    </div>
+            <button
+                id="tabHome"
+                class="active"
+                onclick="showSection('home')"
+            >
+                📊 الرئيسية
+            </button>
 
-                    <div
-                        id="statVisitors"
-                        class="stat-value"
+            <button
+                id="tabContent"
+                onclick="showSection('content')"
+            >
+                📚 المحتوى
+            </button>
+
+            <button
+                id="tabAdmins"
+                onclick="showSection('admins')"
+            >
+                👥 الإداريون
+            </button>
+
+            <button
+                id="tabSettings"
+                onclick="showSection('settings')"
+            >
+                ⚙️ الإعدادات
+            </button>
+
+            <button
+                id="tabActivity"
+                onclick="showSection('activity')"
+            >
+                📋 النشاط
+            </button>
+
+            <button
+                id="tabPassword"
+                onclick="showSection('password')"
+            >
+                🔐 كلمة المرور
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             الرئيسية
+        ================================================== -->
+
+        <section id="section-home">
+
+            <div class="card">
+
+                <div class="actions">
+
+                    <h2 style="flex:1">
+                        📊 إحصائيات الموقع
+                    </h2>
+
+                    <button
+                        class="btn blue"
+                        onclick="loadStats()"
                     >
-                        0
-                    </div>
+                        🔄 تحديث
+                    </button>
 
                 </div>
 
 
-                <div class="stat">
+                <div class="stats">
 
-                    <div class="stat-name">
-                        عمليات البحث
+                    <div class="stat">
+
+                        <div>
+                            الزوار
+                        </div>
+
+                        <span
+                            id="statVisitors"
+                            class="stat-number"
+                        >
+                            0
+                        </span>
+
                     </div>
 
-                    <div
-                        id="statSearches"
-                        class="stat-value"
-                    >
-                        0
+
+                    <div class="stat">
+
+                        <div>
+                            عمليات البحث
+                        </div>
+
+                        <span
+                            id="statSearches"
+                            class="stat-number"
+                        >
+                            0
+                        </span>
+
                     </div>
 
-                </div>
 
+                    <div class="stat">
 
-                <div class="stat">
+                        <div>
+                            الدروس
+                        </div>
 
-                    <div class="stat-name">
-                        الدروس
+                        <span
+                            id="statLessons"
+                            class="stat-number"
+                        >
+                            0
+                        </span>
+
                     </div>
 
-                    <div
-                        id="statLessons"
-                        class="stat-value"
-                    >
-                        0
+
+                    <div class="stat">
+
+                        <div>
+                            الإداريون
+                        </div>
+
+                        <span
+                            id="statAdmins"
+                            class="stat-number"
+                        >
+                            0
+                        </span>
+
                     </div>
 
-                </div>
 
+                    <div class="stat">
 
-                <div class="stat">
+                        <div>
+                            التعديلات
+                        </div>
 
-                    <div class="stat-name">
-                        الإداريون
-                    </div>
+                        <span
+                            id="statActivity"
+                            class="stat-number"
+                        >
+                            0
+                        </span>
 
-                    <div
-                        id="statAdmins"
-                        class="stat-value"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="stat">
-
-                    <div class="stat-name">
-                        التعديلات
-                    </div>
-
-                    <div
-                        id="statActivity"
-                        class="stat-value"
-                    >
-                        0
                     </div>
 
                 </div>
 
             </div>
 
-
-            <br>
-
-            <button
-                onclick="loadStats()"
-            >
-                🔄 تحديث الإحصائيات
-            </button>
-
-        </div>
-
-    </section>
+        </section>
 
 
-    <!-- =========================================
-         الدروس
-    ========================================== -->
+        <!-- =================================================
+             المحتوى
+        ================================================== -->
 
-    <section
-        id="section-lessons"
-        class="section"
-    >
+        <section
+            id="section-content"
+            class="hidden"
+        >
 
-        <div class="card">
+            <div class="card">
 
-            <h2>
-                ➕ إضافة درس جديد
-            </h2>
+                <h2>
+                    🗂️ إدارة المنهج
+                </h2>
 
-
-            <div
-                id="lessonMessage"
-                class="hidden"
-            ></div>
+                <p>
+                    أضف الفصول والصفوف والمواد.
+                </p>
 
 
-            <div class="form-grid">
+                <div class="grid">
 
-                <div>
+                    <!-- الفصول -->
 
-                    <label>
-                        الفصل الدراسي
-                    </label>
+                    <div class="card">
 
-                    <select id="lessonSemester">
+                        <h3>
+                            📅 الفصول
+                        </h3>
 
-                        <option value="">
-                            اختر الفصل
-                        </option>
+                        <input
+                            id="newSemester"
+                            placeholder="مثال: الفصل الدراسي الثالث"
+                        >
 
-                        <option value="الفصل الأول">
-                            الفصل الأول
-                        </option>
+                        <button
+                            class="btn green"
+                            onclick="addCatalog('semester')"
+                        >
+                            ➕ إضافة فصل
+                        </button>
 
-                        <option value="الفصل الثاني">
-                            الفصل الثاني
-                        </option>
+                        <div
+                            id="semesterList"
+                            class="list"
+                        ></div>
 
-                    </select>
+                    </div>
+
+
+                    <!-- الصفوف -->
+
+                    <div class="card">
+
+                        <h3>
+                            🎓 الصفوف
+                        </h3>
+
+                        <input
+                            id="newGrade"
+                            placeholder="مثال: الصف التاسع"
+                        >
+
+                        <button
+                            class="btn green"
+                            onclick="addCatalog('grade')"
+                        >
+                            ➕ إضافة صف
+                        </button>
+
+                        <div
+                            id="gradeList"
+                            class="list"
+                        ></div>
+
+                    </div>
 
                 </div>
 
 
-                <div>
+                <!-- المواد -->
+
+                <div class="card">
+
+                    <h3>
+                        📚 المواد
+                    </h3>
+
+                    <label>
+                        اسم المادة
+                    </label>
+
+                    <input
+                        id="newSubject"
+                        placeholder="مثال: الرياضيات"
+                    >
 
                     <label>
                         الصف
                     </label>
 
-                    <select id="lessonGrade">
-
+                    <select id="subjectGrade">
                         <option value="">
-                            اختر الصف
+                            بدون صف محدد
                         </option>
-
-                        <option value="الصف السابع">
-                            الصف السابع
-                        </option>
-
-                        <option value="الصف الثامن">
-                            الصف الثامن
-                        </option>
-
-                        <option value="الصف التاسع">
-                            الصف التاسع
-                        </option>
-
-                        <option value="الصف العاشر">
-                            الصف العاشر
-                        </option>
-
-                        <option value="الصف الحادي عشر">
-                            الصف الحادي عشر
-                        </option>
-
-                        <option value="الصف الثاني عشر">
-                            الصف الثاني عشر
-                        </option>
-
                     </select>
+
+                    <button
+                        class="btn green"
+                        onclick="addSubject()"
+                    >
+                        ➕ إضافة مادة
+                    </button>
+
+                    <div
+                        id="subjectList"
+                        class="list"
+                    ></div>
 
                 </div>
 
 
-                <div>
+                <!-- الدروس -->
 
-                    <label>
-                        المادة
-                    </label>
+                <div class="card">
 
-                    <select id="lessonSubject">
+                    <h2>
+                        📖 إدارة الدروس
+                    </h2>
 
-                        <option value="">
-                            اختر المادة
-                        </option>
+                    <div class="grid">
 
-                        <option value="الرياضيات">
-                            الرياضيات
-                        </option>
+                        <div>
 
-                        <option value="الفيزياء">
-                            الفيزياء
-                        </option>
+                            <label>
+                                الفصل
+                            </label>
 
-                        <option value="الكيمياء">
-                            الكيمياء
-                        </option>
+                            <select
+                                id="lessonSemester"
+                            ></select>
 
-                        <option value="الأحياء">
-                            الأحياء
-                        </option>
-
-                        <option value="اللغة الإنجليزية">
-                            اللغة الإنجليزية
-                        </option>
-
-                        <option value="اللغة العربية">
-                            اللغة العربية
-                        </option>
-
-                        <option value="الدراسات الاجتماعية">
-                            الدراسات الاجتماعية
-                        </option>
-
-                    </select>
-
-                </div>
+                        </div>
 
 
-                <div>
+                        <div>
+
+                            <label>
+                                الصف
+                            </label>
+
+                            <select
+                                id="lessonGrade"
+                            ></select>
+
+                        </div>
+
+
+                        <div>
+
+                            <label>
+                                المادة
+                            </label>
+
+                            <select
+                                id="lessonSubject"
+                            ></select>
+
+                        </div>
+
+
+                        <div>
+
+                            <label>
+                                رابط الفيديو
+                            </label>
+
+                            <input
+                                id="lessonVideo"
+                                placeholder="رابط YouTube"
+                            >
+
+                        </div>
+
+                    </div>
+
 
                     <label>
                         اسم الدرس
@@ -973,121 +923,104 @@ footer{
 
                     <input
                         id="lessonTitle"
-                        type="text"
-                        placeholder="مثال: قوانين نيوتن"
+                        placeholder="اسم الدرس"
                     >
 
-                </div>
-
-
-                <div class="full">
 
                     <label>
-                        وصف الدرس
+                        الوصف
                     </label>
 
                     <textarea
                         id="lessonDescription"
-                        placeholder="وصف مختصر..."
+                        placeholder="وصف الدرس"
                     ></textarea>
 
-                </div>
 
-
-                <div class="full">
-
-                    <label>
-                        رابط فيديو اختياري
-                    </label>
-
-                    <input
-                        id="lessonVideo"
-                        type="url"
-                        placeholder="https://youtube.com/..."
+                    <button
+                        class="btn green"
+                        onclick="addLesson()"
                     >
+                        ➕ إضافة الدرس
+                    </button>
+
+
+                    <div
+                        id="lessonList"
+                        class="list"
+                    ></div>
 
                 </div>
 
             </div>
 
-
-            <button
-                class="btn-green"
-                onclick="addLesson()"
-            >
-                ✅ إضافة الدرس
-            </button>
-
-        </div>
+        </section>
 
 
-        <div class="card">
+        <!-- =================================================
+             الإداريون
+        ================================================== -->
 
-            <h2>
-                📚 الدروس المضافة
-            </h2>
+        <section
+            id="section-admins"
+            class="hidden"
+        >
+
+            <div class="card">
+
+                <h2>
+                    👥 إدارة الإداريين
+                </h2>
+
+                <p>
+                    إنشاء حسابات إدارية إضافية مع تحديد الصلاحيات.
+                </p>
+
+                <div
+                    id="adminMessage"
+                    class="alert hidden"
+                ></div>
 
 
-            <div
-                id="lessonsList"
-            >
-                <div class="empty">
-                    جاري التحميل...
+                <div class="grid">
+
+                    <div>
+
+                        <label>
+                            اسم المستخدم
+                        </label>
+
+                        <input
+                            id="newAdminUsername"
+                            placeholder="اسم المستخدم"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            كلمة المرور
+                        </label>
+
+                        <input
+                            id="newAdminPassword"
+                            type="password"
+                            placeholder="8 أحرف على الأقل"
+                        >
+
+                    </div>
+
                 </div>
-            </div>
-
-        </div>
-
-    </section>
 
 
-    <!-- =========================================
-         الإداريون
-    ========================================== -->
-
-    <section
-        id="section-admins"
-        class="section"
-    >
-
-        <div class="card">
-
-            <h2>
-                ➕ إنشاء حساب إداري
-            </h2>
+                <h3 style="margin-top:20px">
+                    الصلاحيات
+                </h3>
 
 
-            <div
-                id="adminMessage"
-                class="hidden"
-            ></div>
-
-
-            <label>
-                اسم المستخدم
-            </label>
-
-            <input
-                id="newAdminUsername"
-                type="text"
-                placeholder="اسم المستخدم"
-            >
-
-
-            <label>
-                كلمة المرور
-            </label>
-
-            <input
-                id="newAdminPassword"
-                type="password"
-                placeholder="8 أحرف على الأقل"
-            >
-
-
-            <div class="permissions">
-
-                <label class="check">
+                <label class="permission">
 
                     <input
                         id="permLessons"
@@ -1095,12 +1028,12 @@ footer{
                         checked
                     >
 
-                    📚 إدارة الدروس
+                    📖 إدارة الدروس
 
                 </label>
 
 
-                <label class="check">
+                <label class="permission">
 
                     <input
                         id="permAdmins"
@@ -1112,287 +1045,269 @@ footer{
                 </label>
 
 
-                <label class="check">
+                <label class="permission">
 
                     <input
                         id="permStats"
                         type="checkbox"
-                        checked
                     >
 
-                    📊 عرض الإحصائيات
+                    📊 الإحصائيات
 
                 </label>
 
+
+                <label class="permission">
+
+                    <input
+                        id="permCatalog"
+                        type="checkbox"
+                        checked
+                    >
+
+                    📚 إدارة المنهج
+
+                </label>
+
+
+                <label class="permission">
+
+                    <input
+                        id="permSettings"
+                        type="checkbox"
+                    >
+
+                    ⚙️ الإعدادات
+
+                </label>
+
+
+                <label class="permission">
+
+                    <input
+                        id="permActivity"
+                        type="checkbox"
+                    >
+
+                    📋 سجل النشاط
+
+                </label>
+
+
+                <button
+                    class="btn green"
+                    onclick="createAdminAccount()"
+                >
+                    ➕ إنشاء إداري
+                </button>
+
             </div>
 
 
-            <button
-                class="btn-green"
-                onclick="createAdminAccount()"
-            >
-                ➕ إنشاء الحساب
-            </button>
+            <div class="card">
 
-        </div>
+                <h2>
+                    📋 الحسابات الحالية
+                </h2>
 
+                <div
+                    id="adminsList"
+                    class="list"
+                ></div>
 
-        <div class="card">
-
-            <h2>
-                👥 الحسابات الحالية
-            </h2>
-
-
-            <div
-                id="adminsList"
-            >
-                <div class="empty">
-                    جاري التحميل...
-                </div>
             </div>
 
-        </div>
+        </section>
 
-    </section>
 
+        <!-- =================================================
+             الإعدادات
+        ================================================== -->
 
-    <!-- =========================================
-         سجل التعديلات
-    ========================================== -->
-
-    <section
-        id="section-activity"
-        class="section"
-    >
-
-        <div class="card">
-
-            <h2>
-                📋 سجل جميع التعديلات
-            </h2>
-
-            <p class="subtitle">
-                يظهر هنا من قام بالتعديل، وما الذي عدّله، ومتى حدث ذلك.
-            </p>
-
-            <br>
-
-            <button
-                onclick="loadActivity()"
-            >
-                🔄 تحديث السجل
-            </button>
-
-            <br>
-            <br>
-
-
-            <div
-                id="activityList"
-            >
-                <div class="empty">
-                    جاري تحميل السجل...
-                </div>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================
-         كلمة المرور
-    ========================================== -->
-
-    <section
-        id="section-password"
-        class="section"
-    >
-
-        <div class="card">
-
-            <h2>
-                🔑 تغيير كلمة المرور
-            </h2>
-
-
-            <label>
-                كلمة المرور الجديدة
-            </label>
-
-            <input
-                id="newPassword"
-                type="password"
-                placeholder="8 أحرف على الأقل"
-            >
-
-
-            <label>
-                تأكيد كلمة المرور
-            </label>
-
-            <input
-                id="newPassword2"
-                type="password"
-                placeholder="أعد كتابة كلمة المرور"
-            >
-
-
-            <button
-                onclick="changePassword()"
-            >
-                🔐 تغيير كلمة المرور
-            </button>
-
-        </div>
-
-    </section>
-
-
-</div>
-
-
-<!-- =========================================
-     نافذة تعديل الإداري
-========================================= -->
-
-<div
-    id="editAdminModal"
-    class="modal hidden"
->
-
-    <div class="modal-box">
-
-        <div class="modal-title">
-            🛡️ تعديل صلاحيات الإداري
-        </div>
-
-
-        <p
-            id="editAdminName"
-            class="subtitle"
-        ></p>
-
-
-        <br>
-
-
-        <label class="check">
-
-            <input
-                id="editPermLessons"
-                type="checkbox"
-            >
-
-            📚 إدارة الدروس
-
-        </label>
-
-
-        <br>
-
-
-        <label class="check">
-
-            <input
-                id="editPermAdmins"
-                type="checkbox"
-            >
-
-            👥 إدارة الإداريين
-
-        </label>
-
-
-        <br>
-
-
-        <label class="check">
-
-            <input
-                id="editPermStats"
-                type="checkbox"
-            >
-
-            📊 عرض الإحصائيات
-
-        </label>
-
-
-        <div class="modal-buttons">
-
-            <button
-                class="btn-green"
-                onclick="saveAdminPermissions()"
-            >
-                💾 حفظ الصلاحيات
-            </button>
-
-
-            <button
-                class="btn-gray"
-                onclick="closeEditAdminModal()"
-            >
-                إلغاء
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================
-     نافذة تغيير كلمة مرور إداري
-========================================= -->
-
-<div
-    id="changeAdminPasswordModal"
-    class="modal hidden"
->
-
-    <div class="modal-box">
-
-        <div class="modal-title">
-            🔑 تغيير كلمة مرور إداري
-        </div>
-
-
-        <p
-            id="changeAdminPasswordName"
-            class="subtitle"
-        ></p>
-
-
-        <br>
-
-
-        <label>
-            كلمة المرور الجديدة
-        </label>
-
-        <input
-            id="targetAdminPassword"
-            type="password"
-            placeholder="8 أحرف على الأقل"
+        <section
+            id="section-settings"
+            class="hidden"
         >
 
+            <div class="card">
 
-        <div class="modal-buttons">
+                <h2>
+                    ⚙️ إعدادات الموقع
+                </h2>
+
+                <div
+                    id="settingsMessage"
+                    class="alert hidden"
+                ></div>
+
+
+                <label>
+                    اسم الموقع
+                </label>
+
+                <input
+                    id="settingSiteTitle"
+                    placeholder="شرح دروسي"
+                >
+
+
+                <label>
+                    نص الترحيب
+                </label>
+
+                <textarea
+                    id="settingWelcomeText"
+                    placeholder="أهلاً بك في شرح دروسي..."
+                ></textarea>
+
+
+                <label>
+                    نص أسفل الموقع
+                </label>
+
+                <input
+                    id="settingFooter"
+                    placeholder="جميع الحقوق محفوظة"
+                >
+
+
+                <button
+                    class="btn green"
+                    onclick="saveSettings()"
+                >
+                    💾 حفظ الإعدادات
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             النشاط
+        ================================================== -->
+
+        <section
+            id="section-activity"
+            class="hidden"
+        >
+
+            <div class="card">
+
+                <div class="actions">
+
+                    <h2 style="flex:1">
+                        📋 سجل النشاط
+                    </h2>
+
+                    <button
+                        class="btn blue"
+                        onclick="loadActivity()"
+                    >
+                        🔄 تحديث
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="activityList"
+                    class="list"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             كلمة المرور
+        ================================================== -->
+
+        <section
+            id="section-password"
+            class="hidden"
+        >
+
+            <div class="card">
+
+                <h2>
+                    🔐 تغيير كلمة المرور
+                </h2>
+
+                <div
+                    id="passwordMessage"
+                    class="alert hidden"
+                ></div>
+
+
+                <label>
+                    كلمة المرور الجديدة
+                </label>
+
+                <input
+                    id="myNewPassword"
+                    type="password"
+                    placeholder="8 أحرف على الأقل"
+                >
+
+
+                <label>
+                    تأكيد كلمة المرور
+                </label>
+
+                <input
+                    id="myNewPassword2"
+                    type="password"
+                    placeholder="أعد كتابة كلمة المرور"
+                >
+
+
+                <button
+                    class="btn green"
+                    onclick="changeMyPassword()"
+                >
+                    🔐 حفظ كلمة المرور
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     نافذة التعديل
+===================================================== -->
+
+<div
+    id="modal"
+    class="modal hidden"
+>
+
+    <div class="modal-box">
+
+        <h2 id="modalTitle">
+            تعديل
+        </h2>
+
+        <div id="modalContent"></div>
+
+        <div class="actions">
 
             <button
-                class="btn-green"
-                onclick="saveAdminPassword()"
+                id="modalSave"
+                class="btn green"
             >
-                💾 تغيير كلمة المرور
+                💾 حفظ
             </button>
 
-
             <button
-                class="btn-gray"
-                onclick="closeAdminPasswordModal()"
+                class="btn gray"
+                onclick="closeModal()"
             >
                 إلغاء
             </button>
@@ -1402,67 +1317,49 @@ footer{
     </div>
 
 </div>
-
-
-<footer>
-
-    شرح دروسي © 2026
-
-</footer>
 
 
 <script>
 
-
-/* =========================================
+/* =====================================================
    المتغيرات
-========================================= */
+===================================================== */
 
 let adminToken =
     localStorage.getItem(
         "shrh_admin_token"
     ) || "";
 
-
 let currentAdmin = null;
 
-let editingAdminId = null;
+let catalogItems = [];
 
-let changingPasswordAdminId = null;
+let lessons = [];
 
 
-/* =========================================
+/* =====================================================
    الرسائل
-========================================= */
+===================================================== */
 
 function showMessage(
-    elementId,
+    id,
     message,
-    type = "success"
+    error = false
 ){
 
     const element =
-        document.getElementById(
-            elementId
-        );
-
+        document.getElementById(id);
 
     if(!element){
         return;
     }
 
-
-    element.className =
-        `alert ${
-            type === "error"
-                ? "alert-error"
-                : "alert-success"
-        }`;
-
-
     element.textContent =
         message;
 
+    element.className =
+        "alert " +
+        (error ? "err" : "ok");
 
     element.classList.remove(
         "hidden"
@@ -1471,15 +1368,10 @@ function showMessage(
 }
 
 
-function hideMessage(
-    elementId
-){
+function hideMessage(id){
 
     const element =
-        document.getElementById(
-            elementId
-        );
-
+        document.getElementById(id);
 
     if(element){
 
@@ -1492,11 +1384,30 @@ function hideMessage(
 }
 
 
-/* =========================================
-   API
-========================================= */
+/* =====================================================
+   حماية النص
+===================================================== */
 
-async function apiFetch(
+function escapeHTML(value){
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+    div.textContent =
+        String(value ?? "");
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   API
+===================================================== */
+
+async function api(
     url,
     options = {}
 ){
@@ -1504,9 +1415,7 @@ async function apiFetch(
     const headers = {
 
         "Content-Type":
-            "application/json",
-
-        ...(options.headers || {})
+            "application/json"
 
     };
 
@@ -1525,13 +1434,15 @@ async function apiFetch(
             url,
             {
                 ...options,
-                headers
+                headers:{
+                    ...headers,
+                    ...(options.headers || {})
+                }
             }
         );
 
 
     let data = {};
-
 
     try{
 
@@ -1545,11 +1456,25 @@ async function apiFetch(
     }
 
 
+    /*
+       مهم:
+       لا نحول 401 الخاص بتسجيل الدخول
+       إلى "انتهت جلسة".
+       نخلي رسالة السيرفر تظهر.
+    */
+
     if(
-        response.status === 401
+        response.status === 401 &&
+        !url.includes(
+            "/api/admin/login"
+        )
     ){
 
-        logoutLocal();
+        adminToken = "";
+
+        localStorage.removeItem(
+            "shrh_admin_token"
+        );
 
         throw new Error(
             "انتهت جلسة تسجيل الدخول"
@@ -1573,201 +1498,36 @@ async function apiFetch(
 }
 
 
-/* =========================================
-   فحص الجلسة
-========================================= */
+/* =====================================================
+   تبديل الدخول
+===================================================== */
 
-async function checkSession(){
+function switchAuth(mode){
 
-    if(!adminToken){
+    hideMessage(
+        "authMessage"
+    );
 
-        showAuthArea();
-
-        return;
-
-    }
-
-
-    try{
-
-        const data =
-            await apiFetch(
-                "/api/admin/me"
-            );
-
-
-        currentAdmin =
-            data.admin;
-
-
-        showDashboard();
-
-    }catch(error){
-
-        logoutLocal();
-
-    }
-
-}
-
-
-/* =========================================
-   شاشة الدخول
-========================================= */
-
-function showAuthArea(){
-
-    document
-        .getElementById(
-            "authArea"
-        )
-        .classList.remove(
-            "hidden"
-        );
-
-
-    document
-        .getElementById(
-            "dashboardArea"
-        )
-        .classList.add(
-            "hidden"
-        );
-
-}
-
-
-/* =========================================
-   لوحة التحكم
-========================================= */
-
-function showDashboard(){
-
-    document
-        .getElementById(
-            "authArea"
-        )
-        .classList.add(
-            "hidden"
-        );
-
-
-    document
-        .getElementById(
-            "dashboardArea"
-        )
-        .classList.remove(
-            "hidden"
-        );
-
-
-    document
-        .getElementById(
-            "headerUser"
-        )
-        .textContent =
-            `الأدمن: ${currentAdmin.username}`;
-
-
-    applyPermissions();
-
-
-    loadStats();
-
-    loadLessons();
-
-
-    if(
-        currentAdmin.can_manage_admins
-    ){
-
-        loadAdmins();
-
-        loadActivity();
-
-    }
-
-}
-
-
-/* =========================================
-   تطبيق الصلاحيات
-========================================= */
-
-function applyPermissions(){
-
-    const adminsNav =
-        document.getElementById(
-            "adminsNav"
-        );
-
-
-    const activityNav =
-        document.getElementById(
-            "activityNav"
-        );
-
-
-    if(
-        currentAdmin.can_manage_admins
-    ){
-
-        adminsNav.classList.remove(
-            "hidden"
-        );
-
-        activityNav.classList.remove(
-            "hidden"
-        );
-
-    }else{
-
-        adminsNav.classList.add(
-            "hidden"
-        );
-
-        activityNav.classList.add(
-            "hidden"
-        );
-
-    }
-
-}
-
-
-/* =========================================
-   وضع الدخول / الإنشاء
-========================================= */
-
-function showAuthMode(mode){
 
     const setupForm =
         document.getElementById(
             "setupForm"
         );
 
-
     const loginForm =
         document.getElementById(
             "loginForm"
         );
-
 
     const setupTab =
         document.getElementById(
             "setupTab"
         );
 
-
     const loginTab =
         document.getElementById(
             "loginTab"
         );
-
-
-    hideMessage(
-        "authMessage"
-    );
 
 
     if(mode === "setup"){
@@ -1811,50 +1571,155 @@ function showAuthMode(mode){
 }
 
 
-/* =========================================
-   إنشاء أول أدمن
-========================================= */
+/* =====================================================
+   صفحة الدخول
+===================================================== */
 
-async function setupAdmin(){
+function showAuth(){
+
+    document
+        .getElementById(
+            "dashboardPage"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "authPage"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+
+    switchAuth(
+        "login"
+    );
+
+}
+
+
+/* =====================================================
+   لوحة التحكم
+===================================================== */
+
+function showDashboard(){
+
+    document
+        .getElementById(
+            "authPage"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "dashboardPage"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+
+    if(!currentAdmin){
+
+        return;
+
+    }
+
+
+    document
+        .getElementById(
+            "adminName"
+        )
+        .textContent =
+        currentAdmin.username;
+
+
+    document
+        .getElementById(
+            "adminAvatar"
+        )
+        .textContent =
+        currentAdmin.username
+            .charAt(0)
+            .toUpperCase();
+
+
+    document
+        .getElementById(
+            "tabAdmins"
+        )
+        .classList.toggle(
+            "hidden",
+            !currentAdmin.can_manage_admins
+        );
+
+
+    document
+        .getElementById(
+            "tabSettings"
+        )
+        .classList.toggle(
+            "hidden",
+            !currentAdmin.can_manage_settings
+        );
+
+
+    document
+        .getElementById(
+            "tabActivity"
+        )
+        .classList.toggle(
+            "hidden",
+            !currentAdmin.can_view_activity
+        );
+
+}
+
+
+/* =====================================================
+   إنشاء أول أدمن
+===================================================== */
+
+async function createFirstAdmin(){
 
     const username =
         document
-        .getElementById(
-            "setupUsername"
-        )
-        .value
-        .trim();
+            .getElementById(
+                "setupUsername"
+            )
+            .value
+            .trim();
 
 
     const password =
         document
-        .getElementById(
-            "setupPassword"
-        )
-        .value;
+            .getElementById(
+                "setupPassword"
+            )
+            .value;
 
 
     const password2 =
         document
-        .getElementById(
-            "setupPassword2"
-        )
-        .value;
+            .getElementById(
+                "setupPassword2"
+            )
+            .value;
 
 
-    hideMessage(
-        "authMessage"
-    );
-
-
-    if(
-        username.length < 3
-    ){
+    if(username.length < 3){
 
         showMessage(
             "authMessage",
-            "اسم المستخدم يجب أن يكون 3 أحرف على الأقل.",
-            "error"
+            "اسم المستخدم يجب أن يكون 3 أحرف على الأقل",
+            true
         );
 
         return;
@@ -1862,14 +1727,12 @@ async function setupAdmin(){
     }
 
 
-    if(
-        password.length < 8
-    ){
+    if(password.length < 8){
 
         showMessage(
             "authMessage",
-            "كلمة المرور يجب أن تكون 8 أحرف على الأقل.",
-            "error"
+            "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+            true
         );
 
         return;
@@ -1877,14 +1740,12 @@ async function setupAdmin(){
     }
 
 
-    if(
-        password !== password2
-    ){
+    if(password !== password2){
 
         showMessage(
             "authMessage",
-            "كلمتا المرور غير متطابقتين.",
-            "error"
+            "كلمتا المرور غير متطابقتين",
+            true
         );
 
         return;
@@ -1895,19 +1756,14 @@ async function setupAdmin(){
     try{
 
         const data =
-            await apiFetch(
+            await api(
                 "/api/admin/setup",
                 {
-
                     method:"POST",
-
                     body:JSON.stringify({
-
                         username,
                         password
-
                     })
-
                 }
             );
 
@@ -1928,13 +1784,19 @@ async function setupAdmin(){
 
         showDashboard();
 
+        showSection(
+            "home"
+        );
+
+        loadAll();
+
 
     }catch(error){
 
         showMessage(
             "authMessage",
             error.message,
-            "error"
+            true
         );
 
     }
@@ -1942,56 +1804,95 @@ async function setupAdmin(){
 }
 
 
-/* =========================================
+/* =====================================================
    تسجيل الدخول
-========================================= */
+===================================================== */
 
 async function loginAdmin(){
 
     const username =
         document
-        .getElementById(
-            "loginUsername"
-        )
-        .value
-        .trim();
+            .getElementById(
+                "loginUsername"
+            )
+            .value
+            .trim();
 
 
     const password =
         document
-        .getElementById(
-            "loginPassword"
-        )
-        .value;
+            .getElementById(
+                "loginPassword"
+            )
+            .value;
 
 
-    hideMessage(
-        "authMessage"
-    );
+    if(!username){
+
+        showMessage(
+            "authMessage",
+            "اكتب اسم المستخدم",
+            true
+        );
+
+        return;
+
+    }
+
+
+    if(!password){
+
+        showMessage(
+            "authMessage",
+            "اكتب كلمة المرور",
+            true
+        );
+
+        return;
+
+    }
 
 
     try{
 
+        /*
+         تسجيل الدخول لا يحتاج توكن قديم
+        */
+
+        const oldToken =
+            adminToken;
+
+        adminToken = "";
+
+
         const data =
-            await apiFetch(
+            await api(
                 "/api/admin/login",
                 {
-
                     method:"POST",
-
                     body:JSON.stringify({
-
                         username,
                         password
-
                     })
-
                 }
             );
 
 
+        /*
+         التوكن الجديد
+        */
+
         adminToken =
             data.token;
+
+
+        if(!adminToken){
+
+            throw new Error(
+                "السيرفر لم يرسل رمز الجلسة"
+            );
+
+        }
 
 
         localStorage.setItem(
@@ -2004,15 +1905,47 @@ async function loginAdmin(){
             data.admin;
 
 
+        /*
+         نتأكد أن الجلسة تعمل
+        */
+
+        const me =
+            await api(
+                "/api/admin/me"
+            );
+
+
+        currentAdmin =
+            me.admin;
+
+
         showDashboard();
+
+        showSection(
+            "home"
+        );
+
+        loadAll();
 
 
     }catch(error){
 
+        /*
+         نرجع التوكن القديم فقط إذا كان موجودًا.
+         والأفضل تنظيفه عند فشل الدخول.
+        */
+
+        adminToken = "";
+
+        localStorage.removeItem(
+            "shrh_admin_token"
+        );
+
+
         showMessage(
             "authMessage",
             error.message,
-            "error"
+            true
         );
 
     }
@@ -2020,114 +1953,209 @@ async function loginAdmin(){
 }
 
 
-/* =========================================
+/* =====================================================
+   فحص الجلسة
+===================================================== */
+
+async function checkSession(){
+
+    if(!adminToken){
+
+        return;
+
+    }
+
+
+    try{
+
+        const data =
+            await api(
+                "/api/admin/me"
+            );
+
+
+        currentAdmin =
+            data.admin;
+
+
+        showDashboard();
+
+        showSection(
+            "home"
+        );
+
+        loadAll();
+
+
+    }catch(error){
+
+        adminToken = "";
+
+        localStorage.removeItem(
+            "shrh_admin_token"
+        );
+
+        showAuth();
+
+    }
+
+}
+
+
+/* =====================================================
    تسجيل الخروج
-========================================= */
+===================================================== */
 
 async function logoutAdmin(){
 
     try{
 
-        await apiFetch(
-            "/api/admin/logout",
-            {
-                method:"POST"
-            }
-        );
+        if(adminToken){
+
+            await api(
+                "/api/admin/logout",
+                {
+                    method:"POST"
+                }
+            );
+
+        }
 
     }catch(error){
 
-        // تجاهل
     }
 
-
-    logoutLocal();
-
-}
-
-
-function logoutLocal(){
 
     adminToken = "";
 
     currentAdmin = null;
 
-
     localStorage.removeItem(
         "shrh_admin_token"
     );
 
-
-    showAuthArea();
+    location.reload();
 
 }
 
 
-/* =========================================
-   التنقل
-========================================= */
+/* =====================================================
+   الأقسام
+===================================================== */
 
-function showSection(
-    section,
-    button
-){
+function showSection(section){
 
-    document
-        .querySelectorAll(
-            ".section"
-        )
-        .forEach(
-            element => {
+    const names = [
 
-                element.classList.remove(
-                    "active"
+        "home",
+        "content",
+        "admins",
+        "settings",
+        "activity",
+        "password"
+
+    ];
+
+
+    names.forEach(name => {
+
+        const element =
+            document.getElementById(
+                "section-" + name
+            );
+
+        if(element){
+
+            element.classList.toggle(
+                "hidden",
+                name !== section
+            );
+
+        }
+
+    });
+
+
+    const tabs = {
+
+        home:"tabHome",
+        content:"tabContent",
+        admins:"tabAdmins",
+        settings:"tabSettings",
+        activity:"tabActivity",
+        password:"tabPassword"
+
+    };
+
+
+    Object.entries(tabs).forEach(
+        ([name,id]) => {
+
+            const button =
+                document.getElementById(
+                    id
+                );
+
+            if(button){
+
+                button.classList.toggle(
+                    "active",
+                    name === section
                 );
 
             }
-        );
+
+        }
+    );
 
 
-    const target =
-        document.getElementById(
-            `section-${section}`
-        );
+    if(section === "home"){
 
-
-    if(target){
-
-        target.classList.add(
-            "active"
-        );
+        loadStats();
 
     }
 
 
-    document
-        .querySelectorAll(
-            ".nav button"
-        )
-        .forEach(
-            element => {
+    if(section === "content"){
 
-                element.classList.remove(
-                    "active"
-                );
+        loadCatalog();
 
-            }
-        );
-
-
-    if(button){
-
-        button.classList.add(
-            "active"
-        );
+        loadLessons();
 
     }
 
+
+    if(section === "admins"){
+
+        loadAdmins();
+
+    }
+
+
+    if(section === "settings"){
+
+        loadSettings();
+
+    }
+
+
+    if(section === "activity"){
+
+        loadActivity();
+
+    }
+
+}
+
+
+/* =====================================================
+   تحميل الكل
+===================================================== */
+
+function loadAll(){
 
     if(
-        section === "dashboard"
+        currentAdmin?.can_view_stats
     ){
 
         loadStats();
@@ -2136,8 +2164,11 @@ function showSection(
 
 
     if(
-        section === "lessons"
+        currentAdmin?.can_manage_catalog ||
+        currentAdmin?.can_manage_lessons
     ){
+
+        loadCatalog();
 
         loadLessons();
 
@@ -2145,7 +2176,7 @@ function showSection(
 
 
     if(
-        section === "admins"
+        currentAdmin?.can_manage_admins
     ){
 
         loadAdmins();
@@ -2154,7 +2185,16 @@ function showSection(
 
 
     if(
-        section === "activity"
+        currentAdmin?.can_manage_settings
+    ){
+
+        loadSettings();
+
+    }
+
+
+    if(
+        currentAdmin?.can_view_activity
     ){
 
         loadActivity();
@@ -2164,15 +2204,14 @@ function showSection(
 }
 
 
-/* =========================================
+/* =====================================================
    الإحصائيات
-========================================= */
+===================================================== */
 
 async function loadStats(){
 
     if(
-        !currentAdmin ||
-        !currentAdmin.can_view_stats
+        !currentAdmin?.can_view_stats
     ){
 
         return;
@@ -2183,7 +2222,7 @@ async function loadStats(){
     try{
 
         const data =
-            await apiFetch(
+            await api(
                 "/api/admin/stats"
             );
 
@@ -2193,7 +2232,7 @@ async function loadStats(){
                 "statVisitors"
             )
             .textContent =
-                data.stats.visitors;
+            data.stats.visitors;
 
 
         document
@@ -2201,7 +2240,7 @@ async function loadStats(){
                 "statSearches"
             )
             .textContent =
-                data.stats.searches;
+            data.stats.searches;
 
 
         document
@@ -2209,7 +2248,7 @@ async function loadStats(){
                 "statLessons"
             )
             .textContent =
-                data.stats.lessons;
+            data.stats.lessons;
 
 
         document
@@ -2217,7 +2256,7 @@ async function loadStats(){
                 "statAdmins"
             )
             .textContent =
-                data.stats.admins;
+            data.stats.admins;
 
 
         document
@@ -2225,103 +2264,451 @@ async function loadStats(){
                 "statActivity"
             )
             .textContent =
-                data.stats.activity;
+            data.stats.activity;
+
 
     }catch(error){
 
-        console.error(
-            error
-        );
+        console.error(error);
 
     }
 
 }
 
 
-/* =========================================
-   إضافة درس
-========================================= */
+/* =====================================================
+   الكتالوج
+===================================================== */
 
-async function addLesson(){
+async function loadCatalog(){
 
     if(
-        !currentAdmin ||
-        !currentAdmin.can_manage_lessons
+        !currentAdmin?.can_manage_catalog
     ){
-
-        showMessage(
-            "lessonMessage",
-            "ليس لديك صلاحية إدارة الدروس.",
-            "error"
-        );
 
         return;
 
     }
 
 
-    const semester =
-        document
-        .getElementById(
-            "lessonSemester"
-        )
-        .value;
+    try{
+
+        const data =
+            await api(
+                "/api/admin/catalog"
+            );
 
 
-    const grade =
-        document
-        .getElementById(
-            "lessonGrade"
-        )
-        .value;
+        catalogItems =
+            data.items || [];
 
 
-    const subject =
-        document
-        .getElementById(
-            "lessonSubject"
-        )
-        .value;
+        renderCatalog();
 
 
-    const title =
-        document
-        .getElementById(
-            "lessonTitle"
-        )
-        .value
-        .trim();
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
 
 
-    const description =
-        document
-        .getElementById(
-            "lessonDescription"
-        )
-        .value
-        .trim();
+/* =====================================================
+   عرض الكتالوج
+===================================================== */
+
+function renderCatalog(){
+
+    const semesters =
+        catalogItems.filter(
+            x =>
+                x.type === "semester"
+        );
 
 
-    const video_url =
-        document
-        .getElementById(
-            "lessonVideo"
-        )
-        .value
-        .trim();
+    const grades =
+        catalogItems.filter(
+            x =>
+                x.type === "grade"
+        );
 
 
-    hideMessage(
-        "lessonMessage"
+    const subjects =
+        catalogItems.filter(
+            x =>
+                x.type === "subject"
+        );
+
+
+    renderSimpleCatalog(
+        "semesterList",
+        semesters,
+        "semester"
     );
 
 
-    if(!title){
+    renderSimpleCatalog(
+        "gradeList",
+        grades,
+        "grade"
+    );
 
-        showMessage(
-            "lessonMessage",
-            "اكتب اسم الدرس.",
-            "error"
+
+    renderSubjects(
+        subjects
+    );
+
+
+    fillSelects(
+        semesters,
+        grades,
+        subjects
+    );
+
+}
+
+
+/* =====================================================
+   عرض الفصول والصفوف
+===================================================== */
+
+function renderSimpleCatalog(
+    id,
+    items,
+    type
+){
+
+    const element =
+        document.getElementById(id);
+
+
+    element.innerHTML = "";
+
+
+    if(!items.length){
+
+        element.innerHTML =
+            '<div class="empty">لا يوجد عناصر</div>';
+
+        return;
+
+    }
+
+
+    items.forEach(item => {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.className =
+            "item";
+
+
+        div.innerHTML = `
+
+            <div class="item-top">
+
+                <div>
+
+                    <div class="item-title">
+                        ${escapeHTML(item.name)}
+                    </div>
+
+                    <div class="badges">
+
+                        <span class="badge">
+                            ${item.enabled ? "مفعل" : "معطل"}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="actions">
+
+                    <button
+                        class="btn orange"
+                        onclick="toggleCatalog(
+                            ${item.id},
+                            ${item.enabled},
+                            '${encodeURIComponent(item.name)}',
+                            '${type}',
+                            ${item.grade_id || "null"}
+                        )"
+                    >
+                        ${item.enabled ? "⏸️ تعطيل" : "▶️ تفعيل"}
+                    </button>
+
+
+                    <button
+                        class="btn red"
+                        onclick="deleteCatalog(${item.id})"
+                    >
+                        🗑️ حذف
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        element.appendChild(
+            div
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   عرض المواد
+===================================================== */
+
+function renderSubjects(items){
+
+    const element =
+        document.getElementById(
+            "subjectList"
+        );
+
+
+    element.innerHTML = "";
+
+
+    if(!items.length){
+
+        element.innerHTML =
+            '<div class="empty">لا يوجد مواد</div>';
+
+        return;
+
+    }
+
+
+    items.forEach(item => {
+
+        const grade =
+            catalogItems.find(
+                x =>
+                    x.id === item.grade_id &&
+                    x.type === "grade"
+            );
+
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.className =
+            "item";
+
+
+        div.innerHTML = `
+
+            <div class="item-top">
+
+                <div>
+
+                    <div class="item-title">
+                        ${escapeHTML(item.name)}
+                    </div>
+
+                    <div class="small">
+                        ${
+                            grade
+                            ? "الصف: " + escapeHTML(grade.name)
+                            : "بدون صف محدد"
+                        }
+                    </div>
+
+                    <div class="badges">
+
+                        <span class="badge">
+                            ${item.enabled ? "مفعل" : "معطل"}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="actions">
+
+                    <button
+                        class="btn orange"
+                        onclick="toggleCatalog(
+                            ${item.id},
+                            ${item.enabled},
+                            '${encodeURIComponent(item.name)}',
+                            'subject',
+                            ${item.grade_id || "null"}
+                        )"
+                    >
+                        ${item.enabled ? "⏸️ تعطيل" : "▶️ تفعيل"}
+                    </button>
+
+
+                    <button
+                        class="btn red"
+                        onclick="deleteCatalog(${item.id})"
+                    >
+                        🗑️ حذف
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        element.appendChild(
+            div
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   تعبئة القوائم
+===================================================== */
+
+function fillSelects(
+    semesters,
+    grades,
+    subjects
+){
+
+    const subjectGrade =
+        document.getElementById(
+            "subjectGrade"
+        );
+
+    const lessonSemester =
+        document.getElementById(
+            "lessonSemester"
+        );
+
+    const lessonGrade =
+        document.getElementById(
+            "lessonGrade"
+        );
+
+    const lessonSubject =
+        document.getElementById(
+            "lessonSubject"
+        );
+
+
+    subjectGrade.innerHTML =
+        '<option value="">بدون صف محدد</option>';
+
+
+    grades
+        .filter(x => x.enabled)
+        .forEach(x => {
+
+            subjectGrade.innerHTML += `
+                <option value="${x.id}">
+                    ${escapeHTML(x.name)}
+                </option>
+            `;
+
+        });
+
+
+    lessonSemester.innerHTML =
+        '<option value="">اختر الفصل</option>';
+
+
+    semesters
+        .filter(x => x.enabled)
+        .forEach(x => {
+
+            lessonSemester.innerHTML += `
+                <option value="${escapeHTML(x.name)}">
+                    ${escapeHTML(x.name)}
+                </option>
+            `;
+
+        });
+
+
+    lessonGrade.innerHTML =
+        '<option value="">اختر الصف</option>';
+
+
+    grades
+        .filter(x => x.enabled)
+        .forEach(x => {
+
+            lessonGrade.innerHTML += `
+                <option value="${escapeHTML(x.name)}">
+                    ${escapeHTML(x.name)}
+                </option>
+            `;
+
+        });
+
+
+    lessonSubject.innerHTML =
+        '<option value="">اختر المادة</option>';
+
+
+    subjects
+        .filter(x => x.enabled)
+        .forEach(x => {
+
+            lessonSubject.innerHTML += `
+                <option value="${escapeHTML(x.name)}">
+                    ${escapeHTML(x.name)}
+                </option>
+            `;
+
+        });
+
+}
+
+
+/* =====================================================
+   إضافة فصل أو صف
+===================================================== */
+
+async function addCatalog(type){
+
+    const inputId =
+        type === "semester"
+        ? "newSemester"
+        : "newGrade";
+
+
+    const input =
+        document.getElementById(
+            inputId
+        );
+
+
+    const name =
+        input.value.trim();
+
+
+    if(!name){
+
+        alert(
+            "اكتب الاسم أولًا"
         );
 
         return;
@@ -2331,7 +2718,455 @@ async function addLesson(){
 
     try{
 
-        await apiFetch(
+        await api(
+            "/api/admin/catalog",
+            {
+
+                method:"POST",
+
+                body:JSON.stringify({
+
+                    type,
+
+                    name,
+
+                    grade_id:null,
+
+                    enabled:true,
+
+                    sort_order:0
+
+                })
+
+            }
+        );
+
+
+        input.value = "";
+
+        await loadCatalog();
+
+        await loadStats();
+
+
+    }catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   إضافة مادة
+===================================================== */
+
+async function addSubject(){
+
+    const name =
+        document
+            .getElementById(
+                "newSubject"
+            )
+            .value
+            .trim();
+
+
+    const gradeId =
+        document
+            .getElementById(
+                "subjectGrade"
+            )
+            .value;
+
+
+    if(!name){
+
+        alert(
+            "اكتب اسم المادة"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        await api(
+            "/api/admin/catalog",
+            {
+
+                method:"POST",
+
+                body:JSON.stringify({
+
+                    type:"subject",
+
+                    name,
+
+                    grade_id:
+                        gradeId
+                        ? Number(gradeId)
+                        : null,
+
+                    enabled:true,
+
+                    sort_order:0
+
+                })
+
+            }
+        );
+
+
+        document
+            .getElementById(
+                "newSubject"
+            )
+            .value = "";
+
+
+        await loadCatalog();
+
+        await loadStats();
+
+
+    }catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   تفعيل أو تعطيل
+===================================================== */
+
+async function toggleCatalog(
+    id,
+    enabled,
+    encodedName,
+    type,
+    gradeId
+){
+
+    try{
+
+        await api(
+            "/api/admin/catalog/" +
+            id,
+            {
+
+                method:"PUT",
+
+                body:JSON.stringify({
+
+                    type,
+
+                    name:
+                        decodeURIComponent(
+                            encodedName
+                        ),
+
+                    grade_id:
+                        gradeId || null,
+
+                    enabled:
+                        !enabled,
+
+                    sort_order:0
+
+                })
+
+            }
+        );
+
+
+        await loadCatalog();
+
+        await loadStats();
+
+
+    }catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   حذف عنصر
+===================================================== */
+
+async function deleteCatalog(id){
+
+    if(
+        !confirm(
+            "هل تريد حذف هذا العنصر؟"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        await api(
+            "/api/admin/catalog/" +
+            id,
+            {
+                method:"DELETE"
+            }
+        );
+
+
+        await loadCatalog();
+
+        await loadStats();
+
+
+    }catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   الدروس
+===================================================== */
+
+async function loadLessons(){
+
+    if(
+        !currentAdmin?.can_manage_lessons
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        const data =
+            await api(
+                "/api/lessons"
+            );
+
+
+        lessons =
+            data.items || [];
+
+
+        renderLessons();
+
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =====================================================
+   عرض الدروس
+===================================================== */
+
+function renderLessons(){
+
+    const element =
+        document.getElementById(
+            "lessonList"
+        );
+
+
+    element.innerHTML = "";
+
+
+    if(!lessons.length){
+
+        element.innerHTML =
+            '<div class="empty">لا يوجد دروس حتى الآن</div>';
+
+        return;
+
+    }
+
+
+    lessons.forEach(
+        lesson => {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "item";
+
+
+            div.innerHTML = `
+
+                <div class="item-top">
+
+                    <div>
+
+                        <div class="item-title">
+                            ${escapeHTML(
+                                lesson.title
+                            )}
+                        </div>
+
+                        <div class="small">
+                            ${escapeHTML(
+                                [
+                                    lesson.semester,
+                                    lesson.grade,
+                                    lesson.subject
+                                ]
+                                .filter(Boolean)
+                                .join(" • ")
+                            )}
+                        </div>
+
+                        <div class="small">
+                            ${escapeHTML(
+                                lesson.description || ""
+                            )}
+                        </div>
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <button
+                            class="btn orange"
+                            onclick="editLesson(${lesson.id})"
+                        >
+                            ✏️ تعديل
+                        </button>
+
+                        <button
+                            class="btn red"
+                            onclick="deleteLesson(${lesson.id})"
+                        >
+                            🗑️ حذف
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            element.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   إضافة درس
+===================================================== */
+
+async function addLesson(){
+
+    const semester =
+        document
+            .getElementById(
+                "lessonSemester"
+            )
+            .value
+            .trim();
+
+
+    const grade =
+        document
+            .getElementById(
+                "lessonGrade"
+            )
+            .value
+            .trim();
+
+
+    const subject =
+        document
+            .getElementById(
+                "lessonSubject"
+            )
+            .value
+            .trim();
+
+
+    const title =
+        document
+            .getElementById(
+                "lessonTitle"
+            )
+            .value
+            .trim();
+
+
+    const description =
+        document
+            .getElementById(
+                "lessonDescription"
+            )
+            .value
+            .trim();
+
+
+    const video_url =
+        document
+            .getElementById(
+                "lessonVideo"
+            )
+            .value
+            .trim();
+
+
+    if(!title){
+
+        alert(
+            "اكتب اسم الدرس"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        await api(
             "/api/admin/lessons",
             {
 
@@ -2340,10 +3175,15 @@ async function addLesson(){
                 body:JSON.stringify({
 
                     semester,
+
                     grade,
+
                     subject,
+
                     title,
+
                     description,
+
                     video_url
 
                 })
@@ -2352,315 +3192,31 @@ async function addLesson(){
         );
 
 
-        showMessage(
-            "lessonMessage",
-            "تمت إضافة الدرس بنجاح ✅"
-        );
+        document
+            .getElementById(
+                "lessonTitle"
+            )
+            .value = "";
 
 
-        document.getElementById(
-            "lessonTitle"
-        ).value = "";
+        document
+            .getElementById(
+                "lessonDescription"
+            )
+            .value = "";
 
 
-        document.getElementById(
-            "lessonDescription"
-        ).value = "";
+        document
+            .getElementById(
+                "lessonVideo"
+            )
+            .value = "";
 
 
-        document.getElementById(
-            "lessonVideo"
-        ).value = "";
+        await loadLessons();
 
+        await loadStats();
 
-        loadLessons();
-
-        loadStats();
-
-        loadActivity();
-
-    }catch(error){
-
-        showMessage(
-            "lessonMessage",
-            error.message,
-            "error"
-        );
-
-    }
-
-}
-
-
-/* =========================================
-   تحميل الدروس
-========================================= */
-
-async function loadLessons(){
-
-    const list =
-        document.getElementById(
-            "lessonsList"
-        );
-
-
-    if(!list){
-        return;
-    }
-
-
-    list.innerHTML =
-        `<div class="empty">
-            جاري تحميل الدروس...
-        </div>`;
-
-
-    try{
-
-        const data =
-            await apiFetch(
-                "/api/lessons"
-            );
-
-
-        const lessons =
-            data.items || [];
-
-
-        if(!lessons.length){
-
-            list.innerHTML =
-                `<div class="empty">
-                    لا توجد دروس مضافة حتى الآن.
-                </div>`;
-
-            return;
-
-        }
-
-
-        list.innerHTML = "";
-
-
-        lessons.forEach(
-            lesson => {
-
-                const row =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                row.className =
-                    "lesson-row";
-
-
-                const top =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                top.className =
-                    "top-row";
-
-
-                const info =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                const title =
-                    document.createElement(
-                        "h3"
-                    );
-
-
-                title.textContent =
-                    lesson.title;
-
-
-                const meta =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                meta.className =
-                    "meta";
-
-
-                meta.textContent =
-                    [
-
-                        lesson.grade,
-
-                        lesson.subject,
-
-                        lesson.semester
-
-                    ]
-
-                    .filter(Boolean)
-
-                    .join(
-                        " • "
-                    );
-
-
-                const description =
-                    document.createElement(
-                        "p"
-                    );
-
-
-                description.style.marginTop =
-                    "8px";
-
-
-                description.style.color =
-                    "#aaa";
-
-
-                description.style.lineHeight =
-                    "1.7";
-
-
-                description.textContent =
-                    lesson.description ||
-                    "لا يوجد وصف.";
-
-
-                info.appendChild(
-                    title
-                );
-
-
-                info.appendChild(
-                    meta
-                );
-
-
-                info.appendChild(
-                    description
-                );
-
-
-                top.appendChild(
-                    info
-                );
-
-
-                const actions =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                actions.className =
-                    "actions";
-
-
-                if(
-                    currentAdmin &&
-                    currentAdmin.can_manage_lessons
-                ){
-
-                    const deleteButton =
-                        document.createElement(
-                            "button"
-                        );
-
-
-                    deleteButton.className =
-                        "btn-red";
-
-
-                    deleteButton.textContent =
-                        "🗑️ حذف";
-
-
-                    deleteButton.onclick =
-                        () =>
-                            deleteLesson(
-                                lesson.id
-                            );
-
-
-                    actions.appendChild(
-                        deleteButton
-                    );
-
-                }
-
-
-                top.appendChild(
-                    actions
-                );
-
-
-                row.appendChild(
-                    top
-                );
-
-
-                list.appendChild(
-                    row
-                );
-
-            }
-        );
-
-
-    }catch(error){
-
-        list.innerHTML =
-            `<div class="empty">
-                ${escapeHTML(
-                    error.message
-                )}
-            </div>`;
-
-    }
-
-}
-
-
-/* =========================================
-   حذف درس
-========================================= */
-
-async function deleteLesson(id){
-
-    const ok =
-        confirm(
-            "هل أنت متأكد من حذف هذا الدرس؟"
-        );
-
-
-    if(!ok){
-        return;
-    }
-
-
-    try{
-
-        await apiFetch(
-            `/api/admin/lessons/${id}`,
-            {
-
-                method:"DELETE"
-
-            }
-        );
-
-
-        loadLessons();
-
-        loadStats();
-
-        loadActivity();
 
     }catch(error){
 
@@ -2673,15 +3229,129 @@ async function deleteLesson(id){
 }
 
 
-/* =========================================
-   تحميل الإداريين
-========================================= */
+/* =====================================================
+   تعديل درس
+===================================================== */
 
-async function loadAdmins(){
+async function editLesson(id){
+
+    const lesson =
+        lessons.find(
+            x =>
+                x.id === id
+        );
+
+
+    if(!lesson){
+
+        return;
+
+    }
+
+
+    const title =
+        prompt(
+            "اسم الدرس",
+            lesson.title
+        );
+
+
+    if(title === null){
+
+        return;
+
+    }
+
+
+    const description =
+        prompt(
+            "الوصف",
+            lesson.description || ""
+        );
+
+
+    if(description === null){
+
+        return;
+
+    }
+
+
+    const video =
+        prompt(
+            "رابط الفيديو",
+            lesson.video_url || ""
+        );
+
+
+    if(video === null){
+
+        return;
+
+    }
+
+
+    try{
+
+        await api(
+            "/api/admin/lessons/" +
+            id,
+            {
+
+                method:"PUT",
+
+                body:JSON.stringify({
+
+                    semester:
+                        lesson.semester || "",
+
+                    grade:
+                        lesson.grade || "",
+
+                    subject:
+                        lesson.subject || "",
+
+                    title:
+                        title.trim(),
+
+                    description:
+                        description.trim(),
+
+                    video_url:
+                        video.trim()
+
+                })
+
+            }
+        );
+
+
+        await loadLessons();
+
+        await loadStats();
+
+
+    }catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   حذف درس
+===================================================== */
+
+async function deleteLesson(id){
 
     if(
-        !currentAdmin ||
-        !currentAdmin.can_manage_admins
+        !confirm(
+            "هل تريد حذف هذا الدرس؟"
+        )
     ){
 
         return;
@@ -2689,298 +3359,200 @@ async function loadAdmins(){
     }
 
 
-    const list =
-        document.getElementById(
-            "adminsList"
+    try{
+
+        await api(
+            "/api/admin/lessons/" +
+            id,
+            {
+                method:"DELETE"
+            }
         );
 
 
-    list.innerHTML =
-        `<div class="empty">
-            جاري تحميل الحسابات...
-        </div>`;
+        await loadLessons();
+
+        await loadStats();
+
+
+    }catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   الإداريون
+===================================================== */
+
+async function loadAdmins(){
+
+    if(
+        !currentAdmin?.can_manage_admins
+    ){
+
+        return;
+
+    }
 
 
     try{
 
         const data =
-            await apiFetch(
+            await api(
                 "/api/admin/accounts"
             );
 
 
-        const admins =
-            data.items || [];
+        const list =
+            document.getElementById(
+                "adminsList"
+            );
 
 
-        if(!admins.length){
+        list.innerHTML = "";
+
+
+        if(
+            !data.items ||
+            !data.items.length
+        ){
 
             list.innerHTML =
-                `<div class="empty">
-                    لا توجد حسابات.
-                </div>`;
+                '<div class="empty">لا يوجد إداريون</div>';
 
             return;
 
         }
 
 
-        list.innerHTML = "";
-
-
-        admins.forEach(
+        data.items.forEach(
             admin => {
 
-                const row =
+                const div =
                     document.createElement(
                         "div"
                     );
 
 
-                row.className =
-                    "admin-row";
+                div.className =
+                    "item";
+
+
+                div.innerHTML = `
+
+                    <div class="item-top">
+
+                        <div>
+
+                            <div class="item-title">
+                                👤 ${escapeHTML(
+                                    admin.username
+                                )}
+                            </div>
+
+
+                            <div class="badges">
+
+                                ${
+                                    admin.is_owner
+                                    ? '<span class="badge">👑 الأدمن الرئيسي</span>'
+                                    : ""
+                                }
+
+                                ${
+                                    admin.can_manage_lessons
+                                    ? '<span class="badge">📖 الدروس</span>'
+                                    : ""
+                                }
+
+                                ${
+                                    admin.can_manage_admins
+                                    ? '<span class="badge">👥 الإداريون</span>'
+                                    : ""
+                                }
+
+                                ${
+                                    admin.can_view_stats
+                                    ? '<span class="badge">📊 الإحصائيات</span>'
+                                    : ""
+                                }
+
+                                ${
+                                    admin.can_manage_catalog
+                                    ? '<span class="badge">📚 المنهج</span>'
+                                    : ""
+                                }
+
+                                ${
+                                    admin.can_manage_settings
+                                    ? '<span class="badge">⚙️ الإعدادات</span>'
+                                    : ""
+                                }
+
+                                ${
+                                    admin.can_view_activity
+                                    ? '<span class="badge">📋 النشاط</span>'
+                                    : ""
+                                }
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="actions">
+
+                            ${
+                                admin.id !== currentAdmin.id
+                                ? `
+
+                                    <button
+                                        class="btn orange"
+                                        onclick='editAdminPermissions(${JSON.stringify(admin).replace(/'/g,"&#39;")})'
+                                    >
+                                        🛡️ الصلاحيات
+                                    </button>
+
+                                    <button
+                                        class="btn gray"
+                                        onclick="changeAdminPassword(
+                                            ${admin.id},
+                                            '${encodeURIComponent(admin.username)}'
+                                        )"
+                                    >
+                                        🔑 كلمة المرور
+                                    </button>
+
+                                    <button
+                                        class="btn red"
+                                        onclick="deleteAdmin(${admin.id})"
+                                    >
+                                        🗑️ حذف
+                                    </button>
+
+                                `
+                                : `
+                                    <span class="small">
+                                        الحساب الحالي
+                                    </span>
+                                `
+                            }
 
+                        </div>
 
-                const top =
-                    document.createElement(
-                        "div"
-                    );
+                    </div>
 
-
-                top.className =
-                    "top-row";
-
-
-                const info =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                const title =
-                    document.createElement(
-                        "h3"
-                    );
-
-
-                title.textContent =
-                    `👤 ${admin.username}`;
-
-
-                info.appendChild(
-                    title
-                );
-
-
-                const permissions =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                if(
-                    admin.can_manage_lessons
-                ){
-
-                    permissions.innerHTML +=
-                        `<span class="badge">
-                            📚 إدارة الدروس
-                        </span>`;
-
-                }
-
-
-                if(
-                    admin.can_manage_admins
-                ){
-
-                    permissions.innerHTML +=
-                        `<span class="badge">
-                            👥 إدارة الإداريين
-                        </span>`;
-
-                }
-
-
-                if(
-                    admin.can_view_stats
-                ){
-
-                    permissions.innerHTML +=
-                        `<span class="badge">
-                            📊 الإحصائيات
-                        </span>`;
-
-                }
-
-
-                if(
-                    !permissions.innerHTML
-                ){
-
-                    permissions.innerHTML =
-                        `<span class="badge">
-                            بدون صلاحيات
-                        </span>`;
-
-                }
-
-
-                info.appendChild(
-                    permissions
-                );
-
-
-                const actions =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                actions.className =
-                    "actions";
-
-
-                if(
-                    admin.id !==
-                    currentAdmin.id
-                ){
-
-                    const editButton =
-                        document.createElement(
-                            "button"
-                        );
-
-
-                    editButton.className =
-                        "btn-orange";
-
-
-                    editButton.textContent =
-                        "🛡️ الصلاحيات";
-
-
-                    editButton.onclick =
-                        () =>
-                            openEditAdminModal(
-                                admin
-                            );
-
-
-                    actions.appendChild(
-                        editButton
-                    );
-
-
-                    const passwordButton =
-                        document.createElement(
-                            "button"
-                        );
-
-
-                    passwordButton.className =
-                        "btn-gray";
-
-
-                    passwordButton.textContent =
-                        "🔑 كلمة المرور";
-
-
-                    passwordButton.onclick =
-                        () =>
-                            openAdminPasswordModal(
-                                admin
-                            );
-
-
-                    actions.appendChild(
-                        passwordButton
-                    );
-
-
-                    const deleteButton =
-                        document.createElement(
-                            "button"
-                        );
-
-
-                    deleteButton.className =
-                        "btn-red";
-
-
-                    deleteButton.textContent =
-                        "🗑️ حذف";
-
-
-                    deleteButton.onclick =
-                        () =>
-                            deleteAdmin(
-                                admin
-                            );
-
-
-                    actions.appendChild(
-                        deleteButton
-                    );
-
-                }else{
-
-                    const current =
-                        document.createElement(
-                            "span"
-                        );
-
-
-                    current.className =
-                        "small";
-
-
-                    current.textContent =
-                        "الحساب الحالي";
-
-
-                    actions.appendChild(
-                        current
-                    );
-
-                }
-
-
-                top.appendChild(
-                    actions
-                );
-
-
-                row.appendChild(
-                    top
-                );
-
-
-                const created =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                created.className =
-                    "meta";
-
-
-                created.textContent =
-                    `تاريخ الإنشاء: ${
-                        formatDate(
-                            admin.created_at
-                        )
-                    }`;
-
-
-                row.appendChild(
-                    created
-                );
+                `;
 
 
                 list.appendChild(
-                    row
+                    div
                 );
 
             }
@@ -2989,78 +3561,42 @@ async function loadAdmins(){
 
     }catch(error){
 
-        list.innerHTML =
-            `<div class="empty">
-                ${escapeHTML(
-                    error.message
-                )}
-            </div>`;
+        console.error(error);
 
     }
 
 }
 
 
-/* =========================================
-   إنشاء حساب إداري
-========================================= */
+/* =====================================================
+   إنشاء إداري
+===================================================== */
 
 async function createAdminAccount(){
 
     const username =
         document
-        .getElementById(
-            "newAdminUsername"
-        )
-        .value
-        .trim();
+            .getElementById(
+                "newAdminUsername"
+            )
+            .value
+            .trim();
 
 
     const password =
         document
-        .getElementById(
-            "newAdminPassword"
-        )
-        .value;
+            .getElementById(
+                "newAdminPassword"
+            )
+            .value;
 
 
-    const can_manage_lessons =
-        document
-        .getElementById(
-            "permLessons"
-        )
-        .checked;
-
-
-    const can_manage_admins =
-        document
-        .getElementById(
-            "permAdmins"
-        )
-        .checked;
-
-
-    const can_view_stats =
-        document
-        .getElementById(
-            "permStats"
-        )
-        .checked;
-
-
-    hideMessage(
-        "adminMessage"
-    );
-
-
-    if(
-        username.length < 3
-    ){
+    if(username.length < 3){
 
         showMessage(
             "adminMessage",
-            "اسم المستخدم يجب أن يكون 3 أحرف على الأقل.",
-            "error"
+            "اسم المستخدم يجب أن يكون 3 أحرف على الأقل",
+            true
         );
 
         return;
@@ -3068,14 +3604,12 @@ async function createAdminAccount(){
     }
 
 
-    if(
-        password.length < 8
-    ){
+    if(password.length < 8){
 
         showMessage(
             "adminMessage",
-            "كلمة المرور يجب أن تكون 8 أحرف على الأقل.",
-            "error"
+            "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+            true
         );
 
         return;
@@ -3085,7 +3619,7 @@ async function createAdminAccount(){
 
     try{
 
-        await apiFetch(
+        await api(
             "/api/admin/accounts",
             {
 
@@ -3094,10 +3628,50 @@ async function createAdminAccount(){
                 body:JSON.stringify({
 
                     username,
+
                     password,
-                    can_manage_lessons,
-                    can_manage_admins,
-                    can_view_stats
+
+                    can_manage_lessons:
+                        document
+                            .getElementById(
+                                "permLessons"
+                            )
+                            .checked,
+
+                    can_manage_admins:
+                        document
+                            .getElementById(
+                                "permAdmins"
+                            )
+                            .checked,
+
+                    can_view_stats:
+                        document
+                            .getElementById(
+                                "permStats"
+                            )
+                            .checked,
+
+                    can_manage_catalog:
+                        document
+                            .getElementById(
+                                "permCatalog"
+                            )
+                            .checked,
+
+                    can_manage_settings:
+                        document
+                            .getElementById(
+                                "permSettings"
+                            )
+                            .checked,
+
+                    can_view_activity:
+                        document
+                            .getElementById(
+                                "permActivity"
+                            )
+                            .checked
 
                 })
 
@@ -3107,32 +3681,35 @@ async function createAdminAccount(){
 
         showMessage(
             "adminMessage",
-            "تم إنشاء الحساب بنجاح ✅"
+            "تم إنشاء الإداري ✅"
         );
 
 
-        document.getElementById(
-            "newAdminUsername"
-        ).value = "";
+        document
+            .getElementById(
+                "newAdminUsername"
+            )
+            .value = "";
 
 
-        document.getElementById(
-            "newAdminPassword"
-        ).value = "";
+        document
+            .getElementById(
+                "newAdminPassword"
+            )
+            .value = "";
 
 
-        loadAdmins();
+        await loadAdmins();
 
-        loadStats();
+        await loadStats();
 
-        loadActivity();
 
     }catch(error){
 
         showMessage(
             "adminMessage",
             error.message,
-            "error"
+            true
         );
 
     }
@@ -3140,207 +3717,170 @@ async function createAdminAccount(){
 }
 
 
-/* =========================================
-   حذف إداري
-========================================= */
-
-async function deleteAdmin(
-    admin
-){
-
-    const ok =
-        confirm(
-            `هل تريد حذف حساب "${admin.username}"؟`
-        );
-
-
-    if(!ok){
-        return;
-    }
-
-
-    try{
-
-        await apiFetch(
-            `/api/admin/accounts/${admin.id}`,
-            {
-
-                method:"DELETE"
-
-            }
-        );
-
-
-        loadAdmins();
-
-        loadStats();
-
-        loadActivity();
-
-    }catch(error){
-
-        alert(
-            error.message
-        );
-
-    }
-
-}
-
-
-/* =========================================
+/* =====================================================
    تعديل الصلاحيات
-========================================= */
+===================================================== */
 
-function openEditAdminModal(
-    admin
-){
+function editAdminPermissions(admin){
 
-    editingAdminId =
-        admin.id;
-
-
-    document.getElementById(
-        "editAdminName"
-    ).textContent =
-        `الحساب: ${admin.username}`;
-
-
-    document.getElementById(
-        "editPermLessons"
-    ).checked =
-        admin.can_manage_lessons;
-
-
-    document.getElementById(
-        "editPermAdmins"
-    ).checked =
-        admin.can_manage_admins;
-
-
-    document.getElementById(
-        "editPermStats"
-    ).checked =
-        admin.can_view_stats;
+    document
+        .getElementById(
+            "modalTitle"
+        )
+        .textContent =
+        "🛡️ صلاحيات " +
+        admin.username;
 
 
     document
         .getElementById(
-            "editAdminModal"
+            "modalContent"
         )
-        .classList.remove(
-            "hidden"
-        );
+        .innerHTML = `
 
-}
+            <label class="permission">
+                <input
+                    id="editLessons"
+                    type="checkbox"
+                    ${admin.can_manage_lessons ? "checked" : ""}
+                >
+                📖 إدارة الدروس
+            </label>
 
+            <label class="permission">
+                <input
+                    id="editAdmins"
+                    type="checkbox"
+                    ${admin.can_manage_admins ? "checked" : ""}
+                >
+                👥 إدارة الإداريين
+            </label>
 
-function closeEditAdminModal(){
+            <label class="permission">
+                <input
+                    id="editStats"
+                    type="checkbox"
+                    ${admin.can_view_stats ? "checked" : ""}
+                >
+                📊 الإحصائيات
+            </label>
 
-    editingAdminId =
-        null;
+            <label class="permission">
+                <input
+                    id="editCatalog"
+                    type="checkbox"
+                    ${admin.can_manage_catalog ? "checked" : ""}
+                >
+                📚 إدارة المنهج
+            </label>
+
+            <label class="permission">
+                <input
+                    id="editSettings"
+                    type="checkbox"
+                    ${admin.can_manage_settings ? "checked" : ""}
+                >
+                ⚙️ إعدادات الموقع
+            </label>
+
+            <label class="permission">
+                <input
+                    id="editActivity"
+                    type="checkbox"
+                    ${admin.can_view_activity ? "checked" : ""}
+                >
+                📋 سجل النشاط
+            </label>
+
+        `;
 
 
     document
         .getElementById(
-            "editAdminModal"
+            "modalSave"
         )
-        .classList.add(
-            "hidden"
-        );
+        .onclick =
+        async function(){
 
-}
+            try{
+
+                await api(
+                    "/api/admin/accounts/" +
+                    admin.id +
+                    "/permissions",
+                    {
+
+                        method:"PUT",
+
+                        body:JSON.stringify({
+
+                            can_manage_lessons:
+                                document
+                                    .getElementById(
+                                        "editLessons"
+                                    )
+                                    .checked,
+
+                            can_manage_admins:
+                                document
+                                    .getElementById(
+                                        "editAdmins"
+                                    )
+                                    .checked,
+
+                            can_view_stats:
+                                document
+                                    .getElementById(
+                                        "editStats"
+                                    )
+                                    .checked,
+
+                            can_manage_catalog:
+                                document
+                                    .getElementById(
+                                        "editCatalog"
+                                    )
+                                    .checked,
+
+                            can_manage_settings:
+                                document
+                                    .getElementById(
+                                        "editSettings"
+                                    )
+                                    .checked,
+
+                            can_view_activity:
+                                document
+                                    .getElementById(
+                                        "editActivity"
+                                    )
+                                    .checked
+
+                        })
+
+                    }
+                );
 
 
-async function saveAdminPermissions(){
+                closeModal();
 
-    if(!editingAdminId){
-        return;
-    }
+                await loadAdmins();
 
 
-    try{
+            }catch(error){
 
-        await apiFetch(
-
-            `/api/admin/accounts/${editingAdminId}/permissions`,
-
-            {
-
-                method:"PUT",
-
-                body:JSON.stringify({
-
-                    can_manage_lessons:
-
-                        document.getElementById(
-                            "editPermLessons"
-                        ).checked,
-
-                    can_manage_admins:
-
-                        document.getElementById(
-                            "editPermAdmins"
-                        ).checked,
-
-                    can_view_stats:
-
-                        document.getElementById(
-                            "editPermStats"
-                        ).checked
-
-                })
+                alert(
+                    error.message
+                );
 
             }
 
-        );
-
-
-        closeEditAdminModal();
-
-
-        loadAdmins();
-
-        loadActivity();
-
-
-    }catch(error){
-
-        alert(
-            error.message
-        );
-
-    }
-
-}
-
-
-/* =========================================
-   تغيير كلمة مرور إداري
-========================================= */
-
-function openAdminPasswordModal(
-    admin
-){
-
-    changingPasswordAdminId =
-        admin.id;
-
-
-    document.getElementById(
-        "changeAdminPasswordName"
-    ).textContent =
-        `الحساب: ${admin.username}`;
-
-
-    document.getElementById(
-        "targetAdminPassword"
-    ).value = "";
+        };
 
 
     document
         .getElementById(
-            "changeAdminPasswordModal"
+            "modal"
         )
         .classList.remove(
             "hidden"
@@ -3349,48 +3889,39 @@ function openAdminPasswordModal(
 }
 
 
-function closeAdminPasswordModal(){
+/* =====================================================
+   تغيير كلمة مرور إداري
+===================================================== */
 
-    changingPasswordAdminId =
-        null;
+async function changeAdminPassword(
+    id,
+    encodedUsername
+){
 
-
-    document
-        .getElementById(
-            "changeAdminPasswordModal"
-        )
-        .classList.add(
-            "hidden"
+    const username =
+        decodeURIComponent(
+            encodedUsername
         );
-
-}
-
-
-async function saveAdminPassword(){
-
-    if(
-        !changingPasswordAdminId
-    ){
-
-        return;
-
-    }
 
 
     const password =
-        document
-        .getElementById(
-            "targetAdminPassword"
-        )
-        .value;
+        prompt(
+            "اكتب كلمة المرور الجديدة للحساب " +
+            username
+        );
 
 
-    if(
-        password.length < 8
-    ){
+    if(password === null){
+
+        return;
+
+    }
+
+
+    if(password.length < 8){
 
         alert(
-            "كلمة المرور يجب أن تكون 8 أحرف على الأقل."
+            "كلمة المرور يجب أن تكون 8 أحرف على الأقل"
         );
 
         return;
@@ -3400,10 +3931,10 @@ async function saveAdminPassword(){
 
     try{
 
-        await apiFetch(
-
-            `/api/admin/accounts/${changingPasswordAdminId}/password`,
-
+        await api(
+            "/api/admin/accounts/" +
+            id +
+            "/password",
             {
 
                 method:"PUT",
@@ -3416,7 +3947,6 @@ async function saveAdminPassword(){
                 })
 
             }
-
         );
 
 
@@ -3425,9 +3955,7 @@ async function saveAdminPassword(){
         );
 
 
-        closeAdminPasswordModal();
-
-        loadActivity();
+        await loadAdmins();
 
 
     }catch(error){
@@ -3441,34 +3969,310 @@ async function saveAdminPassword(){
 }
 
 
-/* =========================================
-   تغيير كلمة مرور الأدمن الحالي
-========================================= */
+/* =====================================================
+   حذف إداري
+===================================================== */
 
-async function changePassword(){
-
-    const password =
-        document
-        .getElementById(
-            "newPassword"
-        )
-        .value;
-
-
-    const password2 =
-        document
-        .getElementById(
-            "newPassword2"
-        )
-        .value;
-
+async function deleteAdmin(id){
 
     if(
-        password.length < 8
+        !confirm(
+            "هل تريد حذف هذا الحساب الإداري؟"
+        )
     ){
 
+        return;
+
+    }
+
+
+    try{
+
+        await api(
+            "/api/admin/accounts/" +
+            id,
+            {
+                method:"DELETE"
+            }
+        );
+
+
+        await loadAdmins();
+
+        await loadStats();
+
+
+    }catch(error){
+
         alert(
-            "كلمة المرور يجب أن تكون 8 أحرف على الأقل."
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   الإعدادات
+===================================================== */
+
+async function loadSettings(){
+
+    if(
+        !currentAdmin?.can_manage_settings
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        const data =
+            await api(
+                "/api/admin/settings"
+            );
+
+
+        const settings =
+            data.settings || {};
+
+
+        document
+            .getElementById(
+                "settingSiteTitle"
+            )
+            .value =
+            settings.site_title || "";
+
+
+        document
+            .getElementById(
+                "settingWelcomeText"
+            )
+            .value =
+            settings.welcome_text || "";
+
+
+        document
+            .getElementById(
+                "settingFooter"
+            )
+            .value =
+            settings.footer_text || "";
+
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =====================================================
+   حفظ الإعدادات
+===================================================== */
+
+async function saveSettings(){
+
+    try{
+
+        await api(
+            "/api/admin/settings",
+            {
+
+                method:"PUT",
+
+                body:JSON.stringify({
+
+                    site_title:
+                        document
+                            .getElementById(
+                                "settingSiteTitle"
+                            )
+                            .value
+                            .trim(),
+
+                    welcome_text:
+                        document
+                            .getElementById(
+                                "settingWelcomeText"
+                            )
+                            .value
+                            .trim(),
+
+                    footer_text:
+                        document
+                            .getElementById(
+                                "settingFooter"
+                            )
+                            .value
+                            .trim()
+
+                })
+
+            }
+        );
+
+
+        showMessage(
+            "settingsMessage",
+            "تم حفظ الإعدادات ✅"
+        );
+
+
+    }catch(error){
+
+        showMessage(
+            "settingsMessage",
+            error.message,
+            true
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   سجل النشاط
+===================================================== */
+
+async function loadActivity(){
+
+    if(
+        !currentAdmin?.can_view_activity
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        const data =
+            await api(
+                "/api/admin/activity?limit=200"
+            );
+
+
+        const list =
+            document.getElementById(
+                "activityList"
+            );
+
+
+        list.innerHTML = "";
+
+
+        if(
+            !data.items ||
+            !data.items.length
+        ){
+
+            list.innerHTML =
+                '<div class="empty">لا يوجد نشاط حتى الآن</div>';
+
+            return;
+
+        }
+
+
+        data.items.forEach(
+            item => {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "item activity";
+
+
+                div.innerHTML = `
+
+                    <div class="item-title">
+                        👤 ${escapeHTML(
+                            item.admin_username ||
+                            "النظام"
+                        )}
+                    </div>
+
+                    <div class="small">
+                        ${escapeHTML(
+                            item.action || ""
+                        )}
+                    </div>
+
+                    <div class="small">
+                        ${escapeHTML(
+                            item.details || ""
+                        )}
+                    </div>
+
+                    <div class="small">
+                        ${new Date(
+                            item.created_at
+                        ).toLocaleString(
+                            "ar-OM"
+                        )}
+                    </div>
+
+                `;
+
+
+                list.appendChild(
+                    div
+                );
+
+            }
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =====================================================
+   تغيير كلمة المرور الحالية
+===================================================== */
+
+async function changeMyPassword(){
+
+    const p1 =
+        document
+            .getElementById(
+                "myNewPassword"
+            )
+            .value;
+
+
+    const p2 =
+        document
+            .getElementById(
+                "myNewPassword2"
+            )
+            .value;
+
+
+    if(p1.length < 8){
+
+        showMessage(
+            "passwordMessage",
+            "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+            true
         );
 
         return;
@@ -3476,12 +4280,12 @@ async function changePassword(){
     }
 
 
-    if(
-        password !== password2
-    ){
+    if(p1 !== p2){
 
-        alert(
-            "كلمتا المرور غير متطابقتين."
+        showMessage(
+            "passwordMessage",
+            "كلمتا المرور غير متطابقتين",
+            true
         );
 
         return;
@@ -3491,7 +4295,7 @@ async function changePassword(){
 
     try{
 
-        await apiFetch(
+        await api(
             "/api/admin/password",
             {
 
@@ -3499,8 +4303,7 @@ async function changePassword(){
 
                 body:JSON.stringify({
 
-                    new_password:
-                        password
+                    new_password:p1
 
                 })
 
@@ -3508,28 +4311,32 @@ async function changePassword(){
         );
 
 
-        alert(
+        showMessage(
+            "passwordMessage",
             "تم تغيير كلمة المرور ✅"
         );
 
 
-        document.getElementById(
-            "newPassword"
-        ).value = "";
+        document
+            .getElementById(
+                "myNewPassword"
+            )
+            .value = "";
 
 
-        document.getElementById(
-            "newPassword2"
-        ).value = "";
-
-
-        loadActivity();
+        document
+            .getElementById(
+                "myNewPassword2"
+            )
+            .value = "";
 
 
     }catch(error){
 
-        alert(
-            error.message
+        showMessage(
+            "passwordMessage",
+            error.message,
+            true
         );
 
     }
@@ -3537,354 +4344,30 @@ async function changePassword(){
 }
 
 
-/* =========================================
-   سجل التعديلات
-========================================= */
+/* =====================================================
+   إغلاق النافذة
+===================================================== */
 
-async function loadActivity(){
+function closeModal(){
 
-    if(
-        !currentAdmin ||
-        !currentAdmin.can_manage_admins
-    ){
-
-        return;
-
-    }
-
-
-    const list =
-        document.getElementById(
-            "activityList"
+    document
+        .getElementById(
+            "modal"
+        )
+        .classList.add(
+            "hidden"
         );
-
-
-    if(!list){
-        return;
-    }
-
-
-    list.innerHTML =
-        `<div class="empty">
-            جاري تحميل سجل التعديلات...
-        </div>`;
-
-
-    try{
-
-        const data =
-            await apiFetch(
-                "/api/admin/activity?limit=200"
-            );
-
-
-        const items =
-            data.items || [];
-
-
-        if(!items.length){
-
-            list.innerHTML =
-                `<div class="empty">
-                    لا توجد تعديلات مسجلة حتى الآن.
-                </div>`;
-
-            return;
-
-        }
-
-
-        list.innerHTML = "";
-
-
-        items.forEach(
-            item => {
-
-                const row =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                row.className =
-                    "activity-row";
-
-
-                const top =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                top.className =
-                    "top-row";
-
-
-                const info =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                const title =
-                    document.createElement(
-                        "h3"
-                    );
-
-
-                title.innerHTML =
-                    `
-                    👤 ${escapeHTML(
-                        item.admin_username ||
-                        "نظام"
-                    )}
-
-                    — 
-
-                    <span class="activity-action">
-                        ${escapeHTML(
-                            item.action
-                        )}
-                    </span>
-                    `;
-
-
-                info.appendChild(
-                    title
-                );
-
-
-                if(
-                    item.details
-                ){
-
-                    const details =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    details.className =
-                        "meta";
-
-
-                    details.textContent =
-                        item.details;
-
-
-                    info.appendChild(
-                        details
-                    );
-
-                }
-
-
-                if(
-                    item.target_type
-                ){
-
-                    const target =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    target.className =
-                        "meta";
-
-
-                    target.textContent =
-                        `النوع: ${item.target_type}${
-                            item.target_id
-                                ? ` • الرقم: ${item.target_id}`
-                                : ""
-                        }`;
-
-
-                    info.appendChild(
-                        target
-                    );
-
-                }
-
-
-                const date =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                date.className =
-                    "activity-date";
-
-
-                date.textContent =
-                    formatDate(
-                        item.created_at
-                    );
-
-
-                top.appendChild(
-                    info
-                );
-
-
-                top.appendChild(
-                    date
-                );
-
-
-                row.appendChild(
-                    top
-                );
-
-
-                list.appendChild(
-                    row
-                );
-
-            }
-        );
-
-
-    }catch(error){
-
-        list.innerHTML =
-            `<div class="empty">
-                ${escapeHTML(
-                    error.message
-                )}
-            </div>`;
-
-    }
 
 }
 
 
-/* =========================================
-   التاريخ
-========================================= */
-
-function formatDate(
-    value
-){
-
-    if(!value){
-        return "غير معروف";
-    }
-
-
-    try{
-
-        return new Date(
-            value
-        ).toLocaleString(
-            "ar-OM",
-            {
-                dateStyle:"medium",
-                timeStyle:"short"
-            }
-        );
-
-    }catch(error){
-
-        return String(value);
-
-    }
-
-}
-
-
-/* =========================================
-   فتح الموقع
-========================================= */
-
-function openPublicSite(){
-
-    window.open(
-        "/",
-        "_blank"
-    );
-
-}
-
-
-/* =========================================
-   حماية HTML
-========================================= */
-
-function escapeHTML(
-    text
-){
-
-    const div =
-        document.createElement(
-            "div"
-        );
-
-
-    div.textContent =
-        String(text);
-
-
-    return div.innerHTML;
-
-}
-
-
-/* =========================================
-   إغلاق النوافذ عند الضغط خارجها
-========================================= */
-
-document
-    .getElementById(
-        "editAdminModal"
-    )
-    .addEventListener(
-        "click",
-        function(event){
-
-            if(
-                event.target === this
-            ){
-
-                closeEditAdminModal();
-
-            }
-
-        }
-    );
-
-
-document
-    .getElementById(
-        "changeAdminPasswordModal"
-    )
-    .addEventListener(
-        "click",
-        function(event){
-
-            if(
-                event.target === this
-            ){
-
-                closeAdminPasswordModal();
-
-            }
-
-        }
-    );
-
-
-/* =========================================
+/* =====================================================
    بدء الصفحة
-========================================= */
+===================================================== */
 
 checkSession();
 
 </script>
 
-
 </body>
-
 </html>
