@@ -1,0 +1,2224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>شرح دروسي</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Tahoma,sans-serif;
+    background:#080b12;
+    color:#fff;
+    min-height:100vh;
+}
+
+header{
+    background:#101522;
+    padding:20px;
+    text-align:center;
+    border-bottom:1px solid #202838;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#4da3ff;
+}
+
+.container{
+    width:90%;
+    max-width:1000px;
+    margin:30px auto;
+}
+
+.card{
+    background:#111827;
+    border:1px solid #202838;
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:20px;
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    color:#bbb;
+}
+
+select,
+input{
+    width:100%;
+    padding:14px;
+    border:none;
+    outline:none;
+    border-radius:10px;
+    background:#080b12;
+    color:#fff;
+    margin-bottom:15px;
+    font-size:16px;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+    border-radius:10px;
+    padding:13px 20px;
+    font-size:16px;
+    color:white;
+    background:#2563eb;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+.search-btn{
+    width:100%;
+    margin-top:5px;
+}
+
+.message{
+    background:#111827;
+    border:1px solid #202838;
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+    margin-top:20px;
+}
+
+.loading{
+    text-align:center;
+    padding:25px;
+    font-size:18px;
+}
+
+.lesson{
+    background:#111827;
+    border:1px solid #202838;
+    border-radius:15px;
+    padding:18px;
+    margin-bottom:15px;
+}
+
+.lesson h3{
+    margin-bottom:10px;
+}
+
+.lesson p{
+    color:#bbb;
+    line-height:1.7;
+}
+
+.youtube-title{
+    font-size:24px;
+    font-weight:bold;
+    margin:30px 0 15px;
+}
+
+.youtube-card{
+    background:#111827;
+    border:1px solid #202838;
+    border-radius:16px;
+    padding:12px;
+    margin-bottom:15px;
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.youtube-card img{
+    width:230px;
+    border-radius:10px;
+    display:block;
+}
+
+.youtube-info{
+    flex:1;
+}
+
+.youtube-video-title{
+    font-size:18px;
+    font-weight:bold;
+    line-height:1.5;
+    margin-bottom:8px;
+}
+
+.youtube-channel{
+    color:#aaa;
+    margin-bottom:15px;
+}
+
+.youtube-button{
+    display:inline-block;
+    background:#ff0000;
+    color:#fff;
+    padding:10px 18px;
+    border-radius:8px;
+    text-decoration:none;
+}
+
+.web-button{
+    display:block;
+    text-align:center;
+    background:#2563eb;
+    color:#fff;
+    padding:14px;
+    border-radius:10px;
+    text-decoration:none;
+    margin-top:20px;
+}
+
+.quiz{
+    background:#111827;
+    border:1px solid #202838;
+    border-radius:18px;
+    padding:25px;
+    margin-top:25px;
+}
+
+.quiz-title{
+    font-size:25px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.quiz-subtitle{
+    color:#aaa;
+    margin-bottom:25px;
+    line-height:1.7;
+}
+
+.quiz-question{
+    background:#080b12;
+    border:1px solid #202838;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:18px;
+}
+
+.quiz-question-title{
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:15px;
+    line-height:1.7;
+}
+
+.quiz-option{
+    display:block;
+    background:#111827;
+    border:1px solid #30394c;
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:10px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.quiz-option:hover{
+    border-color:#4da3ff;
+}
+
+.quiz-option input{
+    width:auto;
+    margin:0 8px 0 0;
+    cursor:pointer;
+}
+
+.quiz-submit{
+    width:100%;
+    margin-top:10px;
+    background:#16a34a;
+}
+
+.quiz-result{
+    display:none;
+    text-align:center;
+    margin-top:20px;
+    padding:20px;
+    border-radius:14px;
+    background:#080b12;
+    border:1px solid #202838;
+}
+
+.score{
+    font-size:30px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.restart-btn{
+    margin-top:15px;
+    background:#2563eb;
+}
+
+.correct{
+    border-color:#16a34a !important;
+    background:rgba(22,163,74,.12);
+}
+
+.wrong{
+    border-color:#dc2626 !important;
+    background:rgba(220,38,38,.12);
+}
+
+.info-box{
+    background:#080b12;
+    border:1px solid #202838;
+    border-radius:14px;
+    padding:18px;
+    line-height:1.8;
+    margin-top:20px;
+}
+
+.search-info{
+    color:#aaa;
+    margin-top:10px;
+    font-size:14px;
+}
+
+footer{
+    text-align:center;
+    color:#777;
+    padding:30px;
+}
+
+@media(max-width:700px){
+
+    .container{
+        width:94%;
+    }
+
+    .youtube-card{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .youtube-card img{
+        width:100%;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        شرح <span>دروسي</span>
+    </div>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- =========================
+         اختيار الدرس
+    ========================== -->
+
+    <div class="card">
+
+        <h2>📚 اختر درسك</h2>
+
+
+        <label>الفصل الدراسي</label>
+
+        <select id="semester">
+
+            <option value="">اختر الفصل</option>
+
+            <option value="الفصل الأول">
+                الفصل الأول
+            </option>
+
+            <option value="الفصل الثاني">
+                الفصل الثاني
+            </option>
+
+        </select>
+
+
+        <label>الصف</label>
+
+        <select id="grade">
+
+            <option value="">اختر الصف</option>
+
+            <option value="الصف السابع">
+                الصف السابع
+            </option>
+
+            <option value="الصف الثامن">
+                الصف الثامن
+            </option>
+
+            <option value="الصف التاسع">
+                الصف التاسع
+            </option>
+
+            <option value="الصف العاشر">
+                الصف العاشر
+            </option>
+
+            <option value="الصف الحادي عشر">
+                الصف الحادي عشر
+            </option>
+
+            <option value="الصف الثاني عشر">
+                الصف الثاني عشر
+            </option>
+
+        </select>
+
+
+        <label>المادة</label>
+
+        <select id="subject">
+
+            <option value="">اختر المادة</option>
+
+            <option value="الرياضيات">
+                الرياضيات
+            </option>
+
+            <option value="الفيزياء">
+                الفيزياء
+            </option>
+
+            <option value="الكيمياء">
+                الكيمياء
+            </option>
+
+            <option value="الأحياء">
+                الأحياء
+            </option>
+
+            <option value="اللغة الإنجليزية">
+                اللغة الإنجليزية
+            </option>
+
+            <option value="اللغة العربية">
+                اللغة العربية
+            </option>
+
+            <option value="الدراسات الاجتماعية">
+                الدراسات الاجتماعية
+            </option>
+
+        </select>
+
+
+        <label>اسم الدرس</label>
+
+        <input
+            id="lessonInput"
+            type="text"
+            placeholder="مثال: قوانين نيوتن"
+        >
+
+
+        <button
+            class="search-btn"
+            onclick="searchLesson()"
+        >
+
+            🔎 ابحث عن الدرس
+
+        </button>
+
+
+        <div class="search-info">
+            اختر الصف والمادة والفصل للحصول على نتائج أدق.
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         النتائج
+    ========================== -->
+
+    <div id="results"></div>
+
+
+</div>
+
+
+<footer>
+
+    شرح دروسي © 2026
+
+</footer>
+
+
+<script>
+
+
+/* =========================================
+   البيانات المحلية
+========================================= */
+
+const localGrades =
+    JSON.parse(
+        localStorage.getItem("shrh_grades") || "[]"
+    );
+
+const localSubjects =
+    JSON.parse(
+        localStorage.getItem("shrh_subjects") || "[]"
+    );
+
+const localLessons =
+    JSON.parse(
+        localStorage.getItem("shrh_lessons") || "[]"
+    );
+
+
+/* =========================================
+   حماية النصوص
+========================================= */
+
+function escapeHTML(text){
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
+
+}
+
+
+/* =========================================
+   البحث في الدروس المحلية
+========================================= */
+
+function searchLocalLessons(query){
+
+    const q =
+        query.toLowerCase().trim();
+
+
+    return localLessons.filter(
+        lesson => {
+
+            const title =
+                String(
+                    lesson.title ||
+                    lesson.name ||
+                    ""
+                ).toLowerCase();
+
+
+            return title.includes(q);
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   عرض الدروس المحلية
+========================================= */
+
+function renderLocalLessons(lessons){
+
+    const results =
+        document.getElementById("results");
+
+
+    let html = `
+
+        <div class="youtube-title">
+
+            📚 الدروس الموجودة في شرح دروسي
+
+        </div>
+
+    `;
+
+
+    lessons.forEach(lesson => {
+
+        const title =
+            lesson.title ||
+            lesson.name ||
+            "درس بدون اسم";
+
+
+        const description =
+            lesson.description ||
+            "شرح الدرس";
+
+
+        html += `
+
+            <div class="lesson">
+
+                <h3>
+                    ${escapeHTML(title)}
+                </h3>
+
+                <p>
+                    ${escapeHTML(description)}
+                </p>
+
+            </div>
+
+        `;
+
+    });
+
+
+    results.innerHTML += html;
+
+}
+
+
+/* =========================================
+   البحث في YouTube
+========================================= */
+
+async function searchYouTube(query){
+
+    const results =
+        document.getElementById("results");
+
+
+    try{
+
+        const response =
+            await fetch(
+                `/api/youtube-search?q=${encodeURIComponent(query)}`
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !data.success ||
+            !data.items ||
+            !data.items.length
+        ){
+
+            results.innerHTML += `
+
+                <div class="message">
+
+                    لم يتم العثور على شروحات
+                    في YouTube.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        let html = `
+
+            <div class="youtube-title">
+
+                🎥 شروحات من YouTube
+
+            </div>
+
+        `;
+
+
+        data.items.forEach(video => {
+
+            if(
+                !video.id ||
+                !video.id.videoId
+            ){
+
+                return;
+
+            }
+
+
+            const videoId =
+                video.id.videoId;
+
+
+            const title =
+                video.snippet?.title ||
+                "شرح بدون عنوان";
+
+
+            const channel =
+                video.snippet?.channelTitle ||
+                "YouTube";
+
+
+            const thumbnail =
+                video.snippet?.thumbnails?.medium?.url ||
+                video.snippet?.thumbnails?.default?.url ||
+                "";
+
+
+            html += `
+
+                <div class="youtube-card">
+
+                    <img
+                        src="${escapeHTML(thumbnail)}"
+                        alt="صورة الفيديو"
+                    >
+
+
+                    <div class="youtube-info">
+
+                        <div class="youtube-video-title">
+
+                            ${escapeHTML(title)}
+
+                        </div>
+
+
+                        <div class="youtube-channel">
+
+                            📺 ${escapeHTML(channel)}
+
+                        </div>
+
+
+                        <a
+                            class="youtube-button"
+                            href="https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+
+                            ▶️ شاهد الشرح
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+
+        results.innerHTML += html;
+
+
+    }catch(error){
+
+        console.error(
+            "خطأ في البحث في YouTube:",
+            error
+        );
+
+
+        results.innerHTML += `
+
+            <div class="message">
+
+                ⚠️ حدث خطأ أثناء البحث في YouTube.
+
+                <br><br>
+
+                تأكد أن الموقع مفتوح من:
+
+                <br>
+
+                <b>http://localhost:3000</b>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   البحث في الويب
+========================================= */
+
+function showWebSearch(query){
+
+    const results =
+        document.getElementById("results");
+
+
+    const googleURL =
+        `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+
+
+    results.innerHTML += `
+
+        <a
+            class="web-button"
+            href="${googleURL}"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+
+            🌐 البحث عن المزيد في الويب
+
+        </a>
+
+    `;
+
+}
+
+
+/* =========================================
+   بنك الأسئلة
+========================================= */
+
+const quizBanks = {
+
+
+    "قوانين نيوتن":[
+
+        {
+            question:"ما العلاقة التي يعبّر عنها قانون نيوتن الثاني؟",
+
+            options:[
+                "القوة = الكتلة × التسارع",
+                "القوة = السرعة × الزمن",
+                "القوة = الكتلة ÷ التسارع"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"ماذا يحدث لجسم عندما تكون القوة المحصلة عليه تساوي صفرًا؟",
+
+            options:[
+                "يتوقف دائمًا",
+                "يبقى على حالته الحركية",
+                "يتسارع دائمًا"
+            ],
+
+            answer:1
+        },
+
+
+        {
+            question:"لكل قوة فعل قوة رد فعل مساوية لها في المقدار ومعاكسة لها في الاتجاه. هذا هو:",
+
+            options:[
+                "قانون نيوتن الأول",
+                "قانون نيوتن الثاني",
+                "قانون نيوتن الثالث"
+            ],
+
+            answer:2
+        },
+
+
+        {
+            question:"إذا زادت كتلة جسم وبقيت القوة ثابتة، فإن التسارع:",
+
+            options:[
+                "يزداد",
+                "يقل",
+                "لا يتغير"
+            ],
+
+            answer:1
+        },
+
+
+        {
+            question:"ما الوحدة الأساسية للقوة في النظام الدولي؟",
+
+            options:[
+                "الجول",
+                "النيوتن",
+                "الواط"
+            ],
+
+            answer:1
+        }
+
+    ],
+
+
+    "الحركة":[
+
+        {
+            question:"ما الكمية التي تعبّر عن المسافة التي يقطعها الجسم في وحدة الزمن؟",
+
+            options:[
+                "السرعة",
+                "القوة",
+                "الكتلة"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"عندما تتغير سرعة الجسم مع الزمن فإن الجسم لديه:",
+
+            options:[
+                "تسارع",
+                "كتلة ثابتة فقط",
+                "طاقة حرارية فقط"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"ما وحدة السرعة في النظام الدولي؟",
+
+            options:[
+                "متر/ثانية",
+                "نيوتن",
+                "كيلوجرام"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"إذا قطع جسم مسافة أكبر في الزمن نفسه فإن سرعته:",
+
+            options:[
+                "تقل",
+                "تزداد",
+                "تصبح صفرًا"
+            ],
+
+            answer:1
+        },
+
+
+        {
+            question:"ما العاملان المستخدمان لحساب السرعة؟",
+
+            options:[
+                "المسافة والزمن",
+                "القوة والكتلة",
+                "الطاقة والزمن"
+            ],
+
+            answer:0
+        }
+
+    ],
+
+
+    "الطاقة":[
+
+        {
+            question:"ما الطاقة التي يمتلكها الجسم بسبب حركته؟",
+
+            options:[
+                "طاقة حركية",
+                "طاقة وضع",
+                "طاقة كيميائية"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"ما الطاقة المرتبطة بموضع الجسم أو ارتفاعه؟",
+
+            options:[
+                "الطاقة الحركية",
+                "طاقة الوضع",
+                "الطاقة الصوتية"
+            ],
+
+            answer:1
+        },
+
+
+        {
+            question:"ما وحدة قياس الطاقة؟",
+
+            options:[
+                "الجول",
+                "النيوتن",
+                "الباسكال"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"الطاقة لا تفنى ولا تستحدث من العدم، ولكنها:",
+
+            options:[
+                "تختفي",
+                "تتحول من شكل إلى آخر",
+                "تبقى دائمًا بالشكل نفسه"
+            ],
+
+            answer:1
+        }
+
+    ],
+
+
+    "الذرة":[
+
+        {
+            question:"ما أصغر جزء من العنصر يحتفظ بخواصه؟",
+
+            options:[
+                "الذرة",
+                "المركب",
+                "المحلول"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"أين توجد البروتونات والنيوترونات؟",
+
+            options:[
+                "في النواة",
+                "خارج الذرة",
+                "في الغلاف الإلكتروني فقط"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"ما شحنة الإلكترون؟",
+
+            options:[
+                "موجبة",
+                "سالبة",
+                "متعادلة"
+            ],
+
+            answer:1
+        },
+
+
+        {
+            question:"ما الجسيم المتعادل كهربائيًا؟",
+
+            options:[
+                "الإلكترون",
+                "البروتون",
+                "النيوترون"
+            ],
+
+            answer:2
+        }
+
+    ],
+
+
+    "الخلية":[
+
+        {
+            question:"ما الوحدة الأساسية في بناء الكائنات الحية؟",
+
+            options:[
+                "الخلية",
+                "النسيج",
+                "العضو"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"ما العضية التي تتحكم في معظم أنشطة الخلية؟",
+
+            options:[
+                "النواة",
+                "الجدار الخلوي",
+                "الفجوة"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"ما العضيات المسؤولة عن إنتاج الطاقة في الخلية؟",
+
+            options:[
+                "الميتوكوندريا",
+                "الريبوسومات",
+                "النواة"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"ما الجزء الذي يحيط بالخلية وينظم مرور المواد؟",
+
+            options:[
+                "الغشاء الخلوي",
+                "النواة",
+                "السيتوبلازم"
+            ],
+
+            answer:0
+        }
+
+    ],
+
+
+    "past simple":[
+
+        {
+            question:"متى نستخدم Past Simple في اللغة الإنجليزية؟",
+
+            options:[
+                "للحديث عن حدث وقع في الماضي",
+                "للحديث عن شيء يحدث الآن فقط",
+                "للحديث عن المستقبل فقط"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"أي كلمة تدل غالبًا على الماضي البسيط؟",
+
+            options:[
+                "yesterday",
+                "tomorrow",
+                "now"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"ما صيغة الفعل في الجملة: I played football yesterday؟",
+
+            options:[
+                "Played",
+                "Play",
+                "Playing"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"أي جملة صحيحة؟",
+
+            options:[
+                "I visited Oman yesterday.",
+                "I visit Oman yesterday.",
+                "I visiting Oman yesterday."
+            ],
+
+            answer:0
+        }
+
+    ],
+
+
+    "present simple":[
+
+        {
+            question:"متى نستخدم Present Simple غالبًا؟",
+
+            options:[
+                "للعادات والحقائق",
+                "للأحداث الماضية فقط",
+                "لشيء انتهى أمس"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"أي جملة صحيحة؟",
+
+            options:[
+                "He plays football.",
+                "He play football.",
+                "He playing football."
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"ما الكلمة التي تناسب العادات المتكررة؟",
+
+            options:[
+                "usually",
+                "yesterday",
+                "last week"
+            ],
+
+            answer:0
+        }
+
+    ],
+
+
+    "المعادلات":[
+
+        {
+            question:"ما الهدف الأساسي من حل المعادلة؟",
+
+            options:[
+                "إيجاد قيمة المجهول",
+                "تغيير جميع الأعداد",
+                "حذف المتغير"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"إذا كان x + 5 = 12، فما قيمة x؟",
+
+            options:[
+                "7",
+                "17",
+                "5"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"إذا كان 2x = 10، فما قيمة x؟",
+
+            options:[
+                "5",
+                "8",
+                "20"
+            ],
+
+            answer:0
+        }
+
+    ],
+
+
+    "المثلثات":[
+
+        {
+            question:"كم عدد أضلاع المثلث؟",
+
+            options:[
+                "3",
+                "4",
+                "5"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"مجموع زوايا أي مثلث يساوي:",
+
+            options:[
+                "180°",
+                "90°",
+                "360°"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:"المثلث الذي جميع أضلاعه متساوية يسمى:",
+
+            options:[
+                "متساوي الأضلاع",
+                "قائم الزاوية",
+                "مختلف الأضلاع"
+            ],
+
+            answer:0
+        }
+
+    ]
+
+};
+
+
+/* =========================================
+   إيجاد الاختبار المناسب
+========================================= */
+
+function getQuizForLesson(lesson,subject){
+
+    const text =
+        `${lesson} ${subject}`.toLowerCase();
+
+
+    for(const key of Object.keys(quizBanks)){
+
+        if(
+            text.includes(
+                key.toLowerCase()
+            )
+        ){
+
+            return quizBanks[key];
+
+        }
+
+    }
+
+
+    if(
+        text.includes("نيوتن")
+    ){
+
+        return quizBanks["قوانين نيوتن"];
+
+    }
+
+
+    if(
+        text.includes("حركة") ||
+        text.includes("سرعة")
+    ){
+
+        return quizBanks["الحركة"];
+
+    }
+
+
+    if(
+        text.includes("طاقة")
+    ){
+
+        return quizBanks["الطاقة"];
+
+    }
+
+
+    if(
+        text.includes("ذرة") ||
+        text.includes("كيمياء")
+    ){
+
+        return quizBanks["الذرة"];
+
+    }
+
+
+    if(
+        text.includes("خلية") ||
+        text.includes("أحياء")
+    ){
+
+        return quizBanks["الخلية"];
+
+    }
+
+
+    if(
+        text.includes("past")
+    ){
+
+        return quizBanks["past simple"];
+
+    }
+
+
+    if(
+        text.includes("present")
+    ){
+
+        return quizBanks["present simple"];
+
+    }
+
+
+    if(
+        text.includes("مثلث")
+    ){
+
+        return quizBanks["المثلثات"];
+
+    }
+
+
+    if(
+        text.includes("معادلة") ||
+        text.includes("رياضيات")
+    ){
+
+        return quizBanks["المعادلات"];
+
+    }
+
+
+    return [
+
+        {
+            question:`ما الفكرة الأساسية التي يشرحها درس "${lesson}"؟`,
+
+            options:[
+                "فهم المفاهيم والقواعد المرتبطة بالدرس",
+                "حفظ الاسم فقط",
+                "تجاهل الأمثلة"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:`ما أفضل طريقة لدراسة "${lesson}"؟`,
+
+            options:[
+                "فهم الشرح ثم حل أمثلة",
+                "الحفظ فقط",
+                "عدم المراجعة"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:`ماذا تفعل عندما تجد سؤالًا صعبًا في "${lesson}"؟`,
+
+            options:[
+                "أراجع القاعدة وأحل السؤال خطوة بخطوة",
+                "أتوقف مباشرة",
+                "أترك السؤال بدون محاولة"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:`لماذا نراجع درس "${lesson}" بعد شرحه؟`,
+
+            options:[
+                "لتثبيت المعلومات وفهمها أكثر",
+                "لنسيان المعلومات",
+                "لإلغاء الأمثلة"
+            ],
+
+            answer:0
+        },
+
+
+        {
+            question:`أي طريقة تساعد على تحسين مستواك في "${lesson}"؟`,
+
+            options:[
+                "التدرب على أسئلة متنوعة",
+                "عدم حل الأسئلة",
+                "قراءة اسم الدرس فقط"
+            ],
+
+            answer:0
+        }
+
+    ];
+
+}
+
+
+/* =========================================
+   المتغير الحالي للاختبار
+========================================= */
+
+let currentQuiz = [];
+
+
+/* =========================================
+   إنشاء الاختبار
+========================================= */
+
+function showQuizButton(){
+
+    const results =
+        document.getElementById("results");
+
+
+    const lesson =
+        document
+        .getElementById("lessonInput")
+        .value
+        .trim();
+
+
+    const subject =
+        document
+        .getElementById("subject")
+        .value;
+
+
+    currentQuiz =
+        getQuizForLesson(
+            lesson,
+            subject
+        );
+
+
+    currentQuiz =
+        [...currentQuiz]
+        .sort(
+            () => Math.random() - 0.5
+        )
+        .slice(0,5);
+
+
+    renderQuiz();
+
+}
+
+
+/* =========================================
+   رسم الاختبار
+========================================= */
+
+function renderQuiz(){
+
+    const results =
+        document.getElementById("results");
+
+
+    const lesson =
+        document
+        .getElementById("lessonInput")
+        .value
+        .trim();
+
+
+    let html = `
+
+        <div class="quiz">
+
+            <div class="quiz-title">
+
+                🧠 اختبر نفسك
+
+            </div>
+
+
+            <div class="quiz-subtitle">
+
+                اختبار خاص بدرس:
+
+                <b>
+                    ${escapeHTML(lesson)}
+                </b>
+
+                <br>
+
+                اختر الإجابة الصحيحة ثم اضغط
+                على "تصحيح الاختبار".
+
+            </div>
+
+    `;
+
+
+    currentQuiz.forEach(
+        (question,index) => {
+
+            html += `
+
+                <div
+                    class="quiz-question"
+                    id="question-${index}"
+                >
+
+                    <div class="quiz-question-title">
+
+                        ${index + 1}️⃣
+
+                        ${escapeHTML(
+                            question.question
+                        )}
+
+                    </div>
+
+            `;
+
+
+            question.options.forEach(
+                (option,optionIndex) => {
+
+                    html += `
+
+                        <label
+                            class="quiz-option"
+                            id="option-${index}-${optionIndex}"
+                        >
+
+                            <input
+                                type="radio"
+                                name="q${index}"
+                                value="${optionIndex}"
+                            >
+
+                            ${escapeHTML(option)}
+
+                        </label>
+
+                    `;
+
+                }
+            );
+
+
+            html += `
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+
+            <button
+                class="quiz-submit"
+                onclick="checkQuiz()"
+            >
+
+                ✅ تصحيح الاختبار
+
+            </button>
+
+
+            <div
+                id="quizResult"
+                class="quiz-result"
+            ></div>
+
+        </div>
+
+    `;
+
+
+    results.innerHTML += html;
+
+}
+
+
+/* =========================================
+   تصحيح الاختبار
+========================================= */
+
+function checkQuiz(){
+
+    if(!currentQuiz.length){
+
+        return;
+
+    }
+
+
+    let score = 0;
+
+
+    currentQuiz.forEach(
+        (question,index) => {
+
+            const selected =
+                document.querySelector(
+                    `input[name="q${index}"]:checked`
+                );
+
+
+            question.options.forEach(
+                (_,optionIndex) => {
+
+                    const option =
+                        document.getElementById(
+                            `option-${index}-${optionIndex}`
+                        );
+
+
+                    if(option){
+
+                        option.classList.remove(
+                            "correct",
+                            "wrong"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            const correctOption =
+                document.getElementById(
+                    `option-${index}-${question.answer}`
+                );
+
+
+            if(correctOption){
+
+                correctOption.classList.add(
+                    "correct"
+                );
+
+            }
+
+
+            if(selected){
+
+                const selectedIndex =
+                    Number(
+                        selected.value
+                    );
+
+
+                if(
+                    selectedIndex ===
+                    question.answer
+                ){
+
+                    score++;
+
+                }else{
+
+                    const wrongOption =
+                        document.getElementById(
+                            `option-${index}-${selectedIndex}`
+                        );
+
+
+                    if(wrongOption){
+
+                        wrongOption.classList.add(
+                            "wrong"
+                        );
+
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+
+    const result =
+        document.getElementById(
+            "quizResult"
+        );
+
+
+    const total =
+        currentQuiz.length;
+
+
+    const percentage =
+        Math.round(
+            (score / total) * 100
+        );
+
+
+    let message;
+
+
+    if(percentage === 100){
+
+        message =
+            "🔥 ممتاز جدًا! كل إجاباتك صحيحة.";
+
+    }else if(percentage >= 80){
+
+        message =
+            "👏 ممتاز! مستواك رائع.";
+
+    }else if(percentage >= 60){
+
+        message =
+            "👍 جيد، واصل المراجعة والتدريب.";
+
+    }else{
+
+        message =
+            "📚 راجع الدرس وحاول الاختبار مرة أخرى.";
+
+    }
+
+
+    result.innerHTML = `
+
+        <div class="score">
+
+            ${score} / ${total}
+
+        </div>
+
+
+        <div style="margin-bottom:8px;">
+
+            النسبة: ${percentage}%
+
+        </div>
+
+
+        <div>
+
+            ${message}
+
+        </div>
+
+
+        <button
+            class="restart-btn"
+            onclick="restartQuiz()"
+        >
+
+            🔄 اختبار جديد
+
+        </button>
+
+    `;
+
+
+    result.style.display =
+        "block";
+
+
+    document
+    .querySelectorAll(
+        '.quiz input[type="radio"]'
+    )
+    .forEach(
+        input => {
+
+            input.disabled = true;
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   اختبار جديد
+========================================= */
+
+function restartQuiz(){
+
+    const lesson =
+        document
+        .getElementById("lessonInput")
+        .value
+        .trim();
+
+
+    const subject =
+        document
+        .getElementById("subject")
+        .value;
+
+
+    currentQuiz =
+        getQuizForLesson(
+            lesson,
+            subject
+        );
+
+
+    currentQuiz =
+        [...currentQuiz]
+        .sort(
+            () => Math.random() - 0.5
+        )
+        .slice(0,5);
+
+
+    const oldQuiz =
+        document.querySelector(
+            ".quiz"
+        );
+
+
+    if(!oldQuiz){
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <div class="quiz-title">
+
+            🧠 اختبار جديد
+
+        </div>
+
+
+        <div class="quiz-subtitle">
+
+            درس:
+
+            <b>
+                ${escapeHTML(lesson)}
+            </b>
+
+        </div>
+
+    `;
+
+
+    currentQuiz.forEach(
+        (question,index) => {
+
+            html += `
+
+                <div
+                    class="quiz-question"
+                    id="question-${index}"
+                >
+
+                    <div class="quiz-question-title">
+
+                        ${index + 1}️⃣
+
+                        ${escapeHTML(
+                            question.question
+                        )}
+
+                    </div>
+
+            `;
+
+
+            question.options.forEach(
+                (option,optionIndex) => {
+
+                    html += `
+
+                        <label
+                            class="quiz-option"
+                            id="option-${index}-${optionIndex}"
+                        >
+
+                            <input
+                                type="radio"
+                                name="q${index}"
+                                value="${optionIndex}"
+                            >
+
+                            ${escapeHTML(option)}
+
+                        </label>
+
+                    `;
+
+                }
+            );
+
+
+            html += `
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+
+        <button
+            class="quiz-submit"
+            onclick="checkQuiz()"
+        >
+
+            ✅ تصحيح الاختبار
+
+        </button>
+
+
+        <div
+            id="quizResult"
+            class="quiz-result"
+        ></div>
+
+    `;
+
+
+    oldQuiz.innerHTML =
+        html;
+
+}
+
+
+/* =========================================
+   البحث الرئيسي
+========================================= */
+
+async function searchLesson(){
+
+    const input =
+        document.getElementById(
+            "lessonInput"
+        );
+
+
+    const query =
+        input.value.trim();
+
+
+    if(!query){
+
+        alert(
+            "اكتب اسم الدرس أولاً."
+        );
+
+        return;
+
+    }
+
+
+    const semester =
+        document.getElementById(
+            "semester"
+        ).value;
+
+
+    const grade =
+        document.getElementById(
+            "grade"
+        ).value;
+
+
+    const subject =
+        document.getElementById(
+            "subject"
+        ).value;
+
+
+    const fullQuery = [
+
+        grade,
+        subject,
+        semester,
+        query
+
+    ]
+
+    .filter(Boolean)
+    .join(" ");
+
+
+    const results =
+        document.getElementById(
+            "results"
+        );
+
+
+    results.innerHTML = `
+
+        <div class="loading">
+
+            🔎 جاري البحث عن شرح الدرس...
+
+        </div>
+
+    `;
+
+
+    /* =====================================
+       الاتصال بالسيرفر
+    ===================================== */
+
+    try{
+
+        const serverResponse =
+            await fetch(
+                `/api/search?q=${encodeURIComponent(fullQuery)}`
+            );
+
+
+        const serverData =
+            await serverResponse.json();
+
+
+        console.log(
+            "Server:",
+            serverData
+        );
+
+    }catch(error){
+
+        console.error(
+            "خطأ في الاتصال بالسيرفر:",
+            error
+        );
+
+    }
+
+
+    /* =====================================
+       البحث المحلي
+    ===================================== */
+
+    const localResult =
+        searchLocalLessons(
+            query
+        );
+
+
+    if(localResult.length){
+
+        results.innerHTML = "";
+
+        renderLocalLessons(
+            localResult
+        );
+
+    }else{
+
+        results.innerHTML = `
+
+            <div class="message">
+
+                لم يتم العثور على الدرس
+                في المحتوى المضاف.
+
+                <br><br>
+
+                🔎 جاري البحث عن
+                شروحات خارجية...
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =====================================
+       YouTube
+    ===================================== */
+
+    await searchYouTube(
+        fullQuery
+    );
+
+
+    /* =====================================
+       الويب
+    ===================================== */
+
+    showWebSearch(
+        fullQuery
+    );
+
+
+    /* =====================================
+       الاختبار
+    ===================================== */
+
+    showQuizButton();
+
+}
+
+
+/* =========================================
+   Enter للبحث
+========================================= */
+
+document
+.getElementById("lessonInput")
+.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            searchLesson();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>
