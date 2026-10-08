@@ -1,22 +1,20 @@
-const express = require("express");
-const path = require("path");
-const crypto = require("crypto");
-const bcrypt = require("bcryptjs");
-const axios = require("axios");
-require("dotenv").config();
+const express = require('express');
+const path = require('path');
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
+const axios = require('axios');
+require('dotenv').config();
 
-const { Pool } = require("pg");
+const { Pool } = require('pg');
 
 const app = express();
-
 const PORT = Number(process.env.PORT || 3000);
-
-const DATABASE_URL = process.env.DATABASE_URL || "";
+const DATABASE_URL = process.env.DATABASE_URL || '';
 
 const pool = DATABASE_URL
     ? new Pool({
         connectionString: DATABASE_URL,
-        ssl: DATABASE_URL.includes("localhost")
+        ssl: DATABASE_URL.includes('localhost')
             ? false
             : { rejectUnauthorized: false }
     })
@@ -27,21 +25,20 @@ const pool = DATABASE_URL
    MIDDLEWARE
 ========================================================= */
 
-app.use(express.json({ limit: "2mb" }));
+app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static(__dirname));
 
 
 /* =========================================================
-   DATABASE MIDDLEWARE
+   DATABASE
 ========================================================= */
 
 function requireDatabase(req, res, next) {
     if (!pool) {
         return res.status(503).json({
             success: false,
-            message: "قاعدة البيانات غير متصلة"
+            message: 'قاعدة البيانات غير متصلة'
         });
     }
 
@@ -49,16 +46,9 @@ function requireDatabase(req, res, next) {
 }
 
 
-/* =========================================================
-   DATABASE INITIALIZATION
-========================================================= */
-
 async function initDatabase() {
 
-    if (!pool) {
-        console.log("PostgreSQL غير مفعّل محليًا");
-        return;
-    }
+    if (!pool) return;
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS admins (
@@ -79,20 +69,27 @@ async function initDatabase() {
         )
     `);
 
+
     await pool.query(`
         CREATE TABLE IF NOT EXISTS admin_sessions (
             token TEXT PRIMARY KEY,
-            admin_id INTEGER NOT NULL REFERENCES admins(id) ON DELETE CASCADE,
+            admin_id INTEGER NOT NULL
+                REFERENCES admins(id)
+                ON DELETE CASCADE,
+
             expires_at TIMESTAMP NOT NULL,
+
             created_at TIMESTAMP NOT NULL DEFAULT NOW()
         )
     `);
+
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS catalog_items (
             id SERIAL PRIMARY KEY,
 
             type VARCHAR(30) NOT NULL,
+
             name VARCHAR(255) NOT NULL,
 
             parent_id INTEGER NULL
@@ -102,21 +99,26 @@ async function initDatabase() {
             enabled BOOLEAN NOT NULL DEFAULT TRUE,
 
             created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+
             updated_at TIMESTAMP NOT NULL DEFAULT NOW()
         )
     `);
+
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS lessons (
             id SERIAL PRIMARY KEY,
 
             semester VARCHAR(100),
+
             grade VARCHAR(255),
+
             subject VARCHAR(255),
 
             title VARCHAR(500) NOT NULL,
 
             description TEXT DEFAULT '',
+
             summary TEXT DEFAULT '',
 
             video_url TEXT DEFAULT '',
@@ -124,9 +126,11 @@ async function initDatabase() {
             enabled BOOLEAN NOT NULL DEFAULT TRUE,
 
             created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+
             updated_at TIMESTAMP NOT NULL DEFAULT NOW()
         )
     `);
+
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS questions (
@@ -138,9 +142,11 @@ async function initDatabase() {
 
             question TEXT NOT NULL,
 
-            options JSONB NOT NULL DEFAULT '[]'::jsonb,
+            options JSONB NOT NULL
+                DEFAULT '[]'::jsonb,
 
-            correct_answer INTEGER NOT NULL DEFAULT 0,
+            correct_answer INTEGER NOT NULL
+                DEFAULT 0,
 
             explanation TEXT DEFAULT '',
 
@@ -150,12 +156,15 @@ async function initDatabase() {
         )
     `);
 
+
     await pool.query(`
         CREATE TABLE IF NOT EXISTS site_settings (
             key VARCHAR(100) PRIMARY KEY,
+
             value TEXT DEFAULT ''
         )
     `);
+
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS activity_logs (
@@ -167,7 +176,9 @@ async function initDatabase() {
 
             action VARCHAR(255) NOT NULL,
 
-            entity_type VARCHAR(100) DEFAULT '',
+            entity_type VARCHAR(100)
+                DEFAULT '',
+
             entity_id INTEGER NULL,
 
             details TEXT DEFAULT '',
@@ -176,53 +187,78 @@ async function initDatabase() {
         )
     `);
 
+
     await pool.query(`
         CREATE TABLE IF NOT EXISTS app_stats (
             id INTEGER PRIMARY KEY DEFAULT 1,
 
             visits INTEGER NOT NULL DEFAULT 0,
+
             searches INTEGER NOT NULL DEFAULT 0,
 
             updated_at TIMESTAMP NOT NULL DEFAULT NOW()
         )
     `);
 
+
     await pool.query(`
         INSERT INTO app_stats (id)
         VALUES (1)
-        ON CONFLICT (id) DO NOTHING
+
+        ON CONFLICT (id)
+        DO NOTHING
     `);
 
-    const defaultSettings = [
-        ["site_name", "شرح دروسي"],
-        ["site_title", "شرح دروسي"],
-        ["welcome_text", "تعلّم • افهم • اختبر نفسك"],
-        ["welcome_title", "أهلاً بك في شرح دروسي"],
-        ["search_placeholder", "اكتب اسم الدرس الذي تريد البحث عنه"],
-        ["footer_text", "© 2026 شرح دروسي"],
-        ["theme_color", "#1677ff"],
-        ["youtube_enabled", "true"],
-        ["web_enabled", "true"],
-        ["quiz_enabled", "true"],
-        ["general_info_enabled", "true"],
-        ["site_enabled", "true"]
+
+    const settings = [
+
+        ['site_name', 'شرح دروسي'],
+
+        ['site_title', 'شرح دروسي'],
+
+        ['welcome_title', 'أهلاً بك في شرح دروسي'],
+
+        ['welcome_text', 'تعلّم • افهم • اختبر نفسك'],
+
+        ['search_placeholder', 'اكتب اسم الدرس الذي تريد البحث عنه'],
+
+        ['footer_text', '© 2026 شرح دروسي'],
+
+        ['theme_color', '#1677ff'],
+
+        ['youtube_enabled', 'true'],
+
+        ['web_enabled', 'true'],
+
+        ['quiz_enabled', 'true'],
+
+        ['general_info_enabled', 'true'],
+
+        ['site_enabled', 'true']
     ];
 
-    for (const [key, value] of defaultSettings) {
+
+    for (const [key, value] of settings) {
+
         await pool.query(`
-            INSERT INTO site_settings (key, value)
-            VALUES ($1, $2)
-            ON CONFLICT (key) DO NOTHING
-        `, [key, value]);
+            INSERT INTO site_settings
+            (key, value)
+
+            VALUES
+            ($1, $2)
+
+            ON CONFLICT (key)
+            DO NOTHING
+        `, [
+            key,
+            value
+        ]);
     }
 
-    console.log("PostgreSQL جاهز");
+
+    console.log('PostgreSQL جاهز');
 }
 
-
-/* =========================================================
-   CLEANUP SESSIONS
-========================================================= */
 
 async function cleanupSessions() {
 
@@ -236,12 +272,14 @@ async function cleanupSessions() {
 
 
 /* =========================================================
-   CREATE SESSION
+   SESSIONS
 ========================================================= */
 
 async function createSession(adminId) {
 
-    const token = crypto.randomBytes(48).toString("hex");
+    const token =
+        crypto.randomBytes(48).toString('hex');
+
 
     await pool.query(`
         INSERT INTO admin_sessions
@@ -250,83 +288,170 @@ async function createSession(adminId) {
             admin_id,
             expires_at
         )
+
         VALUES
         (
             $1,
             $2,
             NOW() + INTERVAL '24 hours'
         )
-    `, [token, adminId]);
+    `, [
+        token,
+        adminId
+    ]);
+
 
     return token;
 }
 
 
 /* =========================================================
-   SAFE ADMIN OBJECT
+   ADMIN HELPERS
 ========================================================= */
 
 function safeAdmin(admin) {
 
     if (!admin) return null;
 
+
     return {
+
         id: admin.id,
+
         username: admin.username,
 
         can_manage_lessons:
-            Boolean(admin.can_manage_lessons),
+            Boolean(
+                admin.can_manage_lessons
+            ),
 
         can_manage_admins:
-            Boolean(admin.can_manage_admins),
+            Boolean(
+                admin.can_manage_admins
+            ),
 
         can_view_stats:
-            Boolean(admin.can_view_stats),
+            Boolean(
+                admin.can_view_stats
+            ),
 
         can_manage_catalog:
-            Boolean(admin.can_manage_catalog),
+            Boolean(
+                admin.can_manage_catalog
+            ),
 
         can_manage_settings:
-            Boolean(admin.can_manage_settings),
+            Boolean(
+                admin.can_manage_settings
+            ),
 
         can_view_activity:
-            Boolean(admin.can_view_activity),
+            Boolean(
+                admin.can_view_activity
+            ),
+
+        can_manage_content:
+            Boolean(
+                admin.can_manage_lessons
+            )
+            ||
+            Boolean(
+                admin.can_manage_catalog
+            ),
 
         is_owner:
-            Boolean(admin.is_owner),
+            Boolean(
+                admin.is_owner
+            )
+    };
+}
 
-        /* توافق مع الصفحة القديمة */
+
+function safeAdminAccount(admin) {
+
+    return {
+
+        id: admin.id,
+
+        username: admin.username,
+
         can_manage_content:
-            Boolean(admin.can_manage_lessons)
-        || Boolean(admin.can_manage_catalog)
+            Boolean(
+                admin.can_manage_lessons
+            )
+            ||
+            Boolean(
+                admin.can_manage_catalog
+            ),
+
+        can_manage_lessons:
+            Boolean(
+                admin.can_manage_lessons
+            ),
+
+        can_manage_admins:
+            Boolean(
+                admin.can_manage_admins
+            ),
+
+        can_view_stats:
+            Boolean(
+                admin.can_view_stats
+            ),
+
+        can_manage_catalog:
+            Boolean(
+                admin.can_manage_catalog
+            ),
+
+        can_manage_settings:
+            Boolean(
+                admin.can_manage_settings
+            ),
+
+        can_view_activity:
+            Boolean(
+                admin.can_view_activity
+            ),
+
+        is_owner:
+            Boolean(
+                admin.is_owner
+            ),
+
+        created_at:
+            admin.created_at
     };
 }
 
 
 /* =========================================================
-   GET ADMIN FROM REQUEST
+   AUTH
 ========================================================= */
 
 async function getAdminFromRequest(req) {
 
     if (!pool) return null;
 
+
     let token =
         String(
-            req.headers["x-admin-token"] || ""
+            req.headers['x-admin-token'] || ''
         ).trim();
+
 
     if (!token) {
 
         const authorization =
             String(
-                req.headers.authorization || ""
+                req.headers.authorization || ''
             );
+
 
         if (
             authorization
                 .toLowerCase()
-                .startsWith("bearer ")
+                .startsWith('bearer ')
         ) {
 
             token =
@@ -336,56 +461,77 @@ async function getAdminFromRequest(req) {
         }
     }
 
+
     if (!token) return null;
 
-    const result = await pool.query(`
-        SELECT
-            a.id,
-            a.username,
 
-            a.can_manage_lessons,
-            a.can_manage_admins,
-            a.can_view_stats,
-            a.can_manage_catalog,
-            a.can_manage_settings,
-            a.can_view_activity,
+    const result =
+        await pool.query(`
+            SELECT
 
-            a.is_owner
+                a.id,
 
-        FROM admin_sessions s
+                a.username,
 
-        JOIN admins a
-            ON a.id = s.admin_id
+                a.can_manage_lessons,
 
-        WHERE
-            s.token = $1
-            AND s.expires_at > NOW()
+                a.can_manage_admins,
 
-        LIMIT 1
-    `, [token]);
+                a.can_view_stats,
 
-    return result.rows[0] || null;
+                a.can_manage_catalog,
+
+                a.can_manage_settings,
+
+                a.can_view_activity,
+
+                a.is_owner
+
+            FROM admin_sessions s
+
+            JOIN admins a
+                ON a.id = s.admin_id
+
+            WHERE
+                s.token = $1
+
+                AND s.expires_at > NOW()
+
+            LIMIT 1
+        `, [
+            token
+        ]);
+
+
+    return (
+        result.rows[0]
+        ||
+        null
+    );
 }
 
 
-/* =========================================================
-   REQUIRE ADMIN
-========================================================= */
-
-async function requireAdmin(req, res, next) {
+async function requireAdmin(
+    req,
+    res,
+    next
+) {
 
     try {
 
         const admin =
             await getAdminFromRequest(req);
 
+
         if (!admin) {
 
             return res.status(401).json({
                 success: false,
-                message: "يجب تسجيل الدخول للأدمن"
+                message:
+                    'يجب تسجيل الدخول للأدمن'
             });
         }
+
 
         req.admin = admin;
 
@@ -397,41 +543,48 @@ async function requireAdmin(req, res, next) {
 
         res.status(500).json({
             success: false,
-            message: "حدث خطأ أثناء التحقق"
+            message:
+                'حدث خطأ أثناء التحقق'
         });
     }
 }
 
 
-/* =========================================================
-   PERMISSIONS
-========================================================= */
+function requirePermission(
+    permission
+) {
 
-function requirePermission(permission) {
-
-    return function (req, res, next) {
+    return (
+        req,
+        res,
+        next
+    ) => {
 
         if (!req.admin) {
 
             return res.status(401).json({
                 success: false,
-                message: "يجب تسجيل الدخول للأدمن"
+                message:
+                    'يجب تسجيل الدخول للأدمن'
             });
         }
 
-        const allowed =
+
+        if (
             req.admin.is_owner
-            || req.admin[permission];
+            ||
+            req.admin[permission]
+        ) {
 
-        if (!allowed) {
-
-            return res.status(403).json({
-                success: false,
-                message: "ليس لديك صلاحية لهذا الإجراء"
-            });
+            return next();
         }
 
-        next();
+
+        return res.status(403).json({
+            success: false,
+            message:
+                'ليس لديك صلاحية لهذا الإجراء'
+        });
     };
 }
 
@@ -443,12 +596,13 @@ function requirePermission(permission) {
 async function logActivity(
     admin,
     action,
-    entityType = "",
+    entityType = '',
     entityId = null,
-    details = ""
+    details = ''
 ) {
 
     if (!pool) return;
+
 
     try {
 
@@ -461,8 +615,15 @@ async function logActivity(
                 entity_id,
                 details
             )
+
             VALUES
-            ($1,$2,$3,$4,$5)
+            (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5
+            )
         `, [
             admin?.id || null,
             action,
@@ -474,7 +635,7 @@ async function logActivity(
     } catch (error) {
 
         console.error(
-            "Activity log error:",
+            'Activity log error:',
             error.message
         );
     }
@@ -482,51 +643,77 @@ async function logActivity(
 
 
 /* =========================================================
-   BASIC ROUTES
-========================================================= */
-
-app.get("/", (req, res) => {
-
-    res.sendFile(
-        path.join(__dirname, "index.html")
-    );
-});
-
-
-app.get("/admin", (req, res) => {
-
-    res.sendFile(
-        path.join(__dirname, "admin.html")
-    );
-});
-
-
-app.get("/admin.html", (req, res) => {
-
-    res.sendFile(
-        path.join(__dirname, "admin.html")
-    );
-});
-
-
-/* =========================================================
-   SERVER TEST
+   PAGES
 ========================================================= */
 
 app.get(
-    "/api/test",
+    '/',
+    (req, res) => {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                'index.html'
+            )
+        );
+    }
+);
+
+
+app.get(
+    '/admin',
+    (req, res) => {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                'admin.html'
+            )
+        );
+    }
+);
+
+
+app.get(
+    '/admin.html',
+    (req, res) => {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                'admin.html'
+            )
+        );
+    }
+);
+
+
+/* =========================================================
+   TEST
+========================================================= */
+
+app.get(
+    '/api/test',
     requireDatabase,
     async (req, res) => {
 
         try {
 
-            await pool.query("SELECT 1");
+            await pool.query(
+                'SELECT 1'
+            );
+
 
             res.json({
+
                 success: true,
+
                 server: true,
+
                 database: true,
+
                 port: String(PORT)
+
             });
 
         } catch (error) {
@@ -534,10 +721,15 @@ app.get(
             console.error(error);
 
             res.status(500).json({
+
                 success: false,
+
                 server: true,
+
                 database: false,
+
                 port: String(PORT)
+
             });
         }
     }
@@ -545,11 +737,11 @@ app.get(
 
 
 /* =========================================================
-   ADMIN SETUP STATUS
+   SETUP STATUS
 ========================================================= */
 
 app.get(
-    "/api/admin/setup-status",
+    '/api/admin/setup-status',
     requireDatabase,
     async (req, res) => {
 
@@ -557,16 +749,21 @@ app.get(
 
             const result =
                 await pool.query(`
-                    SELECT COUNT(*)::int AS count
+                    SELECT
+                        COUNT(*)::int AS count
                     FROM admins
                 `);
 
-            const count =
-                Number(result.rows[0].count);
 
             res.json({
+
                 success: true,
-                setupRequired: count === 0
+
+                setupRequired:
+                    Number(
+                        result.rows[0].count
+                    ) === 0
+
             });
 
         } catch (error) {
@@ -574,8 +771,12 @@ app.get(
             console.error(error);
 
             res.status(500).json({
+
                 success: false,
-                message: "تعذر التحقق من حالة الحساب"
+
+                message:
+                    'تعذر التحقق من حالة الحساب'
+
             });
         }
     }
@@ -583,20 +784,37 @@ app.get(
 
 
 /* =========================================================
-   TEMPORARY ADMIN RECOVERY
+   TEMPORARY RECOVERY PAGE
 ========================================================= */
 
-app.get("/admin-recover", (req, res) => {
+app.get(
+    '/admin-recover',
+    (req, res) => {
 
-    res.send(`
+        res.send(`
+
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+
+<html
+    lang="ar"
+    dir="rtl"
+>
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>استعادة الأدمن</title>
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0"
+>
+
+<title>
+استعادة حساب الأدمن
+</title>
 
 <style>
+
 body{
     margin:0;
     min-height:100vh;
@@ -659,111 +877,180 @@ button{
     margin-top:15px;
     line-height:1.8;
 }
+
 </style>
+
 </head>
 
 <body>
 
 <div class="box">
 
-    <h1>🔐 استعادة حساب الأدمن</h1>
+<h1>
+🔐 استعادة حساب الأدمن
+</h1>
 
-    <p>
-        هذه الصفحة مؤقتة لاستعادة حساب الإدارة.
-    </p>
+<p>
+هذه الصفحة مؤقتة لاستعادة حساب الإدارة.
+</p>
 
-    <label>رمز الاستعادة</label>
-    <input id="code" type="password">
+<label>
+رمز الاستعادة
+</label>
 
-    <label>اسم المستخدم الجديد</label>
-    <input id="username" placeholder="admin">
+<input
+    id="code"
+    type="password"
+>
 
-    <label>كلمة المرور الجديدة</label>
-    <input id="password" type="password">
+<label>
+اسم المستخدم الجديد
+</label>
 
-    <button onclick="recover()">
-        استعادة الحساب
-    </button>
+<input
+    id="username"
+>
 
-    <div id="msg"></div>
+<label>
+كلمة المرور الجديدة
+</label>
+
+<input
+    id="password"
+    type="password"
+>
+
+<button
+    onclick="recover()"
+>
+استعادة الحساب
+</button>
+
+<div id="msg"></div>
 
 </div>
+
 
 <script>
 
 async function recover(){
 
     const code =
-        document.getElementById("code").value.trim();
+        document
+        .getElementById('code')
+        .value
+        .trim();
+
 
     const username =
-        document.getElementById("username").value.trim();
+        document
+        .getElementById('username')
+        .value
+        .trim();
+
 
     const password =
-        document.getElementById("password").value;
+        document
+        .getElementById('password')
+        .value;
+
 
     const msg =
-        document.getElementById("msg");
+        document
+        .getElementById('msg');
 
-    msg.textContent = "جاري الاستعادة...";
+
+    msg.textContent =
+        'جاري الاستعادة...';
+
 
     try{
 
         const response =
-            await fetch("/api/admin/recover",{
-                method:"POST",
+            await fetch(
+                '/api/admin/recover',
+                {
+                    method:'POST',
 
-                headers:{
-                    "Content-Type":"application/json"
-                },
+                    headers:{
+                        'Content-Type':
+                            'application/json'
+                    },
 
-                body:JSON.stringify({
-                    code,
-                    username,
-                    password
-                })
-            });
+                    body:JSON.stringify({
+
+                        code,
+
+                        username,
+
+                        password
+
+                    })
+                }
+            );
+
 
         const data =
             await response.json();
 
+
         if(!response.ok){
 
             throw new Error(
-                data.message ||
-                "تعذر الاستعادة"
+                data.message
+                ||
+                'تعذر الاستعادة'
             );
         }
 
+
         localStorage.setItem(
-            "shrh_admin_token",
+            'shrh_admin_token',
             data.token
         );
 
-        msg.textContent =
-            "تمت استعادة الحساب ✅ جاري فتح لوحة الإدارة...";
 
-        setTimeout(()=>{
-            location.href="/admin.html";
-        },1000);
+        msg.textContent =
+            'تمت استعادة الحساب ✅';
+
+
+        setTimeout(
+            () => {
+
+                location.href =
+                    '/admin.html';
+
+            },
+            800
+        );
+
 
     }catch(error){
 
         msg.textContent =
-            "❌ " + error.message;
+            '❌ ' +
+            error.message;
+
     }
 }
 
 </script>
 
 </body>
-</html>
-    `);
-});
 
+</html>
+
+        `);
+    }
+);
+
+
+/* =========================================================
+   ADMIN RECOVERY API
+========================================================= */
 
 app.post(
-    "/api/admin/recover",
+    '/api/admin/recover',
     requireDatabase,
     async (req, res) => {
 
@@ -771,18 +1058,21 @@ app.post(
 
             const code =
                 String(
-                    req.body.code || ""
+                    req.body.code || ''
                 ).trim();
+
 
             const username =
                 String(
-                    req.body.username || ""
+                    req.body.username || ''
                 ).trim();
+
 
             const password =
                 String(
-                    req.body.password || ""
+                    req.body.password || ''
                 );
+
 
             if (
                 !process.env.ADMIN_RECOVERY_CODE
@@ -792,28 +1082,45 @@ app.post(
             ) {
 
                 return res.status(403).json({
+
                     success: false,
-                    message: "رمز الاستعادة غير صحيح"
+
+                    message:
+                        'رمز الاستعادة غير صحيح'
+
                 });
             }
 
-            if (username.length < 3) {
+
+            if (
+                username.length < 3
+            ) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "اسم المستخدم يجب أن يكون 3 أحرف على الأقل"
+                        'اسم المستخدم يجب أن يكون 3 أحرف على الأقل'
+
                 });
             }
 
-            if (password.length < 8) {
+
+            if (
+                password.length < 8
+            ) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "كلمة المرور يجب أن تكون 8 أحرف على الأقل"
+                        'كلمة المرور يجب أن تكون 8 أحرف على الأقل'
+
                 });
             }
+
 
             const hash =
                 await bcrypt.hash(
@@ -821,17 +1128,22 @@ app.post(
                     12
                 );
 
+
             const ownerResult =
                 await pool.query(`
                     SELECT *
                     FROM admins
+
                     ORDER BY
                         is_owner DESC,
                         id ASC
+
                     LIMIT 1
                 `);
 
+
             let admin;
+
 
             if (
                 ownerResult.rows.length === 0
@@ -847,29 +1159,36 @@ app.post(
                             can_manage_lessons,
                             can_manage_admins,
                             can_view_stats,
+
                             can_manage_catalog,
                             can_manage_settings,
                             can_view_activity,
 
                             is_owner
                         )
+
                         VALUES
                         (
                             $1,
                             $2,
+
                             TRUE,
                             TRUE,
                             TRUE,
+
                             TRUE,
                             TRUE,
                             TRUE,
+
                             TRUE
                         )
+
                         RETURNING *
                     `, [
                         username,
                         hash
                     ]);
+
 
                 admin =
                     result.rows[0];
@@ -879,15 +1198,23 @@ app.post(
                 const result =
                     await pool.query(`
                         UPDATE admins
+
                         SET
+
                             username = $1,
+
                             password_hash = $2,
 
                             can_manage_lessons = TRUE,
+
                             can_manage_admins = TRUE,
+
                             can_view_stats = TRUE,
+
                             can_manage_catalog = TRUE,
+
                             can_manage_settings = TRUE,
+
                             can_view_activity = TRUE,
 
                             is_owner = TRUE
@@ -901,45 +1228,76 @@ app.post(
                         ownerResult.rows[0].id
                     ]);
 
+
                 admin =
                     result.rows[0];
             }
 
+
             await pool.query(`
                 DELETE FROM admin_sessions
+
                 WHERE admin_id = $1
-            `, [admin.id]);
+            `, [
+                admin.id
+            ]);
+
 
             const token =
                 await createSession(
                     admin.id
                 );
 
+
             const safe =
-                safeAdmin(admin);
+                safeAdmin(
+                    admin
+                );
+
 
             await logActivity(
+
                 safe,
-                "استعادة حساب الأدمن",
-                "admin",
+
+                'استعادة حساب الأدمن',
+
+                'admin',
+
                 admin.id,
+
                 `تمت استعادة الحساب: ${username}`
+
             );
 
+
             res.json({
+
                 success: true,
+
                 token,
+
                 admin: safe
+
             });
+
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                'RECOVERY ERROR:',
+                error
+            );
+
 
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر استعادة حساب الأدمن"
+                    'تعذر استعادة حساب الأدمن: '
+                    +
+                    error.message
+
             });
         }
     }
@@ -947,11 +1305,11 @@ app.post(
 
 
 /* =========================================================
-   CREATE FIRST ADMIN
+   FIRST ADMIN
 ========================================================= */
 
 app.post(
-    "/api/admin/setup",
+    '/api/admin/setup',
     requireDatabase,
     async (req, res) => {
 
@@ -959,13 +1317,15 @@ app.post(
 
             const username =
                 String(
-                    req.body.username || ""
+                    req.body.username || ''
                 ).trim();
+
 
             const password =
                 String(
-                    req.body.password || ""
+                    req.body.password || ''
                 );
+
 
             if (
                 username.length < 3
@@ -974,17 +1334,23 @@ app.post(
             ) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "اسم المستخدم 3 أحرف على الأقل وكلمة المرور 8 أحرف على الأقل"
+                        'اسم المستخدم 3 أحرف على الأقل وكلمة المرور 8 أحرف على الأقل'
+
                 });
             }
 
+
             const count =
                 await pool.query(`
-                    SELECT COUNT(*)::int AS count
+                    SELECT
+                        COUNT(*)::int AS count
                     FROM admins
                 `);
+
 
             if (
                 Number(
@@ -993,17 +1359,22 @@ app.post(
             ) {
 
                 return res.status(403).json({
+
                     success: false,
+
                     message:
-                        "تم إنشاء حساب الأدمن الأول مسبقًا"
+                        'تم إنشاء حساب الأدمن الأول مسبقًا'
+
                 });
             }
+
 
             const hash =
                 await bcrypt.hash(
                     password,
                     12
                 );
+
 
             const result =
                 await pool.query(`
@@ -1015,6 +1386,7 @@ app.post(
                         can_manage_lessons,
                         can_manage_admins,
                         can_view_stats,
+
                         can_manage_catalog,
                         can_manage_settings,
                         can_view_activity,
@@ -1026,12 +1398,15 @@ app.post(
                     (
                         $1,
                         $2,
+
                         TRUE,
                         TRUE,
                         TRUE,
+
                         TRUE,
                         TRUE,
                         TRUE,
+
                         TRUE
                     )
 
@@ -1041,39 +1416,61 @@ app.post(
                     hash
                 ]);
 
+
             const admin =
                 result.rows[0];
+
 
             const token =
                 await createSession(
                     admin.id
                 );
 
+
             const safe =
-                safeAdmin(admin);
+                safeAdmin(
+                    admin
+                );
+
 
             await logActivity(
+
                 safe,
-                "إنشاء أول أدمن",
-                "admin",
+
+                'إنشاء أول أدمن',
+
+                'admin',
+
                 admin.id,
+
                 `تم إنشاء الحساب: ${username}`
+
             );
 
+
             res.status(201).json({
+
                 success: true,
+
                 token,
+
                 admin: safe
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر إنشاء الأدمن"
+                    'تعذر إنشاء الأدمن'
+
             });
         }
     }
@@ -1081,11 +1478,11 @@ app.post(
 
 
 /* =========================================================
-   ADMIN LOGIN
+   LOGIN
 ========================================================= */
 
 app.post(
-    "/api/admin/login",
+    '/api/admin/login',
     requireDatabase,
     async (req, res) => {
 
@@ -1093,43 +1490,65 @@ app.post(
 
             const username =
                 String(
-                    req.body.username || ""
+                    req.body.username || ''
                 ).trim();
+
 
             const password =
                 String(
-                    req.body.password || ""
+                    req.body.password || ''
                 );
 
-            if (!username || !password) {
+
+            if (
+                !username
+                ||
+                !password
+            ) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "اكتب اسم المستخدم وكلمة المرور"
+                        'اكتب اسم المستخدم وكلمة المرور'
+
                 });
             }
+
 
             const result =
                 await pool.query(`
                     SELECT *
                     FROM admins
-                    WHERE LOWER(username)
-                        = LOWER($1)
+
+                    WHERE
+                        LOWER(username)
+                        =
+                        LOWER($1)
+
                     LIMIT 1
-                `, [username]);
+                `, [
+                    username
+                ]);
+
 
             const admin =
                 result.rows[0];
 
+
             if (!admin) {
 
                 return res.status(401).json({
+
                     success: false,
+
                     message:
-                        "اسم المستخدم أو كلمة المرور غير صحيحة"
+                        'اسم المستخدم أو كلمة المرور غير صحيحة'
+
                 });
             }
+
 
             const valid =
                 await bcrypt.compare(
@@ -1137,45 +1556,70 @@ app.post(
                     admin.password_hash
                 );
 
+
             if (!valid) {
 
                 return res.status(401).json({
+
                     success: false,
+
                     message:
-                        "اسم المستخدم أو كلمة المرور غير صحيحة"
+                        'اسم المستخدم أو كلمة المرور غير صحيحة'
+
                 });
             }
+
 
             const token =
                 await createSession(
                     admin.id
                 );
 
+
             const safe =
-                safeAdmin(admin);
+                safeAdmin(
+                    admin
+                );
+
 
             await logActivity(
+
                 safe,
-                "تسجيل دخول",
-                "admin",
+
+                'تسجيل دخول',
+
+                'admin',
+
                 admin.id,
-                "تم تسجيل الدخول"
+
+                'تم تسجيل الدخول'
+
             );
 
+
             res.json({
+
                 success: true,
+
                 token,
+
                 admin: safe
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر تسجيل الدخول"
+                    'تعذر تسجيل الدخول'
+
             });
         }
     }
@@ -1187,14 +1631,20 @@ app.post(
 ========================================================= */
 
 app.get(
-    "/api/admin/me",
+    '/api/admin/me',
     requireDatabase,
     requireAdmin,
     (req, res) => {
 
         res.json({
+
             success: true,
-            admin: safeAdmin(req.admin)
+
+            admin:
+                safeAdmin(
+                    req.admin
+                )
+
         });
     }
 );
@@ -1205,7 +1655,7 @@ app.get(
 ========================================================= */
 
 app.post(
-    "/api/admin/logout",
+    '/api/admin/logout',
     requireDatabase,
     requireAdmin,
     async (req, res) => {
@@ -1214,477 +1664,575 @@ app.post(
 
             const token =
                 String(
-                    req.headers["x-admin-token"] || ""
+                    req.headers[
+                        'x-admin-token'
+                    ]
+                    ||
+                    ''
                 ).trim();
 
+
             await logActivity(
+
                 req.admin,
-                "تسجيل خروج",
-                "admin",
+
+                'تسجيل خروج',
+
+                'admin',
+
                 req.admin.id,
-                "تم تسجيل الخروج"
+
+                'تم تسجيل الخروج'
+
             );
+
 
             if (token) {
 
                 await pool.query(`
                     DELETE FROM admin_sessions
+
                     WHERE token = $1
-                `, [token]);
-            }
-
-            res.json({
-                success: true
-            });
-
-        } catch (error) {
-
-            console.error(error);
-
-            res.status(500).json({
-                success: false,
-                message:
-                    "تعذر تسجيل الخروج"
-            });
-        }
-    }
-);
-
-
-/* =========================================================
-   CATALOG - GET
-========================================================= */
-
-app.get(
-    "/api/admin/catalog",
-    requireDatabase,
-    requireAdmin,
-    async (req, res) => {
-
-        try {
-
-            const result =
-                await pool.query(`
-                    SELECT
-                        id,
-                        type,
-                        name,
-                        parent_id,
-                        enabled,
-                        created_at,
-                        updated_at
-                    FROM catalog_items
-                    ORDER BY
-                        type,
-                        id
-                `);
-
-            const items =
-                result.rows.map(item => ({
-                    id: item.id,
-                    type: item.type,
-                    name: item.name,
-                    parent_id: item.parent_id,
-                    enabled: item.enabled,
-                    created_at: item.created_at,
-                    updated_at: item.updated_at
-                }));
-
-            res.json({
-                success: true,
-                items
-            });
-
-        } catch (error) {
-
-            console.error(error);
-
-            res.status(500).json({
-                success: false,
-                message:
-                    "تعذر تحميل المحتوى"
-            });
-        }
-    }
-);
-
-
-/* =========================================================
-   CATALOG - CREATE
-========================================================= */
-
-app.post(
-    "/api/admin/catalog",
-    requireDatabase,
-    requireAdmin,
-    requirePermission(
-        "can_manage_catalog"
-    ),
-    async (req, res) => {
-
-        try {
-
-            const type =
-                String(
-                    req.body.type || ""
-                ).trim();
-
-            const name =
-                String(
-                    req.body.name || ""
-                ).trim();
-
-            const parentId =
-                req.body.parent_id
-                    ? Number(req.body.parent_id)
-                    : null;
-
-            if (
-                !["semester","grade","subject","general"].includes(type)
-            ) {
-
-                return res.status(400).json({
-                    success: false,
-                    message:
-                        "نوع المحتوى غير صحيح"
-                });
-            }
-
-            if (!name) {
-
-                return res.status(400).json({
-                    success: false,
-                    message:
-                        "اكتب الاسم"
-                });
-            }
-
-            const result =
-                await pool.query(`
-                    INSERT INTO catalog_items
-                    (
-                        type,
-                        name,
-                        parent_id,
-                        enabled
-                    )
-                    VALUES
-                    ($1,$2,$3,TRUE)
-                    RETURNING *
                 `, [
-                    type,
-                    name,
+                    token
+                ]);
+            }
+
+
+            res.json({
+
+                success: true
+
+            });
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    'تعذر تسجيل الخروج'
+
+            });
+        }
+    }
+);
+
+
+/* =========================================================
+   CATALOG
+========================================================= */
+
+const typeLabels = {
+
+    semester: 'الفصل',
+
+    grade: 'الصف',
+
+    subject: 'المادة'
+};
+
+
+async function getCatalogItems(
+    type
+) {
+
+    const result =
+        await pool.query(`
+            SELECT
+                id,
+                type,
+                name,
+                parent_id,
+                enabled,
+                created_at,
+                updated_at
+
+            FROM catalog_items
+
+            WHERE type = $1
+
+            ORDER BY id
+        `, [
+            type
+        ]);
+
+
+    return result.rows;
+}
+
+
+async function catalogCreate(
+    req,
+    res,
+    type
+) {
+
+    try {
+
+        const name =
+            String(
+                req.body.name || ''
+            ).trim();
+
+
+        if (!name) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    `اكتب اسم ${typeLabels[type]}`
+
+            });
+        }
+
+
+        let parentId = null;
+
+
+        if (
+            type === 'subject'
+            &&
+            req.body.parent_id
+        ) {
+
+            parentId =
+                Number(
+                    req.body.parent_id
+                );
+        }
+
+
+        if (
+            type === 'subject'
+            &&
+            parentId
+        ) {
+
+            const parent =
+                await pool.query(`
+                    SELECT id
+                    FROM catalog_items
+
+                    WHERE
+                        id = $1
+                        AND type = 'grade'
+                `, [
                     parentId
                 ]);
 
-            const item =
-                result.rows[0];
 
-            await logActivity(
-                req.admin,
-                "إضافة عنصر",
-                type,
-                item.id,
-                `تمت إضافة: ${name}`
-            );
+            if (
+                !parent.rows.length
+            ) {
 
-            res.status(201).json({
-                success: true,
-                item
-            });
+                return res.status(400).json({
 
-        } catch (error) {
+                    success: false,
 
-            console.error(error);
+                    message:
+                        'الصف المرتبط غير موجود'
 
-            res.status(500).json({
-                success: false,
-                message:
-                    "تعذر إضافة العنصر"
-            });
+                });
+            }
         }
-    }
-);
 
 
-/* =========================================================
-   CATALOG - UPDATE
-========================================================= */
-
-app.put(
-    "/api/admin/catalog/:id",
-    requireDatabase,
-    requireAdmin,
-    requirePermission(
-        "can_manage_catalog"
-    ),
-    async (req, res) => {
-
-        try {
-
-            const id =
-                Number(req.params.id);
-
-            const name =
-                String(
-                    req.body.name || ""
-                ).trim();
-
-            const enabled =
-                req.body.enabled === undefined
-                    ? true
-                    : Boolean(req.body.enabled);
-
-            const parentId =
-                req.body.parent_id === undefined
-                    ? null
-                    : (
-                        req.body.parent_id
-                            ? Number(req.body.parent_id)
-                            : null
-                    );
-
-            if (!Number.isInteger(id)) {
-
-                return res.status(400).json({
-                    success: false,
-                    message:
-                        "المعرف غير صحيح"
-                });
-            }
-
-            if (!name) {
-
-                return res.status(400).json({
-                    success: false,
-                    message:
-                        "اكتب الاسم"
-                });
-            }
-
-            const result =
-                await pool.query(`
-                    UPDATE catalog_items
-
-                    SET
-                        name = $1,
-                        enabled = $2,
-                        parent_id = $3,
-                        updated_at = NOW()
-
-                    WHERE id = $4
-
-                    RETURNING *
-                `, [
+        const result =
+            await pool.query(`
+                INSERT INTO catalog_items
+                (
+                    type,
                     name,
-                    enabled,
-                    parentId,
-                    id
-                ]);
+                    parent_id,
+                    enabled
+                )
 
-            if (!result.rows.length) {
+                VALUES
+                (
+                    $1,
+                    $2,
+                    $3,
+                    TRUE
+                )
 
-                return res.status(404).json({
-                    success: false,
-                    message:
-                        "العنصر غير موجود"
-                });
-            }
+                RETURNING *
+            `, [
+                type,
+                name,
+                parentId
+            ]);
 
-            await logActivity(
-                req.admin,
-                "تعديل عنصر",
-                "catalog",
-                id,
-                `تم تعديل: ${name}`
+
+        const item =
+            result.rows[0];
+
+
+        await logActivity(
+
+            req.admin,
+
+            `إضافة ${typeLabels[type]}`,
+
+            type,
+
+            item.id,
+
+            `تمت إضافة: ${name}`
+
+        );
+
+
+        res.status(201).json({
+
+            success: true,
+
+            item
+
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                `تعذر إضافة ${typeLabels[type]}`
+
+        });
+    }
+}
+
+
+async function catalogUpdate(
+    req,
+    res,
+    type
+) {
+
+    try {
+
+        const id =
+            Number(
+                req.params.id
             );
 
-            res.json({
-                success: true,
-                item: result.rows[0]
-            });
 
-        } catch (error) {
+        const name =
+            String(
+                req.body.name || ''
+            ).trim();
 
-            console.error(error);
 
-            res.status(500).json({
+        const enabled =
+            req.body.enabled === undefined
+                ? true
+                : Boolean(
+                    req.body.enabled
+                );
+
+
+        if (
+            !Number.isInteger(id)
+            ||
+            !name
+        ) {
+
+            return res.status(400).json({
+
                 success: false,
+
                 message:
-                    "تعذر تعديل العنصر"
+                    'البيانات غير صحيحة'
+
             });
         }
+
+
+        const result =
+            await pool.query(`
+                UPDATE catalog_items
+
+                SET
+
+                    name = $1,
+
+                    enabled = $2,
+
+                    updated_at = NOW()
+
+                WHERE
+                    id = $3
+
+                    AND type = $4
+
+                RETURNING *
+            `, [
+                name,
+                enabled,
+                id,
+                type
+            ]);
+
+
+        if (
+            !result.rows.length
+        ) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    'العنصر غير موجود'
+
+            });
+        }
+
+
+        await logActivity(
+
+            req.admin,
+
+            `تعديل ${typeLabels[type]}`,
+
+            type,
+
+            id,
+
+            `تم التعديل: ${name}`
+
+        );
+
+
+        res.json({
+
+            success: true,
+
+            item:
+                result.rows[0]
+
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                `تعذر تعديل ${typeLabels[type]}`
+
+        });
     }
-);
+}
+
+
+async function catalogDelete(
+    req,
+    res,
+    type
+) {
+
+    try {
+
+        const id =
+            Number(
+                req.params.id
+            );
+
+
+        const result =
+            await pool.query(`
+                DELETE FROM catalog_items
+
+                WHERE
+                    id = $1
+
+                    AND type = $2
+
+                RETURNING *
+            `, [
+                id,
+                type
+            ]);
+
+
+        if (
+            !result.rows.length
+        ) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    'العنصر غير موجود'
+
+            });
+        }
+
+
+        await logActivity(
+
+            req.admin,
+
+            `حذف ${typeLabels[type]}`,
+
+            type,
+
+            id,
+
+            `تم الحذف: ${result.rows[0].name}`
+
+        );
+
+
+        res.json({
+
+            success: true
+
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                `تعذر حذف ${typeLabels[type]}`
+
+        });
+    }
+}
 
 
 /* =========================================================
-   CATALOG - DELETE
+   COMPATIBILITY ROUTES FOR CURRENT ADMIN.HTML
 ========================================================= */
 
-app.delete(
-    "/api/admin/catalog/:id",
-    requireDatabase,
-    requireAdmin,
-    requirePermission(
-        "can_manage_catalog"
-    ),
-    async (req, res) => {
+for (
+    const type
+    of [
+        'semester',
+        'grade',
+        'subject'
+    ]
+) {
 
-        try {
+    app.get(
+        `/api/admin/${type}s`,
+        requireDatabase,
+        requireAdmin,
+        async (req, res) => {
 
-            const id =
-                Number(req.params.id);
+            try {
 
-            const result =
-                await pool.query(`
-                    DELETE FROM catalog_items
-                    WHERE id = $1
-                    RETURNING *
-                `, [id]);
+                res.json({
 
-            if (!result.rows.length) {
+                    success: true,
 
-                return res.status(404).json({
+                    items:
+                        await getCatalogItems(
+                            type
+                        )
+
+                });
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                res.status(500).json({
+
                     success: false,
+
                     message:
-                        "العنصر غير موجود"
+                        'تعذر تحميل المحتوى'
+
                 });
             }
-
-            await logActivity(
-                req.admin,
-                "حذف عنصر",
-                "catalog",
-                id,
-                `تم حذف: ${result.rows[0].name}`
-            );
-
-            res.json({
-                success: true
-            });
-
-        } catch (error) {
-
-            console.error(error);
-
-            res.status(500).json({
-                success: false,
-                message:
-                    "تعذر حذف العنصر"
-            });
         }
-    }
-);
+    );
+
+
+    app.post(
+        `/api/admin/${type}s`,
+        requireDatabase,
+        requireAdmin,
+        requirePermission(
+            'can_manage_catalog'
+        ),
+        (req, res) =>
+            catalogCreate(
+                req,
+                res,
+                type
+            )
+    );
+
+
+    app.put(
+        `/api/admin/${type}s/:id`,
+        requireDatabase,
+        requireAdmin,
+        requirePermission(
+            'can_manage_catalog'
+        ),
+        (req, res) =>
+            catalogUpdate(
+                req,
+                res,
+                type
+            )
+    );
+
+
+    app.delete(
+        `/api/admin/${type}s/:id`,
+        requireDatabase,
+        requireAdmin,
+        requirePermission(
+            'can_manage_catalog'
+        ),
+        (req, res) =>
+            catalogDelete(
+                req,
+                res,
+                type
+            )
+    );
+}
 
 
 /* =========================================================
-   LESSONS - PUBLIC
+   UNIFIED CATALOG API
 ========================================================= */
 
 app.get(
-    "/api/lessons",
-    requireDatabase,
-    async (req, res) => {
-
-        try {
-
-            const semester =
-                String(
-                    req.query.semester || ""
-                ).trim();
-
-            const grade =
-                String(
-                    req.query.grade || ""
-                ).trim();
-
-            const subject =
-                String(
-                    req.query.subject || ""
-                ).trim();
-
-            const result =
-                await pool.query(`
-                    SELECT
-                        id,
-                        semester,
-                        grade,
-                        subject,
-                        title,
-                        description,
-                        summary,
-                        video_url,
-                        enabled,
-                        created_at,
-                        updated_at
-                    FROM lessons
-
-                    WHERE enabled = TRUE
-
-                    ORDER BY id DESC
-
-                    LIMIT 500
-                `);
-
-            let items =
-                result.rows;
-
-            if (semester) {
-
-                items =
-                    items.filter(
-                        x =>
-                            String(x.semester || "")
-                                === semester
-                    );
-            }
-
-            if (grade) {
-
-                items =
-                    items.filter(
-                        x =>
-                            String(x.grade || "")
-                                === grade
-                    );
-            }
-
-            if (subject) {
-
-                items =
-                    items.filter(
-                        x =>
-                            String(x.subject || "")
-                                === subject
-                    );
-            }
-
-            res.json({
-                success: true,
-                items
-            });
-
-        } catch (error) {
-
-            console.error(error);
-
-            res.status(500).json({
-                success: false,
-                message:
-                    "تعذر تحميل الدروس"
-            });
-        }
-    }
-);
-
-
-/* =========================================================
-   LESSONS - ADMIN GET
-========================================================= */
-
-app.get(
-    "/api/admin/lessons",
+    '/api/admin/catalog',
     requireDatabase,
     requireAdmin,
     async (req, res) => {
@@ -1694,23 +2242,37 @@ app.get(
             const result =
                 await pool.query(`
                     SELECT *
-                    FROM lessons
-                    ORDER BY id DESC
+
+                    FROM catalog_items
+
+                    ORDER BY
+                        type,
+                        id
                 `);
 
+
             res.json({
+
                 success: true,
-                items: result.rows
+
+                items:
+                    result.rows
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر تحميل الدروس"
+                    'تعذر تحميل المحتوى'
+
             });
         }
     }
@@ -1718,15 +2280,189 @@ app.get(
 
 
 /* =========================================================
-   LESSONS - CREATE
+   LESSONS PUBLIC
 ========================================================= */
 
+app.get(
+    '/api/lessons',
+    requireDatabase,
+    async (req, res) => {
+
+        try {
+
+            const result =
+                await pool.query(`
+                    SELECT *
+
+                    FROM lessons
+
+                    WHERE enabled = TRUE
+
+                    ORDER BY id DESC
+
+                    LIMIT 500
+                `);
+
+
+            let items =
+                result.rows;
+
+
+            const semester =
+                String(
+                    req.query.semester
+                    ||
+                    ''
+                ).trim();
+
+
+            const grade =
+                String(
+                    req.query.grade
+                    ||
+                    ''
+                ).trim();
+
+
+            const subject =
+                String(
+                    req.query.subject
+                    ||
+                    ''
+                ).trim();
+
+
+            if (semester) {
+
+                items =
+                    items.filter(
+                        x =>
+                            String(
+                                x.semester
+                                ||
+                                ''
+                            )
+                            ===
+                            semester
+                    );
+            }
+
+
+            if (grade) {
+
+                items =
+                    items.filter(
+                        x =>
+                            String(
+                                x.grade
+                                ||
+                                ''
+                            )
+                            ===
+                            grade
+                    );
+            }
+
+
+            if (subject) {
+
+                items =
+                    items.filter(
+                        x =>
+                            String(
+                                x.subject
+                                ||
+                                ''
+                            )
+                            ===
+                            subject
+                    );
+            }
+
+
+            res.json({
+
+                success: true,
+
+                items
+
+            });
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    'تعذر تحميل الدروس'
+
+            });
+        }
+    }
+);
+
+
+/* =========================================================
+   LESSONS ADMIN
+========================================================= */
+
+app.get(
+    '/api/admin/lessons',
+    requireDatabase,
+    requireAdmin,
+    async (req, res) => {
+
+        try {
+
+            const result =
+                await pool.query(`
+                    SELECT *
+
+                    FROM lessons
+
+                    ORDER BY id DESC
+                `);
+
+
+            res.json({
+
+                success: true,
+
+                items:
+                    result.rows
+
+            });
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    'تعذر تحميل الدروس'
+
+            });
+        }
+    }
+);
+
+
 app.post(
-    "/api/admin/lessons",
+    '/api/admin/lessons',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_manage_lessons"
+        'can_manage_lessons'
     ),
     async (req, res) => {
 
@@ -1734,47 +2470,72 @@ app.post(
 
             const semester =
                 String(
-                    req.body.semester || ""
+                    req.body.semester
+                    ||
+                    ''
                 ).trim();
+
 
             const grade =
                 String(
-                    req.body.grade || ""
+                    req.body.grade
+                    ||
+                    ''
                 ).trim();
+
 
             const subject =
                 String(
-                    req.body.subject || ""
+                    req.body.subject
+                    ||
+                    ''
                 ).trim();
+
 
             const title =
                 String(
-                    req.body.title || ""
+                    req.body.title
+                    ||
+                    ''
                 ).trim();
+
 
             const description =
                 String(
-                    req.body.description || ""
+                    req.body.description
+                    ||
+                    ''
                 );
+
 
             const summary =
                 String(
-                    req.body.summary || ""
+                    req.body.summary
+                    ||
+                    ''
                 );
+
 
             const videoUrl =
                 String(
-                    req.body.video_url || ""
+                    req.body.video_url
+                    ||
+                    ''
                 ).trim();
+
 
             if (!title) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "اكتب عنوان الدرس"
+                        'اكتب عنوان الدرس'
+
                 });
             }
+
 
             const result =
                 await pool.query(`
@@ -1792,7 +2553,14 @@ app.post(
 
                     VALUES
                     (
-                        $1,$2,$3,$4,$5,$6,$7,TRUE
+                        $1,
+                        $2,
+                        $3,
+                        $4,
+                        $5,
+                        $6,
+                        $7,
+                        TRUE
                     )
 
                     RETURNING *
@@ -1806,119 +2574,172 @@ app.post(
                     videoUrl
                 ]);
 
-            const lesson =
-                result.rows[0];
 
             await logActivity(
+
                 req.admin,
-                "إضافة درس",
-                "lesson",
-                lesson.id,
+
+                'إضافة درس',
+
+                'lesson',
+
+                result.rows[0].id,
+
                 `تمت إضافة الدرس: ${title}`
+
             );
 
+
             res.status(201).json({
+
                 success: true,
-                item: lesson
+
+                item:
+                    result.rows[0]
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر إضافة الدرس"
+                    'تعذر إضافة الدرس'
+
             });
         }
     }
 );
 
 
-/* =========================================================
-   LESSONS - UPDATE
-========================================================= */
-
 app.put(
-    "/api/admin/lessons/:id",
+    '/api/admin/lessons/:id',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_manage_lessons"
+        'can_manage_lessons'
     ),
     async (req, res) => {
 
         try {
 
             const id =
-                Number(req.params.id);
+                Number(
+                    req.params.id
+                );
+
 
             const semester =
                 String(
-                    req.body.semester || ""
+                    req.body.semester
+                    ||
+                    ''
                 ).trim();
+
 
             const grade =
                 String(
-                    req.body.grade || ""
+                    req.body.grade
+                    ||
+                    ''
                 ).trim();
+
 
             const subject =
                 String(
-                    req.body.subject || ""
+                    req.body.subject
+                    ||
+                    ''
                 ).trim();
+
 
             const title =
                 String(
-                    req.body.title || ""
+                    req.body.title
+                    ||
+                    ''
                 ).trim();
+
 
             const description =
                 String(
-                    req.body.description || ""
+                    req.body.description
+                    ||
+                    ''
                 );
+
 
             const summary =
                 String(
-                    req.body.summary || ""
+                    req.body.summary
+                    ||
+                    ''
                 );
+
 
             const videoUrl =
                 String(
-                    req.body.video_url || ""
+                    req.body.video_url
+                    ||
+                    ''
                 ).trim();
+
 
             const enabled =
                 req.body.enabled === undefined
+
                     ? true
-                    : Boolean(req.body.enabled);
+
+                    : Boolean(
+                        req.body.enabled
+                    );
+
 
             if (!title) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "اكتب عنوان الدرس"
+                        'اكتب عنوان الدرس'
+
                 });
             }
+
 
             const result =
                 await pool.query(`
                     UPDATE lessons
 
                     SET
+
                         semester = $1,
+
                         grade = $2,
+
                         subject = $3,
+
                         title = $4,
+
                         description = $5,
+
                         summary = $6,
+
                         video_url = $7,
+
                         enabled = $8,
+
                         updated_at = NOW()
 
-                    WHERE id = $9
+                    WHERE
+                        id = $9
 
                     RETURNING *
                 `, [
@@ -1933,96 +2754,144 @@ app.put(
                     id
                 ]);
 
-            if (!result.rows.length) {
+
+            if (
+                !result.rows.length
+            ) {
 
                 return res.status(404).json({
+
                     success: false,
+
                     message:
-                        "الدرس غير موجود"
+                        'الدرس غير موجود'
+
                 });
             }
 
+
             await logActivity(
+
                 req.admin,
-                "تعديل درس",
-                "lesson",
+
+                'تعديل درس',
+
+                'lesson',
+
                 id,
+
                 `تم تعديل الدرس: ${title}`
+
             );
 
+
             res.json({
+
                 success: true,
-                item: result.rows[0]
+
+                item:
+                    result.rows[0]
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر تعديل الدرس"
+                    'تعذر تعديل الدرس'
+
             });
         }
     }
 );
 
 
-/* =========================================================
-   LESSONS - DELETE
-========================================================= */
-
 app.delete(
-    "/api/admin/lessons/:id",
+    '/api/admin/lessons/:id',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_manage_lessons"
+        'can_manage_lessons'
     ),
     async (req, res) => {
 
         try {
 
             const id =
-                Number(req.params.id);
+                Number(
+                    req.params.id
+                );
+
 
             const result =
                 await pool.query(`
                     DELETE FROM lessons
-                    WHERE id = $1
-                    RETURNING *
-                `, [id]);
 
-            if (!result.rows.length) {
+                    WHERE
+                        id = $1
+
+                    RETURNING *
+                `, [
+                    id
+                ]);
+
+
+            if (
+                !result.rows.length
+            ) {
 
                 return res.status(404).json({
+
                     success: false,
+
                     message:
-                        "الدرس غير موجود"
+                        'الدرس غير موجود'
+
                 });
             }
 
+
             await logActivity(
+
                 req.admin,
-                "حذف درس",
-                "lesson",
+
+                'حذف درس',
+
+                'lesson',
+
                 id,
+
                 `تم حذف الدرس: ${result.rows[0].title}`
+
             );
 
+
             res.json({
+
                 success: true
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر حذف الدرس"
+                    'تعذر حذف الدرس'
+
             });
         }
     }
@@ -2030,11 +2899,11 @@ app.delete(
 
 
 /* =========================================================
-   QUESTIONS - GET ADMIN
+   QUESTIONS
 ========================================================= */
 
 app.get(
-    "/api/admin/questions",
+    '/api/admin/questions',
     requireDatabase,
     requireAdmin,
     async (req, res) => {
@@ -2044,39 +2913,47 @@ app.get(
             const result =
                 await pool.query(`
                     SELECT *
+
                     FROM questions
+
                     ORDER BY id DESC
                 `);
 
+
             res.json({
+
                 success: true,
-                items: result.rows
+
+                items:
+                    result.rows
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر تحميل الأسئلة"
+                    'تعذر تحميل الأسئلة'
+
             });
         }
     }
 );
 
 
-/* =========================================================
-   QUESTIONS - CREATE
-========================================================= */
-
 app.post(
-    "/api/admin/questions",
+    '/api/admin/questions',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_manage_lessons"
+        'can_manage_lessons'
     ),
     async (req, res) => {
 
@@ -2084,37 +2961,56 @@ app.post(
 
             const lessonId =
                 req.body.lesson_id
-                    ? Number(req.body.lesson_id)
+                    ? Number(
+                        req.body.lesson_id
+                    )
                     : null;
+
 
             const question =
                 String(
-                    req.body.question || ""
+                    req.body.question
+                    ||
+                    ''
                 ).trim();
 
+
             const options =
-                Array.isArray(req.body.options)
+                Array.isArray(
+                    req.body.options
+                )
                     ? req.body.options
                     : [];
 
+
             const correctAnswer =
                 Number(
-                    req.body.correct_answer ?? 0
+                    req.body.correct_answer
+                    ??
+                    0
                 );
+
 
             const explanation =
                 String(
-                    req.body.explanation || ""
+                    req.body.explanation
+                    ||
+                    ''
                 );
+
 
             if (!question) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "اكتب السؤال"
+                        'اكتب السؤال'
+
                 });
             }
+
 
             const result =
                 await pool.query(`
@@ -2130,67 +3026,98 @@ app.post(
 
                     VALUES
                     (
-                        $1,$2,$3,$4,$5,TRUE
+                        $1,
+                        $2,
+                        $3,
+                        $4,
+                        $5,
+                        TRUE
                     )
 
                     RETURNING *
                 `, [
                     lessonId,
                     question,
-                    JSON.stringify(options),
+                    JSON.stringify(
+                        options
+                    ),
                     correctAnswer,
                     explanation
                 ]);
 
+
             await logActivity(
+
                 req.admin,
-                "إضافة سؤال",
-                "question",
+
+                'إضافة سؤال',
+
+                'question',
+
                 result.rows[0].id,
+
                 question
+
             );
 
+
             res.status(201).json({
+
                 success: true,
-                item: result.rows[0]
+
+                item:
+                    result.rows[0]
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر إضافة السؤال"
+                    'تعذر إضافة السؤال'
+
             });
         }
     }
 );
 
 
-/* =========================================================
-   PUBLIC QUESTIONS
-========================================================= */
-
 app.get(
-    "/api/questions",
+    '/api/questions',
     requireDatabase,
     async (req, res) => {
 
         try {
 
             const lessonId =
-                Number(req.query.lesson_id);
+                Number(
+                    req.query.lesson_id
+                );
 
-            if (!Number.isInteger(lessonId)) {
+
+            if (
+                !Number.isInteger(
+                    lessonId
+                )
+            ) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "lesson_id غير صحيح"
+                        'lesson_id غير صحيح'
+
                 });
             }
+
 
             const result =
                 await pool.query(`
@@ -2205,25 +3132,39 @@ app.get(
                     FROM questions
 
                     WHERE
+
                         lesson_id = $1
+
                         AND enabled = TRUE
 
                     ORDER BY id
-                `, [lessonId]);
+                `, [
+                    lessonId
+                ]);
+
 
             res.json({
+
                 success: true,
-                items: result.rows
+
+                items:
+                    result.rows
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر تحميل الأسئلة"
+                    'تعذر تحميل الأسئلة'
+
             });
         }
     }
@@ -2231,15 +3172,15 @@ app.get(
 
 
 /* =========================================================
-   ADMIN ACCOUNTS - GET
+   ADMIN ACCOUNTS
 ========================================================= */
 
 app.get(
-    "/api/admin/accounts",
+    '/api/admin/accounts',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_manage_admins"
+        'can_manage_admins'
     ),
     async (req, res) => {
 
@@ -2247,114 +3188,50 @@ app.get(
 
             const result =
                 await pool.query(`
-                    SELECT
-                        id,
-                        username,
-
-                        can_manage_lessons,
-                        can_manage_admins,
-                        can_view_stats,
-                        can_manage_catalog,
-                        can_manage_settings,
-                        can_view_activity,
-
-                        is_owner,
-                        created_at
+                    SELECT *
 
                     FROM admins
 
                     ORDER BY id
                 `);
 
+
             res.json({
+
                 success: true,
 
                 items:
                     result.rows.map(
                         safeAdminAccount
                     )
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر تحميل حسابات الأدمن"
+                    'تعذر تحميل حسابات الأدمن'
+
             });
         }
     }
 );
 
 
-function safeAdminAccount(admin) {
-
-    return {
-
-        id: admin.id,
-
-        username: admin.username,
-
-        can_manage_content:
-            Boolean(
-                admin.can_manage_lessons
-                ||
-                admin.can_manage_catalog
-            ),
-
-        can_manage_lessons:
-            Boolean(
-                admin.can_manage_lessons
-            ),
-
-        can_manage_admins:
-            Boolean(
-                admin.can_manage_admins
-            ),
-
-        can_view_stats:
-            Boolean(
-                admin.can_view_stats
-            ),
-
-        can_manage_catalog:
-            Boolean(
-                admin.can_manage_catalog
-            ),
-
-        can_manage_settings:
-            Boolean(
-                admin.can_manage_settings
-            ),
-
-        can_view_activity:
-            Boolean(
-                admin.can_view_activity
-            ),
-
-        is_owner:
-            Boolean(
-                admin.is_owner
-            ),
-
-        created_at:
-            admin.created_at
-    };
-}
-
-
-/* =========================================================
-   ADMIN ACCOUNTS - CREATE
-========================================================= */
-
 app.post(
-    "/api/admin/accounts",
+    '/api/admin/accounts',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_manage_admins"
+        'can_manage_admins'
     ),
     async (req, res) => {
 
@@ -2362,75 +3239,112 @@ app.post(
 
             const username =
                 String(
-                    req.body.username || ""
+                    req.body.username
+                    ||
+                    ''
                 ).trim();
+
 
             const password =
                 String(
-                    req.body.password || ""
+                    req.body.password
+                    ||
+                    ''
                 );
 
-            const canManageContent =
+
+            const content =
                 Boolean(
                     req.body.can_manage_content
                 );
 
-            const canManageAdmins =
+
+            const admins =
                 Boolean(
                     req.body.can_manage_admins
                 );
 
-            const canViewStats =
+
+            const stats =
                 Boolean(
                     req.body.can_view_stats
                 );
 
-            const canManageSettings =
+
+            const settings =
                 Boolean(
                     req.body.can_manage_settings
                 );
 
-            if (username.length < 3) {
+
+            if (
+                username.length < 3
+            ) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "اسم المستخدم 3 أحرف على الأقل"
+                        'اسم المستخدم 3 أحرف على الأقل'
+
                 });
             }
 
-            if (password.length < 8) {
+
+            if (
+                password.length < 8
+            ) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "كلمة المرور 8 أحرف على الأقل"
+                        'كلمة المرور 8 أحرف على الأقل'
+
                 });
             }
+
 
             const exists =
                 await pool.query(`
                     SELECT id
-                    FROM admins
-                    WHERE LOWER(username)
-                        = LOWER($1)
-                    LIMIT 1
-                `, [username]);
 
-            if (exists.rows.length) {
+                    FROM admins
+
+                    WHERE
+                        LOWER(username)
+                        =
+                        LOWER($1)
+
+                    LIMIT 1
+                `, [
+                    username
+                ]);
+
+
+            if (
+                exists.rows.length
+            ) {
 
                 return res.status(409).json({
+
                     success: false,
+
                     message:
-                        "اسم المستخدم موجود بالفعل"
+                        'اسم المستخدم موجود بالفعل'
+
                 });
             }
+
 
             const hash =
                 await bcrypt.hash(
                     password,
                     12
                 );
+
 
             const result =
                 await pool.query(`
@@ -2442,6 +3356,7 @@ app.post(
                         can_manage_lessons,
                         can_manage_admins,
                         can_view_stats,
+
                         can_manage_catalog,
                         can_manage_settings,
                         can_view_activity,
@@ -2451,9 +3366,17 @@ app.post(
 
                     VALUES
                     (
-                        $1,$2,
-                        $3,$4,$5,$6,$7,
+                        $1,
+                        $2,
+
+                        $3,
                         $4,
+                        $5,
+
+                        $3,
+                        $6,
+                        $4,
+
                         FALSE
                     )
 
@@ -2461,39 +3384,56 @@ app.post(
                 `, [
                     username,
                     hash,
-
-                    canManageContent,
-                    canManageAdmins,
-                    canViewStats,
-                    canManageContent,
-                    canManageSettings
+                    content,
+                    admins,
+                    stats,
+                    settings
                 ]);
+
 
             const admin =
                 result.rows[0];
 
+
             await logActivity(
+
                 req.admin,
-                "إضافة أدمن",
-                "admin",
+
+                'إضافة أدمن',
+
+                'admin',
+
                 admin.id,
+
                 `تم إنشاء: ${username}`
+
             );
 
+
             res.status(201).json({
+
                 success: true,
+
                 item:
-                    safeAdminAccount(admin)
+                    safeAdminAccount(
+                        admin
+                    )
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر إنشاء حساب الأدمن"
+                    'تعذر إنشاء حساب الأدمن'
+
             });
         }
     }
@@ -2501,41 +3441,54 @@ app.post(
 
 
 /* =========================================================
-   ADMIN PERMISSIONS - UPDATE
+   UPDATE ADMIN PERMISSIONS
 ========================================================= */
 
 app.put(
-    "/api/admin/accounts/:id/permissions",
+    '/api/admin/accounts/:id/permissions',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_manage_admins"
+        'can_manage_admins'
     ),
     async (req, res) => {
 
         try {
 
             const id =
-                Number(req.params.id);
+                Number(
+                    req.params.id
+                );
+
 
             const targetResult =
                 await pool.query(`
                     SELECT *
+
                     FROM admins
+
                     WHERE id = $1
-                `, [id]);
+                `, [
+                    id
+                ]);
+
 
             const target =
                 targetResult.rows[0];
 
+
             if (!target) {
 
                 return res.status(404).json({
+
                     success: false,
+
                     message:
-                        "الحساب غير موجود"
+                        'الحساب غير موجود'
+
                 });
             }
+
 
             if (
                 target.is_owner
@@ -2544,41 +3497,56 @@ app.put(
             ) {
 
                 return res.status(403).json({
+
                     success: false,
+
                     message:
-                        "لا يمكن تعديل صلاحيات مالك الموقع"
+                        'لا يمكن تعديل صلاحيات مالك الموقع'
+
                 });
             }
+
 
             const content =
                 Boolean(
                     req.body.can_manage_content
                 );
 
+
             const admins =
                 Boolean(
                     req.body.can_manage_admins
                 );
+
 
             const stats =
                 Boolean(
                     req.body.can_view_stats
                 );
 
+
             const settings =
                 Boolean(
                     req.body.can_manage_settings
                 );
 
+
             const result =
                 await pool.query(`
                     UPDATE admins
+
                     SET
+
                         can_manage_lessons = $1,
+
                         can_manage_catalog = $1,
+
                         can_manage_admins = $2,
+
                         can_view_stats = $3,
+
                         can_manage_settings = $4,
+
                         can_view_activity = $2
 
                     WHERE id = $5
@@ -2592,30 +3560,46 @@ app.put(
                     id
                 ]);
 
+
             await logActivity(
+
                 req.admin,
-                "تعديل صلاحيات أدمن",
-                "admin",
+
+                'تعديل صلاحيات أدمن',
+
+                'admin',
+
                 id,
-                `تم تعديل الصلاحيات: ${target.username}`
+
+                `تم تعديل: ${target.username}`
+
             );
 
+
             res.json({
+
                 success: true,
+
                 item:
                     safeAdminAccount(
                         result.rows[0]
                     )
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر تعديل الصلاحيات"
+                    'تعذر تعديل الصلاحيات'
+
             });
         }
     }
@@ -2623,55 +3607,77 @@ app.put(
 
 
 /* =========================================================
-   ADMIN PASSWORD - UPDATE
+   CHANGE ADMIN PASSWORD
 ========================================================= */
 
 app.put(
-    "/api/admin/accounts/:id/password",
+    '/api/admin/accounts/:id/password',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_manage_admins"
+        'can_manage_admins'
     ),
     async (req, res) => {
 
         try {
 
             const id =
-                Number(req.params.id);
+                Number(
+                    req.params.id
+                );
+
 
             const newPassword =
                 String(
-                    req.body.new_password || ""
+                    req.body.new_password
+                    ||
+                    ''
                 );
 
-            if (newPassword.length < 8) {
+
+            if (
+                newPassword.length < 8
+            ) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "كلمة المرور 8 أحرف على الأقل"
+                        'كلمة المرور 8 أحرف على الأقل'
+
                 });
             }
+
 
             const targetResult =
                 await pool.query(`
                     SELECT *
+
                     FROM admins
+
                     WHERE id = $1
-                `, [id]);
+                `, [
+                    id
+                ]);
+
 
             const target =
                 targetResult.rows[0];
 
+
             if (!target) {
 
                 return res.status(404).json({
+
                     success: false,
+
                     message:
-                        "الحساب غير موجود"
+                        'الحساب غير موجود'
+
                 });
             }
+
 
             if (
                 target.is_owner
@@ -2680,11 +3686,15 @@ app.put(
             ) {
 
                 return res.status(403).json({
+
                     success: false,
+
                     message:
-                        "لا يمكن تغيير كلمة مرور مالك الموقع من هذا الحساب"
+                        'لا يمكن تغيير كلمة مرور مالك الموقع'
+
                 });
             }
+
 
             const hash =
                 await bcrypt.hash(
@@ -2692,40 +3702,62 @@ app.put(
                     12
                 );
 
+
             await pool.query(`
                 UPDATE admins
+
                 SET password_hash = $1
+
                 WHERE id = $2
             `, [
                 hash,
                 id
             ]);
 
+
             await pool.query(`
                 DELETE FROM admin_sessions
+
                 WHERE admin_id = $1
-            `, [id]);
+            `, [
+                id
+            ]);
+
 
             await logActivity(
+
                 req.admin,
-                "تغيير كلمة مرور أدمن",
-                "admin",
+
+                'تغيير كلمة مرور أدمن',
+
+                'admin',
+
                 id,
-                `تم تغيير كلمة المرور للحساب: ${target.username}`
+
+                target.username
+
             );
 
+
             res.json({
+
                 success: true
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر تغيير كلمة المرور"
+                    'تعذر تغيير كلمة المرور'
+
             });
         }
     }
@@ -2733,85 +3765,229 @@ app.put(
 
 
 /* =========================================================
-   ADMIN ACCOUNT - DELETE
+   CHANGE MY PASSWORD
+========================================================= */
+
+app.put(
+    '/api/admin/password',
+    requireDatabase,
+    requireAdmin,
+    async (req, res) => {
+
+        try {
+
+            const newPassword =
+                String(
+                    req.body.new_password
+                    ||
+                    ''
+                );
+
+
+            if (
+                newPassword.length < 8
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        'كلمة المرور 8 أحرف على الأقل'
+
+                });
+            }
+
+
+            const hash =
+                await bcrypt.hash(
+                    newPassword,
+                    12
+                );
+
+
+            await pool.query(`
+                UPDATE admins
+
+                SET password_hash = $1
+
+                WHERE id = $2
+            `, [
+                hash,
+                req.admin.id
+            ]);
+
+
+            await pool.query(`
+                DELETE FROM admin_sessions
+
+                WHERE admin_id = $1
+            `, [
+                req.admin.id
+            ]);
+
+
+            await logActivity(
+
+                req.admin,
+
+                'تغيير كلمة المرور',
+
+                'admin',
+
+                req.admin.id,
+
+                req.admin.username
+
+            );
+
+
+            res.json({
+
+                success: true
+
+            });
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    'تعذر تغيير كلمة المرور'
+
+            });
+        }
+    }
+);
+
+
+/* =========================================================
+   DELETE ADMIN
 ========================================================= */
 
 app.delete(
-    "/api/admin/accounts/:id",
+    '/api/admin/accounts/:id',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_manage_admins"
+        'can_manage_admins'
     ),
     async (req, res) => {
 
         try {
 
             const id =
-                Number(req.params.id);
+                Number(
+                    req.params.id
+                );
 
-            if (id === req.admin.id) {
+
+            if (
+                id === req.admin.id
+            ) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "لا يمكنك حذف حسابك الحالي"
+                        'لا يمكنك حذف حسابك الحالي'
+
                 });
             }
+
 
             const targetResult =
                 await pool.query(`
                     SELECT *
+
                     FROM admins
+
                     WHERE id = $1
-                `, [id]);
+                `, [
+                    id
+                ]);
+
 
             const target =
                 targetResult.rows[0];
 
+
             if (!target) {
 
                 return res.status(404).json({
+
                     success: false,
+
                     message:
-                        "الحساب غير موجود"
+                        'الحساب غير موجود'
+
                 });
             }
+
 
             if (target.is_owner) {
 
                 return res.status(403).json({
+
                     success: false,
+
                     message:
-                        "لا يمكن حذف مالك الموقع"
+                        'لا يمكن حذف مالك الموقع'
+
                 });
             }
 
+
             await pool.query(`
                 DELETE FROM admins
+
                 WHERE id = $1
-            `, [id]);
+            `, [
+                id
+            ]);
+
 
             await logActivity(
+
                 req.admin,
-                "حذف أدمن",
-                "admin",
+
+                'حذف أدمن',
+
+                'admin',
+
                 id,
-                `تم حذف: ${target.username}`
+
+                target.username
+
             );
 
+
             res.json({
+
                 success: true
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر حذف الحساب"
+                    'تعذر حذف الحساب'
+
             });
         }
     }
@@ -2819,15 +3995,15 @@ app.delete(
 
 
 /* =========================================================
-   SETTINGS - GET
+   SETTINGS
 ========================================================= */
 
 app.get(
-    "/api/admin/settings",
+    '/api/admin/settings',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_manage_settings"
+        'can_manage_settings'
     ),
     async (req, res) => {
 
@@ -2835,12 +4011,18 @@ app.get(
 
             const result =
                 await pool.query(`
-                    SELECT key, value
+                    SELECT
+                        key,
+                        value
+
                     FROM site_settings
+
                     ORDER BY key
                 `);
 
+
             const settings = {};
+
 
             for (
                 const row
@@ -2851,62 +4033,87 @@ app.get(
                     row.value;
             }
 
+
             res.json({
+
                 success: true,
+
                 settings
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر تحميل الإعدادات"
+                    'تعذر تحميل الإعدادات'
+
             });
         }
     }
 );
 
 
-/* =========================================================
-   SETTINGS - UPDATE
-========================================================= */
-
 app.put(
-    "/api/admin/settings",
+    '/api/admin/settings',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_manage_settings"
+        'can_manage_settings'
     ),
     async (req, res) => {
 
         try {
 
             const allowed = [
-                "site_name",
-                "site_title",
-                "welcome_text",
-                "welcome_title",
-                "search_placeholder",
-                "footer_text",
-                "theme_color",
-                "youtube_enabled",
-                "web_enabled",
-                "quiz_enabled",
-                "general_info_enabled",
-                "site_enabled"
+
+                'site_name',
+
+                'site_title',
+
+                'welcome_title',
+
+                'welcome_text',
+
+                'search_placeholder',
+
+                'footer_text',
+
+                'theme_color',
+
+                'youtube_enabled',
+
+                'web_enabled',
+
+                'quiz_enabled',
+
+                'general_info_enabled',
+
+                'site_enabled'
+
             ];
 
-            for (const key of allowed) {
+
+            for (
+                const key
+                of allowed
+            ) {
 
                 if (
-                    req.body[key] === undefined
+                    req.body[key]
+                    ===
+                    undefined
                 ) {
                     continue;
                 }
+
 
                 await pool.query(`
                     INSERT INTO site_settings
@@ -2916,37 +4123,59 @@ app.put(
                     )
 
                     VALUES
-                    ($1,$2)
+                    (
+                        $1,
+                        $2
+                    )
 
                     ON CONFLICT (key)
+
                     DO UPDATE
-                    SET value = EXCLUDED.value
+                    SET value =
+                        EXCLUDED.value
                 `, [
                     key,
-                    String(req.body[key])
+                    String(
+                        req.body[key]
+                    )
                 ]);
             }
 
+
             await logActivity(
+
                 req.admin,
-                "تعديل إعدادات الموقع",
-                "settings",
+
+                'تعديل إعدادات الموقع',
+
+                'settings',
+
                 null,
-                "تم تحديث إعدادات الموقع"
+
+                'تم تحديث الإعدادات'
+
             );
 
+
             res.json({
+
                 success: true
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر حفظ الإعدادات"
+                    'تعذر حفظ الإعدادات'
+
             });
         }
     }
@@ -2958,7 +4187,7 @@ app.put(
 ========================================================= */
 
 app.get(
-    "/api/settings",
+    '/api/settings',
     requireDatabase,
     async (req, res) => {
 
@@ -2966,11 +4195,16 @@ app.get(
 
             const result =
                 await pool.query(`
-                    SELECT key, value
+                    SELECT
+                        key,
+                        value
+
                     FROM site_settings
                 `);
 
+
             const settings = {};
+
 
             for (
                 const row
@@ -2981,19 +4215,28 @@ app.get(
                     row.value;
             }
 
+
             res.json({
+
                 success: true,
+
                 settings
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر تحميل إعدادات الموقع"
+                    'تعذر تحميل إعدادات الموقع'
+
             });
         }
     }
@@ -3001,15 +4244,15 @@ app.get(
 
 
 /* =========================================================
-   ADMIN ACTIVITY
+   ACTIVITY
 ========================================================= */
 
 app.get(
-    "/api/admin/activity",
+    '/api/admin/activity',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_view_activity"
+        'can_view_activity'
     ),
     async (req, res) => {
 
@@ -3017,73 +4260,91 @@ app.get(
 
             let limit =
                 Number(
-                    req.query.limit || 200
+                    req.query.limit
+                    ||
+                    200
                 );
 
-            if (!Number.isFinite(limit)) {
+
+            if (
+                !Number.isFinite(
+                    limit
+                )
+            ) {
+
                 limit = 200;
             }
+
 
             limit =
                 Math.max(
                     1,
                     Math.min(
                         500,
-                        Math.floor(limit)
+                        Math.floor(
+                            limit
+                        )
                     )
                 );
+
 
             const result =
                 await pool.query(`
                     SELECT
+
                         l.id,
+
                         l.action,
+
                         l.entity_type,
+
                         l.entity_id,
+
                         l.details,
+
                         l.created_at,
 
                         a.username
+                            AS admin_username
 
                     FROM activity_logs l
 
                     LEFT JOIN admins a
-                        ON a.id = l.admin_id
+
+                        ON a.id =
+                           l.admin_id
 
                     ORDER BY
                         l.id DESC
 
                     LIMIT $1
-                `, [limit]);
+                `, [
+                    limit
+                ]);
+
 
             res.json({
+
                 success: true,
 
                 items:
-                    result.rows.map(row => ({
-                        id: row.id,
-                        action: row.action,
-                        entity_type:
-                            row.entity_type,
-                        entity_id:
-                            row.entity_id,
-                        details:
-                            row.details,
-                        admin:
-                            row.username || "النظام",
-                        created_at:
-                            row.created_at
-                    }))
+                    result.rows
+
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر تحميل سجل النشاط"
+                    'تعذر تحميل سجل النشاط'
+
             });
         }
     }
@@ -3095,126 +4356,159 @@ app.get(
 ========================================================= */
 
 app.get(
-    "/api/admin/stats",
+    '/api/admin/stats',
     requireDatabase,
     requireAdmin,
     requirePermission(
-        "can_view_stats"
+        'can_view_stats'
     ),
     async (req, res) => {
 
         try {
 
-            const [
-                grades,
-                subjects,
-                semesters,
-                lessons,
-                questions,
-                admins,
-                stats
-            ] = await Promise.all([
+            const results =
+                await Promise.all([
 
-                pool.query(`
-                    SELECT COUNT(*)::int AS count
-                    FROM catalog_items
-                    WHERE type='grade'
-                `),
+                    pool.query(`
+                        SELECT
+                            visits,
+                            searches
 
-                pool.query(`
-                    SELECT COUNT(*)::int AS count
-                    FROM catalog_items
-                    WHERE type='subject'
-                `),
+                        FROM app_stats
 
-                pool.query(`
-                    SELECT COUNT(*)::int AS count
-                    FROM catalog_items
-                    WHERE type='semester'
-                `),
+                        WHERE id = 1
+                    `),
 
-                pool.query(`
-                    SELECT COUNT(*)::int AS count
-                    FROM lessons
-                `),
+                    pool.query(`
+                        SELECT
+                            COUNT(*)::int
+                            AS count
 
-                pool.query(`
-                    SELECT COUNT(*)::int AS count
-                    FROM questions
-                `),
+                        FROM lessons
+                    `),
 
-                pool.query(`
-                    SELECT COUNT(*)::int AS count
-                    FROM admins
-                `),
+                    pool.query(`
+                        SELECT
+                            COUNT(*)::int
+                            AS count
 
-                pool.query(`
-                    SELECT visits, searches
-                    FROM app_stats
-                    WHERE id = 1
-                `)
-            ]);
+                        FROM admins
+                    `),
 
-            const stat =
-                stats.rows[0] || {
+                    pool.query(`
+                        SELECT
+                            COUNT(*)::int
+                            AS count
+
+                        FROM activity_logs
+                    `),
+
+                    pool.query(`
+                        SELECT
+                            COUNT(*)::int
+                            AS count
+
+                        FROM catalog_items
+
+                        WHERE
+                            type = 'grade'
+                    `),
+
+                    pool.query(`
+                        SELECT
+                            COUNT(*)::int
+                            AS count
+
+                        FROM catalog_items
+
+                        WHERE
+                            type = 'subject'
+                    `)
+
+                ]);
+
+
+            const appStats =
+                results[0]
+                    .rows[0]
+                ||
+                {
                     visits: 0,
                     searches: 0
                 };
 
+
             res.json({
+
                 success: true,
 
                 stats: {
-                    grades:
-                        Number(
-                            grades.rows[0].count
-                        ),
 
-                    subjects:
+                    visitors:
                         Number(
-                            subjects.rows[0].count
-                        ),
-
-                    semesters:
-                        Number(
-                            semesters.rows[0].count
-                        ),
-
-                    lessons:
-                        Number(
-                            lessons.rows[0].count
-                        ),
-
-                    questions:
-                        Number(
-                            questions.rows[0].count
-                        ),
-
-                    admins:
-                        Number(
-                            admins.rows[0].count
+                            appStats.visits
                         ),
 
                     users:
                         Number(
-                            stat.visits
+                            appStats.visits
                         ),
 
                     searches:
                         Number(
-                            stat.searches
+                            appStats.searches
+                        ),
+
+                    lessons:
+                        Number(
+                            results[1]
+                                .rows[0]
+                                .count
+                        ),
+
+                    admins:
+                        Number(
+                            results[2]
+                                .rows[0]
+                                .count
+                        ),
+
+                    activity:
+                        Number(
+                            results[3]
+                                .rows[0]
+                                .count
+                        ),
+
+                    grades:
+                        Number(
+                            results[4]
+                                .rows[0]
+                                .count
+                        ),
+
+                    subjects:
+                        Number(
+                            results[5]
+                                .rows[0]
+                                .count
                         )
                 }
             });
+
 
         } catch (error) {
 
             console.error(error);
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر تحميل الإحصائيات"
+                    'تعذر تحميل الإحصائيات'
+
             });
         }
     }
@@ -3222,11 +4516,11 @@ app.get(
 
 
 /* =========================================================
-   PUBLIC VISIT COUNTER
+   PUBLIC STATS
 ========================================================= */
 
 app.post(
-    "/api/stats/visit",
+    '/api/stats/visit',
     requireDatabase,
     async (req, res) => {
 
@@ -3236,32 +4530,38 @@ app.post(
                 UPDATE app_stats
 
                 SET
-                    visits = visits + 1,
-                    updated_at = NOW()
+
+                    visits =
+                        visits + 1,
+
+                    updated_at =
+                        NOW()
 
                 WHERE id = 1
             `);
 
+
             res.json({
+
                 success: true
+
             });
+
 
         } catch (error) {
 
             res.status(500).json({
+
                 success: false
+
             });
         }
     }
 );
 
 
-/* =========================================================
-   PUBLIC SEARCH COUNTER
-========================================================= */
-
 app.post(
-    "/api/stats/search",
+    '/api/stats/search',
     requireDatabase,
     async (req, res) => {
 
@@ -3271,20 +4571,30 @@ app.post(
                 UPDATE app_stats
 
                 SET
-                    searches = searches + 1,
-                    updated_at = NOW()
+
+                    searches =
+                        searches + 1,
+
+                    updated_at =
+                        NOW()
 
                 WHERE id = 1
             `);
 
+
             res.json({
+
                 success: true
+
             });
+
 
         } catch (error) {
 
             res.status(500).json({
+
                 success: false
+
             });
         }
     }
@@ -3296,7 +4606,7 @@ app.post(
 ========================================================= */
 
 app.get(
-    "/api/youtube-search",
+    '/api/youtube-search',
     async (req, res) => {
 
         try {
@@ -3304,101 +4614,151 @@ app.get(
             const apiKey =
                 process.env.YOUTUBE_API_KEY;
 
+
             if (!apiKey) {
 
                 return res.status(503).json({
+
                     success: false,
+
                     message:
-                        "YouTube API غير مفعّل"
+                        'YouTube API غير مفعّل'
+
                 });
             }
 
+
             const query =
                 String(
-                    req.query.q || ""
+                    req.query.q
+                    ||
+                    ''
                 ).trim();
+
 
             if (!query) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
-                        "اكتب عبارة البحث"
+                        'اكتب عبارة البحث'
+
                 });
             }
 
+
             const response =
                 await axios.get(
-                    "https://www.googleapis.com/youtube/v3/search",
+
+                    'https://www.googleapis.com/youtube/v3/search',
+
                     {
+
                         params: {
-                            part: "snippet",
-                            type: "video",
-                            maxResults: 8,
-                            q: query,
-                            key: apiKey
+
+                            part:
+                                'snippet',
+
+                            type:
+                                'video',
+
+                            maxResults:
+                                8,
+
+                            q:
+                                query,
+
+                            key:
+                                apiKey
                         },
 
-                        timeout: 15000
+                        timeout:
+                            15000
                     }
                 );
 
+
             const items =
                 (
-                    response.data.items || []
+                    response.data.items
+                    ||
+                    []
                 )
-                .map(item => ({
-                    videoId:
-                        item.id?.videoId || "",
+                .map(
+                    item => ({
 
-                    title:
-                        item.snippet?.title || "",
+                        videoId:
+                            item.id?.videoId
+                            ||
+                            '',
 
-                    channel:
-                        item.snippet?.channelTitle
-                        || "",
+                        title:
+                            item.snippet?.title
+                            ||
+                            '',
 
-                    description:
-                        item.snippet?.description
-                        || "",
+                        channel:
+                            item.snippet?.channelTitle
+                            ||
+                            '',
 
-                    thumbnail:
-                        item.snippet
-                            ?.thumbnails
-                            ?.high
-                            ?.url
-                        ||
-                        item.snippet
-                            ?.thumbnails
-                            ?.medium
-                            ?.url
-                        ||
-                        ""
-                }))
+                        description:
+                            item.snippet?.description
+                            ||
+                            '',
+
+                        thumbnail:
+                            item.snippet
+                                ?.thumbnails
+                                ?.high
+                                ?.url
+
+                            ||
+
+                            item.snippet
+                                ?.thumbnails
+                                ?.medium
+                                ?.url
+
+                            ||
+
+                            ''
+                    })
+                )
                 .filter(
                     item =>
                         item.videoId
                 );
 
+
             res.json({
+
                 success: true,
+
                 items
+
             });
+
 
         } catch (error) {
 
             console.error(
-                "YouTube error:",
+                'YouTube error:',
                 error.response?.data
-                || error.message
+                ||
+                error.message
             );
 
-            res.status(
-                error.response?.status || 500
-            ).json({
+
+            res.status(500).json({
+
                 success: false,
+
                 message:
-                    "تعذر البحث في YouTube"
+                    'تعذر البحث في YouTube'
+
             });
         }
     }
@@ -3406,17 +4766,20 @@ app.get(
 
 
 /* =========================================================
-   404 API
+   API 404
 ========================================================= */
 
 app.use(
-    "/api",
+    '/api',
     (req, res) => {
 
         res.status(404).json({
+
             success: false,
+
             message:
-                "مسار API غير موجود"
+                'مسار API غير موجود'
+
         });
     }
 );
@@ -3427,28 +4790,43 @@ app.use(
 ========================================================= */
 
 app.use(
-    (error, req, res, next) => {
+    (
+        error,
+        req,
+        res,
+        next
+    ) => {
 
         console.error(
-            "Server error:",
+            'Server error:',
             error
         );
 
-        if (res.headersSent) {
-            return next(error);
+
+        if (
+            res.headersSent
+        ) {
+
+            return next(
+                error
+            );
         }
 
+
         res.status(500).json({
+
             success: false,
+
             message:
-                "حدث خطأ في الخادم"
+                'حدث خطأ في الخادم'
+
         });
     }
 );
 
 
 /* =========================================================
-   START SERVER
+   START
 ========================================================= */
 
 async function startServer() {
@@ -3463,9 +4841,13 @@ async function startServer() {
 
         }
 
+
         app.listen(
+
             PORT,
-            "0.0.0.0",
+
+            '0.0.0.0',
+
             () => {
 
                 console.log(
@@ -3479,17 +4861,18 @@ async function startServer() {
                 console.log(
                     `PostgreSQL: ${
                         pool
-                            ? "Connected"
-                            : "Not configured locally"
+                            ? 'Connected'
+                            : 'Not configured locally'
                     }`
                 );
             }
         );
 
+
     } catch (error) {
 
         console.error(
-            "Startup error:",
+            'Startup error:',
             error
         );
 
