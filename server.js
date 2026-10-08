@@ -1,20 +1,20 @@
-const express = require('express');
-const path = require('path');
-const crypto = require('crypto');
-const bcrypt = require('bcryptjs');
-const axios = require('axios');
-require('dotenv').config();
+const express = require("express");
+const path = require("path");
+const crypto = require("crypto");
+const bcrypt = require("bcryptjs");
+const axios = require("axios");
+require("dotenv").config();
 
-const { Pool } = require('pg');
+const { Pool } = require("pg");
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
-const DATABASE_URL = process.env.DATABASE_URL || '';
+const DATABASE_URL = process.env.DATABASE_URL || "";
 
 const pool = DATABASE_URL
     ? new Pool({
         connectionString: DATABASE_URL,
-        ssl: DATABASE_URL.includes('localhost')
+        ssl: DATABASE_URL.includes("localhost")
             ? false
             : { rejectUnauthorized: false }
     })
@@ -25,7 +25,7 @@ const pool = DATABASE_URL
    MIDDLEWARE
 ========================================================= */
 
-app.use(express.json({ limit: '2mb' }));
+app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
 
@@ -38,7 +38,7 @@ function requireDatabase(req, res, next) {
     if (!pool) {
         return res.status(503).json({
             success: false,
-            message: 'قاعدة البيانات غير متصلة'
+            message: "قاعدة البيانات غير متصلة"
         });
     }
 
@@ -48,19 +48,34 @@ function requireDatabase(req, res, next) {
 
 async function initDatabase() {
 
-    if (!pool) return;
+    if (!pool) {
+        console.log("PostgreSQL غير مفعّل محليًا");
+        return;
+    }
+
+
+    /* =====================================================
+       ADMINS
+    ===================================================== */
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS admins (
             id SERIAL PRIMARY KEY,
+
             username VARCHAR(100) UNIQUE NOT NULL,
+
             password_hash TEXT NOT NULL,
 
             can_manage_lessons BOOLEAN NOT NULL DEFAULT TRUE,
+
             can_manage_admins BOOLEAN NOT NULL DEFAULT FALSE,
+
             can_view_stats BOOLEAN NOT NULL DEFAULT FALSE,
+
             can_manage_catalog BOOLEAN NOT NULL DEFAULT TRUE,
+
             can_manage_settings BOOLEAN NOT NULL DEFAULT FALSE,
+
             can_view_activity BOOLEAN NOT NULL DEFAULT FALSE,
 
             is_owner BOOLEAN NOT NULL DEFAULT FALSE,
@@ -70,9 +85,62 @@ async function initDatabase() {
     `);
 
 
+    /* =====================================================
+       DATABASE MIGRATION
+       تضيف الأعمدة الناقصة للقاعدة القديمة
+    ===================================================== */
+
+    await pool.query(`
+        ALTER TABLE admins
+        ADD COLUMN IF NOT EXISTS can_manage_lessons
+        BOOLEAN NOT NULL DEFAULT TRUE
+    `);
+
+    await pool.query(`
+        ALTER TABLE admins
+        ADD COLUMN IF NOT EXISTS can_manage_admins
+        BOOLEAN NOT NULL DEFAULT FALSE
+    `);
+
+    await pool.query(`
+        ALTER TABLE admins
+        ADD COLUMN IF NOT EXISTS can_view_stats
+        BOOLEAN NOT NULL DEFAULT FALSE
+    `);
+
+    await pool.query(`
+        ALTER TABLE admins
+        ADD COLUMN IF NOT EXISTS can_manage_catalog
+        BOOLEAN NOT NULL DEFAULT TRUE
+    `);
+
+    await pool.query(`
+        ALTER TABLE admins
+        ADD COLUMN IF NOT EXISTS can_manage_settings
+        BOOLEAN NOT NULL DEFAULT FALSE
+    `);
+
+    await pool.query(`
+        ALTER TABLE admins
+        ADD COLUMN IF NOT EXISTS can_view_activity
+        BOOLEAN NOT NULL DEFAULT FALSE
+    `);
+
+    await pool.query(`
+        ALTER TABLE admins
+        ADD COLUMN IF NOT EXISTS is_owner
+        BOOLEAN NOT NULL DEFAULT FALSE
+    `);
+
+
+    /* =====================================================
+       ADMIN SESSIONS
+    ===================================================== */
+
     await pool.query(`
         CREATE TABLE IF NOT EXISTS admin_sessions (
             token TEXT PRIMARY KEY,
+
             admin_id INTEGER NOT NULL
                 REFERENCES admins(id)
                 ON DELETE CASCADE,
@@ -83,6 +151,10 @@ async function initDatabase() {
         )
     `);
 
+
+    /* =====================================================
+       CATALOG
+    ===================================================== */
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS catalog_items (
@@ -104,6 +176,38 @@ async function initDatabase() {
         )
     `);
 
+
+    /* =====================================================
+       CATALOG MIGRATION
+    ===================================================== */
+
+    await pool.query(`
+        ALTER TABLE catalog_items
+        ADD COLUMN IF NOT EXISTS parent_id INTEGER NULL
+    `);
+
+    await pool.query(`
+        ALTER TABLE catalog_items
+        ADD COLUMN IF NOT EXISTS enabled
+        BOOLEAN NOT NULL DEFAULT TRUE
+    `);
+
+    await pool.query(`
+        ALTER TABLE catalog_items
+        ADD COLUMN IF NOT EXISTS created_at
+        TIMESTAMP NOT NULL DEFAULT NOW()
+    `);
+
+    await pool.query(`
+        ALTER TABLE catalog_items
+        ADD COLUMN IF NOT EXISTS updated_at
+        TIMESTAMP NOT NULL DEFAULT NOW()
+    `);
+
+
+    /* =====================================================
+       LESSONS
+    ===================================================== */
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS lessons (
@@ -133,6 +237,59 @@ async function initDatabase() {
 
 
     await pool.query(`
+        ALTER TABLE lessons
+        ADD COLUMN IF NOT EXISTS semester VARCHAR(100)
+    `);
+
+    await pool.query(`
+        ALTER TABLE lessons
+        ADD COLUMN IF NOT EXISTS grade VARCHAR(255)
+    `);
+
+    await pool.query(`
+        ALTER TABLE lessons
+        ADD COLUMN IF NOT EXISTS subject VARCHAR(255)
+    `);
+
+    await pool.query(`
+        ALTER TABLE lessons
+        ADD COLUMN IF NOT EXISTS description TEXT DEFAULT ''
+    `);
+
+    await pool.query(`
+        ALTER TABLE lessons
+        ADD COLUMN IF NOT EXISTS summary TEXT DEFAULT ''
+    `);
+
+    await pool.query(`
+        ALTER TABLE lessons
+        ADD COLUMN IF NOT EXISTS video_url TEXT DEFAULT ''
+    `);
+
+    await pool.query(`
+        ALTER TABLE lessons
+        ADD COLUMN IF NOT EXISTS enabled
+        BOOLEAN NOT NULL DEFAULT TRUE
+    `);
+
+    await pool.query(`
+        ALTER TABLE lessons
+        ADD COLUMN IF NOT EXISTS created_at
+        TIMESTAMP NOT NULL DEFAULT NOW()
+    `);
+
+    await pool.query(`
+        ALTER TABLE lessons
+        ADD COLUMN IF NOT EXISTS updated_at
+        TIMESTAMP NOT NULL DEFAULT NOW()
+    `);
+
+
+    /* =====================================================
+       QUESTIONS
+    ===================================================== */
+
+    await pool.query(`
         CREATE TABLE IF NOT EXISTS questions (
             id SERIAL PRIMARY KEY,
 
@@ -145,8 +302,7 @@ async function initDatabase() {
             options JSONB NOT NULL
                 DEFAULT '[]'::jsonb,
 
-            correct_answer INTEGER NOT NULL
-                DEFAULT 0,
+            correct_answer INTEGER NOT NULL DEFAULT 0,
 
             explanation TEXT DEFAULT '',
 
@@ -157,6 +313,10 @@ async function initDatabase() {
     `);
 
 
+    /* =====================================================
+       SETTINGS
+    ===================================================== */
+
     await pool.query(`
         CREATE TABLE IF NOT EXISTS site_settings (
             key VARCHAR(100) PRIMARY KEY,
@@ -165,6 +325,10 @@ async function initDatabase() {
         )
     `);
 
+
+    /* =====================================================
+       ACTIVITY LOGS
+    ===================================================== */
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS activity_logs (
@@ -188,6 +352,10 @@ async function initDatabase() {
     `);
 
 
+    /* =====================================================
+       STATS
+    ===================================================== */
+
     await pool.query(`
         CREATE TABLE IF NOT EXISTS app_stats (
             id INTEGER PRIMARY KEY DEFAULT 1,
@@ -210,39 +378,49 @@ async function initDatabase() {
     `);
 
 
-    const settings = [
+    /* =====================================================
+       DEFAULT SETTINGS
+    ===================================================== */
 
-        ['site_name', 'شرح دروسي'],
+    const defaultSettings = [
 
-        ['site_title', 'شرح دروسي'],
+        ["site_name", "شرح دروسي"],
 
-        ['welcome_title', 'أهلاً بك في شرح دروسي'],
+        ["site_title", "شرح دروسي"],
 
-        ['welcome_text', 'تعلّم • افهم • اختبر نفسك'],
+        ["welcome_title", "أهلاً بك في شرح دروسي"],
 
-        ['search_placeholder', 'اكتب اسم الدرس الذي تريد البحث عنه'],
+        ["welcome_text", "تعلّم • افهم • اختبر نفسك"],
 
-        ['footer_text', '© 2026 شرح دروسي'],
+        [
+            "search_placeholder",
+            "اكتب اسم الدرس الذي تريد البحث عنه"
+        ],
 
-        ['theme_color', '#1677ff'],
+        ["footer_text", "© 2026 شرح دروسي"],
 
-        ['youtube_enabled', 'true'],
+        ["theme_color", "#1677ff"],
 
-        ['web_enabled', 'true'],
+        ["youtube_enabled", "true"],
 
-        ['quiz_enabled', 'true'],
+        ["web_enabled", "true"],
 
-        ['general_info_enabled', 'true'],
+        ["quiz_enabled", "true"],
 
-        ['site_enabled', 'true']
+        ["general_info_enabled", "true"],
+
+        ["site_enabled", "true"]
     ];
 
 
-    for (const [key, value] of settings) {
+    for (const [key, value] of defaultSettings) {
 
         await pool.query(`
             INSERT INTO site_settings
-            (key, value)
+            (
+                key,
+                value
+            )
 
             VALUES
             ($1, $2)
@@ -256,9 +434,13 @@ async function initDatabase() {
     }
 
 
-    console.log('PostgreSQL جاهز');
+    console.log("PostgreSQL جاهز");
 }
 
+
+/* =========================================================
+   CLEANUP SESSIONS
+========================================================= */
 
 async function cleanupSessions() {
 
@@ -272,13 +454,13 @@ async function cleanupSessions() {
 
 
 /* =========================================================
-   SESSIONS
+   SESSION
 ========================================================= */
 
 async function createSession(adminId) {
 
     const token =
-        crypto.randomBytes(48).toString('hex');
+        crypto.randomBytes(48).toString("hex");
 
 
     await pool.query(`
@@ -306,7 +488,7 @@ async function createSession(adminId) {
 
 
 /* =========================================================
-   ADMIN HELPERS
+   SAFE ADMIN
 ========================================================= */
 
 function safeAdmin(admin) {
@@ -321,48 +503,32 @@ function safeAdmin(admin) {
         username: admin.username,
 
         can_manage_lessons:
-            Boolean(
-                admin.can_manage_lessons
-            ),
+            Boolean(admin.can_manage_lessons),
 
         can_manage_admins:
-            Boolean(
-                admin.can_manage_admins
-            ),
+            Boolean(admin.can_manage_admins),
 
         can_view_stats:
-            Boolean(
-                admin.can_view_stats
-            ),
+            Boolean(admin.can_view_stats),
 
         can_manage_catalog:
-            Boolean(
-                admin.can_manage_catalog
-            ),
+            Boolean(admin.can_manage_catalog),
 
         can_manage_settings:
-            Boolean(
-                admin.can_manage_settings
-            ),
+            Boolean(admin.can_manage_settings),
 
         can_view_activity:
-            Boolean(
-                admin.can_view_activity
-            ),
+            Boolean(admin.can_view_activity),
 
         can_manage_content:
             Boolean(
                 admin.can_manage_lessons
-            )
-            ||
-            Boolean(
+                ||
                 admin.can_manage_catalog
             ),
 
         is_owner:
-            Boolean(
-                admin.is_owner
-            )
+            Boolean(admin.is_owner)
     };
 }
 
@@ -378,9 +544,7 @@ function safeAdminAccount(admin) {
         can_manage_content:
             Boolean(
                 admin.can_manage_lessons
-            )
-            ||
-            Boolean(
+                ||
                 admin.can_manage_catalog
             ),
 
@@ -426,7 +590,7 @@ function safeAdminAccount(admin) {
 
 
 /* =========================================================
-   AUTH
+   GET ADMIN
 ========================================================= */
 
 async function getAdminFromRequest(req) {
@@ -436,7 +600,9 @@ async function getAdminFromRequest(req) {
 
     let token =
         String(
-            req.headers['x-admin-token'] || ''
+            req.headers["x-admin-token"]
+            ||
+            ""
         ).trim();
 
 
@@ -444,14 +610,16 @@ async function getAdminFromRequest(req) {
 
         const authorization =
             String(
-                req.headers.authorization || ''
+                req.headers.authorization
+                ||
+                ""
             );
 
 
         if (
             authorization
                 .toLowerCase()
-                .startsWith('bearer ')
+                .startsWith("bearer ")
         ) {
 
             token =
@@ -493,6 +661,7 @@ async function getAdminFromRequest(req) {
                 ON a.id = s.admin_id
 
             WHERE
+
                 s.token = $1
 
                 AND s.expires_at > NOW()
@@ -503,13 +672,13 @@ async function getAdminFromRequest(req) {
         ]);
 
 
-    return (
-        result.rows[0]
-        ||
-        null
-    );
+    return result.rows[0] || null;
 }
 
+
+/* =========================================================
+   REQUIRE ADMIN
+========================================================= */
 
 async function requireAdmin(
     req,
@@ -526,9 +695,12 @@ async function requireAdmin(
         if (!admin) {
 
             return res.status(401).json({
+
                 success: false,
+
                 message:
-                    'يجب تسجيل الدخول للأدمن'
+                    "يجب تسجيل الدخول للأدمن"
+
             });
         }
 
@@ -541,14 +713,22 @@ async function requireAdmin(
 
         console.error(error);
 
+
         res.status(500).json({
+
             success: false,
+
             message:
-                'حدث خطأ أثناء التحقق'
+                "حدث خطأ أثناء التحقق"
+
         });
     }
 }
 
+
+/* =========================================================
+   PERMISSION
+========================================================= */
 
 function requirePermission(
     permission
@@ -563,9 +743,12 @@ function requirePermission(
         if (!req.admin) {
 
             return res.status(401).json({
+
                 success: false,
+
                 message:
-                    'يجب تسجيل الدخول للأدمن'
+                    "يجب تسجيل الدخول للأدمن"
+
             });
         }
 
@@ -581,24 +764,27 @@ function requirePermission(
 
 
         return res.status(403).json({
+
             success: false,
+
             message:
-                'ليس لديك صلاحية لهذا الإجراء'
+                "ليس لديك صلاحية لهذا الإجراء"
+
         });
     };
 }
 
 
 /* =========================================================
-   ACTIVITY LOG
+   ACTIVITY
 ========================================================= */
 
 async function logActivity(
     admin,
     action,
-    entityType = '',
+    entityType = "",
     entityId = null,
-    details = ''
+    details = ""
 ) {
 
     if (!pool) return;
@@ -625,17 +811,23 @@ async function logActivity(
                 $5
             )
         `, [
+
             admin?.id || null,
+
             action,
+
             entityType,
+
             entityId,
+
             details
+
         ]);
 
     } catch (error) {
 
         console.error(
-            'Activity log error:',
+            "Activity log error:",
             error.message
         );
     }
@@ -647,13 +839,13 @@ async function logActivity(
 ========================================================= */
 
 app.get(
-    '/',
+    "/",
     (req, res) => {
 
         res.sendFile(
             path.join(
                 __dirname,
-                'index.html'
+                "index.html"
             )
         );
     }
@@ -661,13 +853,13 @@ app.get(
 
 
 app.get(
-    '/admin',
+    "/admin",
     (req, res) => {
 
         res.sendFile(
             path.join(
                 __dirname,
-                'admin.html'
+                "admin.html"
             )
         );
     }
@@ -675,13 +867,13 @@ app.get(
 
 
 app.get(
-    '/admin.html',
+    "/admin.html",
     (req, res) => {
 
         res.sendFile(
             path.join(
                 __dirname,
-                'admin.html'
+                "admin.html"
             )
         );
     }
@@ -693,14 +885,14 @@ app.get(
 ========================================================= */
 
 app.get(
-    '/api/test',
+    "/api/test",
     requireDatabase,
     async (req, res) => {
 
         try {
 
             await pool.query(
-                'SELECT 1'
+                "SELECT 1"
             );
 
 
@@ -719,6 +911,7 @@ app.get(
         } catch (error) {
 
             console.error(error);
+
 
             res.status(500).json({
 
@@ -741,7 +934,7 @@ app.get(
 ========================================================= */
 
 app.get(
-    '/api/admin/setup-status',
+    "/api/admin/setup-status",
     requireDatabase,
     async (req, res) => {
 
@@ -770,12 +963,13 @@ app.get(
 
             console.error(error);
 
+
             res.status(500).json({
 
                 success: false,
 
                 message:
-                    'تعذر التحقق من حالة الحساب'
+                    "تعذر التحقق من حالة الحساب"
 
             });
         }
@@ -784,11 +978,11 @@ app.get(
 
 
 /* =========================================================
-   TEMPORARY RECOVERY PAGE
+   RECOVERY PAGE
 ========================================================= */
 
 app.get(
-    '/admin-recover',
+    "/admin-recover",
     (req, res) => {
 
         res.send(`
@@ -909,6 +1103,7 @@ button{
 
 <input
     id="username"
+    placeholder="admin"
 >
 
 <label>
@@ -937,44 +1132,44 @@ async function recover(){
 
     const code =
         document
-        .getElementById('code')
+        .getElementById("code")
         .value
         .trim();
 
 
     const username =
         document
-        .getElementById('username')
+        .getElementById("username")
         .value
         .trim();
 
 
     const password =
         document
-        .getElementById('password')
+        .getElementById("password")
         .value;
 
 
     const msg =
         document
-        .getElementById('msg');
+        .getElementById("msg");
 
 
     msg.textContent =
-        'جاري الاستعادة...';
+        "جاري الاستعادة...";
 
 
     try{
 
         const response =
             await fetch(
-                '/api/admin/recover',
+                "/api/admin/recover",
                 {
-                    method:'POST',
+                    method:"POST",
 
                     headers:{
-                        'Content-Type':
-                            'application/json'
+                        "Content-Type":
+                            "application/json"
                     },
 
                     body:JSON.stringify({
@@ -999,26 +1194,26 @@ async function recover(){
             throw new Error(
                 data.message
                 ||
-                'تعذر الاستعادة'
+                "تعذر الاستعادة"
             );
         }
 
 
         localStorage.setItem(
-            'shrh_admin_token',
+            "shrh_admin_token",
             data.token
         );
 
 
         msg.textContent =
-            'تمت استعادة الحساب ✅';
+            "تمت استعادة الحساب ✅";
 
 
         setTimeout(
             () => {
 
                 location.href =
-                    '/admin.html';
+                    "/admin.html";
 
             },
             800
@@ -1028,7 +1223,7 @@ async function recover(){
     }catch(error){
 
         msg.textContent =
-            '❌ ' +
+            "❌ " +
             error.message;
 
     }
@@ -1046,11 +1241,11 @@ async function recover(){
 
 
 /* =========================================================
-   ADMIN RECOVERY API
+   ADMIN RECOVERY
 ========================================================= */
 
 app.post(
-    '/api/admin/recover',
+    "/api/admin/recover",
     requireDatabase,
     async (req, res) => {
 
@@ -1058,19 +1253,25 @@ app.post(
 
             const code =
                 String(
-                    req.body.code || ''
+                    req.body.code
+                    ||
+                    ""
                 ).trim();
 
 
             const username =
                 String(
-                    req.body.username || ''
+                    req.body.username
+                    ||
+                    ""
                 ).trim();
 
 
             const password =
                 String(
-                    req.body.password || ''
+                    req.body.password
+                    ||
+                    ""
                 );
 
 
@@ -1086,7 +1287,7 @@ app.post(
                     success: false,
 
                     message:
-                        'رمز الاستعادة غير صحيح'
+                        "رمز الاستعادة غير صحيح"
 
                 });
             }
@@ -1101,7 +1302,7 @@ app.post(
                     success: false,
 
                     message:
-                        'اسم المستخدم يجب أن يكون 3 أحرف على الأقل'
+                        "اسم المستخدم يجب أن يكون 3 أحرف على الأقل"
 
                 });
             }
@@ -1116,7 +1317,7 @@ app.post(
                     success: false,
 
                     message:
-                        'كلمة المرور يجب أن تكون 8 أحرف على الأقل'
+                        "كلمة المرور يجب أن تكون 8 أحرف على الأقل"
 
                 });
             }
@@ -1132,6 +1333,7 @@ app.post(
             const ownerResult =
                 await pool.query(`
                     SELECT *
+
                     FROM admins
 
                     ORDER BY
@@ -1185,8 +1387,11 @@ app.post(
 
                         RETURNING *
                     `, [
+
                         username,
+
                         hash
+
                     ]);
 
 
@@ -1219,13 +1424,18 @@ app.post(
 
                             is_owner = TRUE
 
-                        WHERE id = $3
+                        WHERE
+                            id = $3
 
                         RETURNING *
                     `, [
+
                         username,
+
                         hash,
+
                         ownerResult.rows[0].id
+
                     ]);
 
 
@@ -1259,9 +1469,9 @@ app.post(
 
                 safe,
 
-                'استعادة حساب الأدمن',
+                "استعادة حساب الأدمن",
 
-                'admin',
+                "admin",
 
                 admin.id,
 
@@ -1284,7 +1494,7 @@ app.post(
         } catch (error) {
 
             console.error(
-                'RECOVERY ERROR:',
+                "RECOVERY ERROR:",
                 error
             );
 
@@ -1294,7 +1504,7 @@ app.post(
                 success: false,
 
                 message:
-                    'تعذر استعادة حساب الأدمن: '
+                    "تعذر استعادة حساب الأدمن: "
                     +
                     error.message
 
@@ -1305,11 +1515,11 @@ app.post(
 
 
 /* =========================================================
-   FIRST ADMIN
+   FIRST ADMIN SETUP
 ========================================================= */
 
 app.post(
-    '/api/admin/setup',
+    "/api/admin/setup",
     requireDatabase,
     async (req, res) => {
 
@@ -1317,13 +1527,17 @@ app.post(
 
             const username =
                 String(
-                    req.body.username || ''
+                    req.body.username
+                    ||
+                    ""
                 ).trim();
 
 
             const password =
                 String(
-                    req.body.password || ''
+                    req.body.password
+                    ||
+                    ""
                 );
 
 
@@ -1338,7 +1552,7 @@ app.post(
                     success: false,
 
                     message:
-                        'اسم المستخدم 3 أحرف على الأقل وكلمة المرور 8 أحرف على الأقل'
+                        "اسم المستخدم 3 أحرف على الأقل وكلمة المرور 8 أحرف على الأقل"
 
                 });
             }
@@ -1363,7 +1577,7 @@ app.post(
                     success: false,
 
                     message:
-                        'تم إنشاء حساب الأدمن الأول مسبقًا'
+                        "تم إنشاء حساب الأدمن الأول مسبقًا"
 
                 });
             }
@@ -1412,8 +1626,11 @@ app.post(
 
                     RETURNING *
                 `, [
+
                     username,
+
                     hash
+
                 ]);
 
 
@@ -1437,9 +1654,9 @@ app.post(
 
                 safe,
 
-                'إنشاء أول أدمن',
+                "إنشاء أول أدمن",
 
-                'admin',
+                "admin",
 
                 admin.id,
 
@@ -1469,7 +1686,7 @@ app.post(
                 success: false,
 
                 message:
-                    'تعذر إنشاء الأدمن'
+                    "تعذر إنشاء الأدمن"
 
             });
         }
@@ -1478,11 +1695,11 @@ app.post(
 
 
 /* =========================================================
-   LOGIN
+   ADMIN LOGIN
 ========================================================= */
 
 app.post(
-    '/api/admin/login',
+    "/api/admin/login",
     requireDatabase,
     async (req, res) => {
 
@@ -1490,13 +1707,17 @@ app.post(
 
             const username =
                 String(
-                    req.body.username || ''
+                    req.body.username
+                    ||
+                    ""
                 ).trim();
 
 
             const password =
                 String(
-                    req.body.password || ''
+                    req.body.password
+                    ||
+                    ""
                 );
 
 
@@ -1511,7 +1732,7 @@ app.post(
                     success: false,
 
                     message:
-                        'اكتب اسم المستخدم وكلمة المرور'
+                        "اكتب اسم المستخدم وكلمة المرور"
 
                 });
             }
@@ -1520,6 +1741,7 @@ app.post(
             const result =
                 await pool.query(`
                     SELECT *
+
                     FROM admins
 
                     WHERE
@@ -1544,7 +1766,7 @@ app.post(
                     success: false,
 
                     message:
-                        'اسم المستخدم أو كلمة المرور غير صحيحة'
+                        "اسم المستخدم أو كلمة المرور غير صحيحة"
 
                 });
             }
@@ -1564,7 +1786,7 @@ app.post(
                     success: false,
 
                     message:
-                        'اسم المستخدم أو كلمة المرور غير صحيحة'
+                        "اسم المستخدم أو كلمة المرور غير صحيحة"
 
                 });
             }
@@ -1586,13 +1808,13 @@ app.post(
 
                 safe,
 
-                'تسجيل دخول',
+                "تسجيل دخول",
 
-                'admin',
+                "admin",
 
                 admin.id,
 
-                'تم تسجيل الدخول'
+                "تم تسجيل الدخول"
 
             );
 
@@ -1618,7 +1840,7 @@ app.post(
                 success: false,
 
                 message:
-                    'تعذر تسجيل الدخول'
+                    "تعذر تسجيل الدخول"
 
             });
         }
@@ -1631,7 +1853,7 @@ app.post(
 ========================================================= */
 
 app.get(
-    '/api/admin/me',
+    "/api/admin/me",
     requireDatabase,
     requireAdmin,
     (req, res) => {
@@ -1655,7 +1877,7 @@ app.get(
 ========================================================= */
 
 app.post(
-    '/api/admin/logout',
+    "/api/admin/logout",
     requireDatabase,
     requireAdmin,
     async (req, res) => {
@@ -1665,10 +1887,10 @@ app.post(
             const token =
                 String(
                     req.headers[
-                        'x-admin-token'
+                        "x-admin-token"
                     ]
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -1676,13 +1898,13 @@ app.post(
 
                 req.admin,
 
-                'تسجيل خروج',
+                "تسجيل خروج",
 
-                'admin',
+                "admin",
 
                 req.admin.id,
 
-                'تم تسجيل الخروج'
+                "تم تسجيل الخروج"
 
             );
 
@@ -1716,7 +1938,7 @@ app.post(
                 success: false,
 
                 message:
-                    'تعذر تسجيل الخروج'
+                    "تعذر تسجيل الخروج"
 
             });
         }
@@ -1725,22 +1947,20 @@ app.post(
 
 
 /* =========================================================
-   CATALOG
+   CATALOG HELPERS
 ========================================================= */
 
 const typeLabels = {
 
-    semester: 'الفصل',
+    semester: "الفصل",
 
-    grade: 'الصف',
+    grade: "الصف",
 
-    subject: 'المادة'
+    subject: "المادة"
 };
 
 
-async function getCatalogItems(
-    type
-) {
+async function getCatalogItems(type) {
 
     const result =
         await pool.query(`
@@ -1777,7 +1997,9 @@ async function catalogCreate(
 
         const name =
             String(
-                req.body.name || ''
+                req.body.name
+                ||
+                ""
             ).trim();
 
 
@@ -1798,7 +2020,7 @@ async function catalogCreate(
 
 
         if (
-            type === 'subject'
+            type === "subject"
             &&
             req.body.parent_id
         ) {
@@ -1807,41 +2029,6 @@ async function catalogCreate(
                 Number(
                     req.body.parent_id
                 );
-        }
-
-
-        if (
-            type === 'subject'
-            &&
-            parentId
-        ) {
-
-            const parent =
-                await pool.query(`
-                    SELECT id
-                    FROM catalog_items
-
-                    WHERE
-                        id = $1
-                        AND type = 'grade'
-                `, [
-                    parentId
-                ]);
-
-
-            if (
-                !parent.rows.length
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        'الصف المرتبط غير موجود'
-
-                });
-            }
         }
 
 
@@ -1865,9 +2052,13 @@ async function catalogCreate(
 
                 RETURNING *
             `, [
+
                 type,
+
                 name,
+
                 parentId
+
             ]);
 
 
@@ -1932,7 +2123,9 @@ async function catalogUpdate(
 
         const name =
             String(
-                req.body.name || ''
+                req.body.name
+                ||
+                ""
             ).trim();
 
 
@@ -1955,7 +2148,7 @@ async function catalogUpdate(
                 success: false,
 
                 message:
-                    'البيانات غير صحيحة'
+                    "البيانات غير صحيحة"
 
             });
         }
@@ -1974,16 +2167,22 @@ async function catalogUpdate(
                     updated_at = NOW()
 
                 WHERE
+
                     id = $3
 
                     AND type = $4
 
                 RETURNING *
             `, [
+
                 name,
+
                 enabled,
+
                 id,
+
                 type
+
             ]);
 
 
@@ -1996,7 +2195,7 @@ async function catalogUpdate(
                 success: false,
 
                 message:
-                    'العنصر غير موجود'
+                    "العنصر غير موجود"
 
             });
         }
@@ -2063,14 +2262,18 @@ async function catalogDelete(
                 DELETE FROM catalog_items
 
                 WHERE
+
                     id = $1
 
                     AND type = $2
 
                 RETURNING *
             `, [
+
                 id,
+
                 type
+
             ]);
 
 
@@ -2083,7 +2286,7 @@ async function catalogDelete(
                 success: false,
 
                 message:
-                    'العنصر غير موجود'
+                    "العنصر غير موجود"
 
             });
         }
@@ -2129,15 +2332,15 @@ async function catalogDelete(
 
 
 /* =========================================================
-   COMPATIBILITY ROUTES FOR CURRENT ADMIN.HTML
+   CURRENT ADMIN.HTML ROUTES
 ========================================================= */
 
 for (
     const type
     of [
-        'semester',
-        'grade',
-        'subject'
+        "semester",
+        "grade",
+        "subject"
     ]
 ) {
 
@@ -2164,13 +2367,12 @@ for (
 
                 console.error(error);
 
-
                 res.status(500).json({
 
                     success: false,
 
                     message:
-                        'تعذر تحميل المحتوى'
+                        "تعذر تحميل المحتوى"
 
                 });
             }
@@ -2183,7 +2385,7 @@ for (
         requireDatabase,
         requireAdmin,
         requirePermission(
-            'can_manage_catalog'
+            "can_manage_catalog"
         ),
         (req, res) =>
             catalogCreate(
@@ -2199,7 +2401,7 @@ for (
         requireDatabase,
         requireAdmin,
         requirePermission(
-            'can_manage_catalog'
+            "can_manage_catalog"
         ),
         (req, res) =>
             catalogUpdate(
@@ -2215,7 +2417,7 @@ for (
         requireDatabase,
         requireAdmin,
         requirePermission(
-            'can_manage_catalog'
+            "can_manage_catalog"
         ),
         (req, res) =>
             catalogDelete(
@@ -2228,11 +2430,11 @@ for (
 
 
 /* =========================================================
-   UNIFIED CATALOG API
+   UNIFIED CATALOG
 ========================================================= */
 
 app.get(
-    '/api/admin/catalog',
+    "/api/admin/catalog",
     requireDatabase,
     requireAdmin,
     async (req, res) => {
@@ -2271,7 +2473,7 @@ app.get(
                 success: false,
 
                 message:
-                    'تعذر تحميل المحتوى'
+                    "تعذر تحميل المحتوى"
 
             });
         }
@@ -2280,11 +2482,11 @@ app.get(
 
 
 /* =========================================================
-   LESSONS PUBLIC
+   PUBLIC LESSONS
 ========================================================= */
 
 app.get(
-    '/api/lessons',
+    "/api/lessons",
     requireDatabase,
     async (req, res) => {
 
@@ -2312,7 +2514,7 @@ app.get(
                 String(
                     req.query.semester
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2320,7 +2522,7 @@ app.get(
                 String(
                     req.query.grade
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2328,7 +2530,7 @@ app.get(
                 String(
                     req.query.subject
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2340,7 +2542,7 @@ app.get(
                             String(
                                 x.semester
                                 ||
-                                ''
+                                ""
                             )
                             ===
                             semester
@@ -2356,7 +2558,7 @@ app.get(
                             String(
                                 x.grade
                                 ||
-                                ''
+                                ""
                             )
                             ===
                             grade
@@ -2372,7 +2574,7 @@ app.get(
                             String(
                                 x.subject
                                 ||
-                                ''
+                                ""
                             )
                             ===
                             subject
@@ -2399,7 +2601,7 @@ app.get(
                 success: false,
 
                 message:
-                    'تعذر تحميل الدروس'
+                    "تعذر تحميل الدروس"
 
             });
         }
@@ -2408,11 +2610,11 @@ app.get(
 
 
 /* =========================================================
-   LESSONS ADMIN
+   ADMIN LESSONS
 ========================================================= */
 
 app.get(
-    '/api/admin/lessons',
+    "/api/admin/lessons",
     requireDatabase,
     requireAdmin,
     async (req, res) => {
@@ -2449,7 +2651,7 @@ app.get(
                 success: false,
 
                 message:
-                    'تعذر تحميل الدروس'
+                    "تعذر تحميل الدروس"
 
             });
         }
@@ -2458,11 +2660,11 @@ app.get(
 
 
 app.post(
-    '/api/admin/lessons',
+    "/api/admin/lessons",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_manage_lessons'
+        "can_manage_lessons"
     ),
     async (req, res) => {
 
@@ -2472,7 +2674,7 @@ app.post(
                 String(
                     req.body.semester
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2480,7 +2682,7 @@ app.post(
                 String(
                     req.body.grade
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2488,7 +2690,7 @@ app.post(
                 String(
                     req.body.subject
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2496,7 +2698,7 @@ app.post(
                 String(
                     req.body.title
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2504,7 +2706,7 @@ app.post(
                 String(
                     req.body.description
                     ||
-                    ''
+                    ""
                 );
 
 
@@ -2512,7 +2714,7 @@ app.post(
                 String(
                     req.body.summary
                     ||
-                    ''
+                    ""
                 );
 
 
@@ -2520,7 +2722,7 @@ app.post(
                 String(
                     req.body.video_url
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2531,7 +2733,7 @@ app.post(
                     success: false,
 
                     message:
-                        'اكتب عنوان الدرس'
+                        "اكتب عنوان الدرس"
 
                 });
             }
@@ -2565,13 +2767,21 @@ app.post(
 
                     RETURNING *
                 `, [
+
                     semester,
+
                     grade,
+
                     subject,
+
                     title,
+
                     description,
+
                     summary,
+
                     videoUrl
+
                 ]);
 
 
@@ -2579,9 +2789,9 @@ app.post(
 
                 req.admin,
 
-                'إضافة درس',
+                "إضافة درس",
 
-                'lesson',
+                "lesson",
 
                 result.rows[0].id,
 
@@ -2610,7 +2820,7 @@ app.post(
                 success: false,
 
                 message:
-                    'تعذر إضافة الدرس'
+                    "تعذر إضافة الدرس"
 
             });
         }
@@ -2619,11 +2829,11 @@ app.post(
 
 
 app.put(
-    '/api/admin/lessons/:id',
+    "/api/admin/lessons/:id",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_manage_lessons'
+        "can_manage_lessons"
     ),
     async (req, res) => {
 
@@ -2639,7 +2849,7 @@ app.put(
                 String(
                     req.body.semester
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2647,7 +2857,7 @@ app.put(
                 String(
                     req.body.grade
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2655,7 +2865,7 @@ app.put(
                 String(
                     req.body.subject
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2663,7 +2873,7 @@ app.put(
                 String(
                     req.body.title
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2671,7 +2881,7 @@ app.put(
                 String(
                     req.body.description
                     ||
-                    ''
+                    ""
                 );
 
 
@@ -2679,7 +2889,7 @@ app.put(
                 String(
                     req.body.summary
                     ||
-                    ''
+                    ""
                 );
 
 
@@ -2687,31 +2897,16 @@ app.put(
                 String(
                     req.body.video_url
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
             const enabled =
                 req.body.enabled === undefined
-
                     ? true
-
                     : Boolean(
                         req.body.enabled
                     );
-
-
-            if (!title) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        'اكتب عنوان الدرس'
-
-                });
-            }
 
 
             const result =
@@ -2743,15 +2938,25 @@ app.put(
 
                     RETURNING *
                 `, [
+
                     semester,
+
                     grade,
+
                     subject,
+
                     title,
+
                     description,
+
                     summary,
+
                     videoUrl,
+
                     enabled,
+
                     id
+
                 ]);
 
 
@@ -2764,7 +2969,7 @@ app.put(
                     success: false,
 
                     message:
-                        'الدرس غير موجود'
+                        "الدرس غير موجود"
 
                 });
             }
@@ -2774,9 +2979,9 @@ app.put(
 
                 req.admin,
 
-                'تعديل درس',
+                "تعديل درس",
 
-                'lesson',
+                "lesson",
 
                 id,
 
@@ -2805,7 +3010,7 @@ app.put(
                 success: false,
 
                 message:
-                    'تعذر تعديل الدرس'
+                    "تعذر تعديل الدرس"
 
             });
         }
@@ -2814,11 +3019,11 @@ app.put(
 
 
 app.delete(
-    '/api/admin/lessons/:id',
+    "/api/admin/lessons/:id",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_manage_lessons'
+        "can_manage_lessons"
     ),
     async (req, res) => {
 
@@ -2834,8 +3039,7 @@ app.delete(
                 await pool.query(`
                     DELETE FROM lessons
 
-                    WHERE
-                        id = $1
+                    WHERE id = $1
 
                     RETURNING *
                 `, [
@@ -2852,7 +3056,7 @@ app.delete(
                     success: false,
 
                     message:
-                        'الدرس غير موجود'
+                        "الدرس غير موجود"
 
                 });
             }
@@ -2862,9 +3066,9 @@ app.delete(
 
                 req.admin,
 
-                'حذف درس',
+                "حذف درس",
 
-                'lesson',
+                "lesson",
 
                 id,
 
@@ -2890,7 +3094,7 @@ app.delete(
                 success: false,
 
                 message:
-                    'تعذر حذف الدرس'
+                    "تعذر حذف الدرس"
 
             });
         }
@@ -2903,7 +3107,7 @@ app.delete(
 ========================================================= */
 
 app.get(
-    '/api/admin/questions',
+    "/api/admin/questions",
     requireDatabase,
     requireAdmin,
     async (req, res) => {
@@ -2940,7 +3144,7 @@ app.get(
                 success: false,
 
                 message:
-                    'تعذر تحميل الأسئلة'
+                    "تعذر تحميل الأسئلة"
 
             });
         }
@@ -2949,11 +3153,11 @@ app.get(
 
 
 app.post(
-    '/api/admin/questions',
+    "/api/admin/questions",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_manage_lessons'
+        "can_manage_lessons"
     ),
     async (req, res) => {
 
@@ -2971,7 +3175,7 @@ app.post(
                 String(
                     req.body.question
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -2995,7 +3199,7 @@ app.post(
                 String(
                     req.body.explanation
                     ||
-                    ''
+                    ""
                 );
 
 
@@ -3006,7 +3210,7 @@ app.post(
                     success: false,
 
                     message:
-                        'اكتب السؤال'
+                        "اكتب السؤال"
 
                 });
             }
@@ -3036,13 +3240,19 @@ app.post(
 
                     RETURNING *
                 `, [
+
                     lessonId,
+
                     question,
+
                     JSON.stringify(
                         options
                     ),
+
                     correctAnswer,
+
                     explanation
+
                 ]);
 
 
@@ -3050,9 +3260,9 @@ app.post(
 
                 req.admin,
 
-                'إضافة سؤال',
+                "إضافة سؤال",
 
-                'question',
+                "question",
 
                 result.rows[0].id,
 
@@ -3081,7 +3291,7 @@ app.post(
                 success: false,
 
                 message:
-                    'تعذر إضافة السؤال'
+                    "تعذر إضافة السؤال"
 
             });
         }
@@ -3090,7 +3300,7 @@ app.post(
 
 
 app.get(
-    '/api/questions',
+    "/api/questions",
     requireDatabase,
     async (req, res) => {
 
@@ -3113,7 +3323,7 @@ app.get(
                     success: false,
 
                     message:
-                        'lesson_id غير صحيح'
+                        "lesson_id غير صحيح"
 
                 });
             }
@@ -3122,11 +3332,17 @@ app.get(
             const result =
                 await pool.query(`
                     SELECT
+
                         id,
+
                         lesson_id,
+
                         question,
+
                         options,
+
                         correct_answer,
+
                         explanation
 
                     FROM questions
@@ -3163,7 +3379,7 @@ app.get(
                 success: false,
 
                 message:
-                    'تعذر تحميل الأسئلة'
+                    "تعذر تحميل الأسئلة"
 
             });
         }
@@ -3176,11 +3392,11 @@ app.get(
 ========================================================= */
 
 app.get(
-    '/api/admin/accounts',
+    "/api/admin/accounts",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_manage_admins'
+        "can_manage_admins"
     ),
     async (req, res) => {
 
@@ -3218,7 +3434,7 @@ app.get(
                 success: false,
 
                 message:
-                    'تعذر تحميل حسابات الأدمن'
+                    "تعذر تحميل حسابات الأدمن"
 
             });
         }
@@ -3227,11 +3443,11 @@ app.get(
 
 
 app.post(
-    '/api/admin/accounts',
+    "/api/admin/accounts",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_manage_admins'
+        "can_manage_admins"
     ),
     async (req, res) => {
 
@@ -3241,7 +3457,7 @@ app.post(
                 String(
                     req.body.username
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -3249,7 +3465,7 @@ app.post(
                 String(
                     req.body.password
                     ||
-                    ''
+                    ""
                 );
 
 
@@ -3286,7 +3502,7 @@ app.post(
                     success: false,
 
                     message:
-                        'اسم المستخدم 3 أحرف على الأقل'
+                        "اسم المستخدم 3 أحرف على الأقل"
 
                 });
             }
@@ -3301,7 +3517,7 @@ app.post(
                     success: false,
 
                     message:
-                        'كلمة المرور 8 أحرف على الأقل'
+                        "كلمة المرور 8 أحرف على الأقل"
 
                 });
             }
@@ -3333,7 +3549,7 @@ app.post(
                     success: false,
 
                     message:
-                        'اسم المستخدم موجود بالفعل'
+                        "اسم المستخدم موجود بالفعل"
 
                 });
             }
@@ -3382,12 +3598,19 @@ app.post(
 
                     RETURNING *
                 `, [
+
                     username,
+
                     hash,
+
                     content,
+
                     admins,
+
                     stats,
+
                     settings
+
                 ]);
 
 
@@ -3399,9 +3622,9 @@ app.post(
 
                 req.admin,
 
-                'إضافة أدمن',
+                "إضافة أدمن",
 
-                'admin',
+                "admin",
 
                 admin.id,
 
@@ -3432,7 +3655,7 @@ app.post(
                 success: false,
 
                 message:
-                    'تعذر إنشاء حساب الأدمن'
+                    "تعذر إنشاء حساب الأدمن"
 
             });
         }
@@ -3441,15 +3664,15 @@ app.post(
 
 
 /* =========================================================
-   UPDATE ADMIN PERMISSIONS
+   ADMIN PERMISSIONS
 ========================================================= */
 
 app.put(
-    '/api/admin/accounts/:id/permissions',
+    "/api/admin/accounts/:id/permissions",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_manage_admins'
+        "can_manage_admins"
     ),
     async (req, res) => {
 
@@ -3484,7 +3707,7 @@ app.put(
                     success: false,
 
                     message:
-                        'الحساب غير موجود'
+                        "الحساب غير موجود"
 
                 });
             }
@@ -3501,7 +3724,7 @@ app.put(
                     success: false,
 
                     message:
-                        'لا يمكن تعديل صلاحيات مالك الموقع'
+                        "لا يمكن تعديل صلاحيات مالك الموقع"
 
                 });
             }
@@ -3553,11 +3776,17 @@ app.put(
 
                     RETURNING *
                 `, [
+
                     content,
+
                     admins,
+
                     stats,
+
                     settings,
+
                     id
+
                 ]);
 
 
@@ -3565,9 +3794,9 @@ app.put(
 
                 req.admin,
 
-                'تعديل صلاحيات أدمن',
+                "تعديل صلاحيات أدمن",
 
-                'admin',
+                "admin",
 
                 id,
 
@@ -3598,7 +3827,7 @@ app.put(
                 success: false,
 
                 message:
-                    'تعذر تعديل الصلاحيات'
+                    "تعذر تعديل الصلاحيات"
 
             });
         }
@@ -3607,15 +3836,15 @@ app.put(
 
 
 /* =========================================================
-   CHANGE ADMIN PASSWORD
+   ADMIN PASSWORD
 ========================================================= */
 
 app.put(
-    '/api/admin/accounts/:id/password',
+    "/api/admin/accounts/:id/password",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_manage_admins'
+        "can_manage_admins"
     ),
     async (req, res) => {
 
@@ -3631,7 +3860,7 @@ app.put(
                 String(
                     req.body.new_password
                     ||
-                    ''
+                    ""
                 );
 
 
@@ -3644,7 +3873,7 @@ app.put(
                     success: false,
 
                     message:
-                        'كلمة المرور 8 أحرف على الأقل'
+                        "كلمة المرور 8 أحرف على الأقل"
 
                 });
             }
@@ -3673,24 +3902,7 @@ app.put(
                     success: false,
 
                     message:
-                        'الحساب غير موجود'
-
-                });
-            }
-
-
-            if (
-                target.is_owner
-                &&
-                target.id !== req.admin.id
-            ) {
-
-                return res.status(403).json({
-
-                    success: false,
-
-                    message:
-                        'لا يمكن تغيير كلمة مرور مالك الموقع'
+                        "الحساب غير موجود"
 
                 });
             }
@@ -3710,8 +3922,11 @@ app.put(
 
                 WHERE id = $2
             `, [
+
                 hash,
+
                 id
+
             ]);
 
 
@@ -3728,9 +3943,9 @@ app.put(
 
                 req.admin,
 
-                'تغيير كلمة مرور أدمن',
+                "تغيير كلمة مرور أدمن",
 
-                'admin',
+                "admin",
 
                 id,
 
@@ -3756,7 +3971,7 @@ app.put(
                 success: false,
 
                 message:
-                    'تعذر تغيير كلمة المرور'
+                    "تعذر تغيير كلمة المرور"
 
             });
         }
@@ -3769,7 +3984,7 @@ app.put(
 ========================================================= */
 
 app.put(
-    '/api/admin/password',
+    "/api/admin/password",
     requireDatabase,
     requireAdmin,
     async (req, res) => {
@@ -3780,7 +3995,7 @@ app.put(
                 String(
                     req.body.new_password
                     ||
-                    ''
+                    ""
                 );
 
 
@@ -3793,7 +4008,7 @@ app.put(
                     success: false,
 
                     message:
-                        'كلمة المرور 8 أحرف على الأقل'
+                        "كلمة المرور 8 أحرف على الأقل"
 
                 });
             }
@@ -3813,8 +4028,11 @@ app.put(
 
                 WHERE id = $2
             `, [
+
                 hash,
+
                 req.admin.id
+
             ]);
 
 
@@ -3831,9 +4049,9 @@ app.put(
 
                 req.admin,
 
-                'تغيير كلمة المرور',
+                "تغيير كلمة المرور",
 
-                'admin',
+                "admin",
 
                 req.admin.id,
 
@@ -3859,7 +4077,7 @@ app.put(
                 success: false,
 
                 message:
-                    'تعذر تغيير كلمة المرور'
+                    "تعذر تغيير كلمة المرور"
 
             });
         }
@@ -3872,11 +4090,11 @@ app.put(
 ========================================================= */
 
 app.delete(
-    '/api/admin/accounts/:id',
+    "/api/admin/accounts/:id",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_manage_admins'
+        "can_manage_admins"
     ),
     async (req, res) => {
 
@@ -3897,7 +4115,7 @@ app.delete(
                     success: false,
 
                     message:
-                        'لا يمكنك حذف حسابك الحالي'
+                        "لا يمكنك حذف حسابك الحالي"
 
                 });
             }
@@ -3926,7 +4144,7 @@ app.delete(
                     success: false,
 
                     message:
-                        'الحساب غير موجود'
+                        "الحساب غير موجود"
 
                 });
             }
@@ -3939,7 +4157,7 @@ app.delete(
                     success: false,
 
                     message:
-                        'لا يمكن حذف مالك الموقع'
+                        "لا يمكن حذف مالك الموقع"
 
                 });
             }
@@ -3958,9 +4176,9 @@ app.delete(
 
                 req.admin,
 
-                'حذف أدمن',
+                "حذف أدمن",
 
-                'admin',
+                "admin",
 
                 id,
 
@@ -3986,7 +4204,7 @@ app.delete(
                 success: false,
 
                 message:
-                    'تعذر حذف الحساب'
+                    "تعذر حذف الحساب"
 
             });
         }
@@ -3999,11 +4217,11 @@ app.delete(
 ========================================================= */
 
 app.get(
-    '/api/admin/settings',
+    "/api/admin/settings",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_manage_settings'
+        "can_manage_settings"
     ),
     async (req, res) => {
 
@@ -4053,7 +4271,7 @@ app.get(
                 success: false,
 
                 message:
-                    'تعذر تحميل الإعدادات'
+                    "تعذر تحميل الإعدادات"
 
             });
         }
@@ -4062,11 +4280,11 @@ app.get(
 
 
 app.put(
-    '/api/admin/settings',
+    "/api/admin/settings",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_manage_settings'
+        "can_manage_settings"
     ),
     async (req, res) => {
 
@@ -4074,29 +4292,29 @@ app.put(
 
             const allowed = [
 
-                'site_name',
+                "site_name",
 
-                'site_title',
+                "site_title",
 
-                'welcome_title',
+                "welcome_title",
 
-                'welcome_text',
+                "welcome_text",
 
-                'search_placeholder',
+                "search_placeholder",
 
-                'footer_text',
+                "footer_text",
 
-                'theme_color',
+                "theme_color",
 
-                'youtube_enabled',
+                "youtube_enabled",
 
-                'web_enabled',
+                "web_enabled",
 
-                'quiz_enabled',
+                "quiz_enabled",
 
-                'general_info_enabled',
+                "general_info_enabled",
 
-                'site_enabled'
+                "site_enabled"
 
             ];
 
@@ -4131,13 +4349,17 @@ app.put(
                     ON CONFLICT (key)
 
                     DO UPDATE
+
                     SET value =
                         EXCLUDED.value
                 `, [
+
                     key,
+
                     String(
                         req.body[key]
                     )
+
                 ]);
             }
 
@@ -4146,13 +4368,13 @@ app.put(
 
                 req.admin,
 
-                'تعديل إعدادات الموقع',
+                "تعديل إعدادات الموقع",
 
-                'settings',
+                "settings",
 
                 null,
 
-                'تم تحديث الإعدادات'
+                "تم تحديث الإعدادات"
 
             );
 
@@ -4174,7 +4396,7 @@ app.put(
                 success: false,
 
                 message:
-                    'تعذر حفظ الإعدادات'
+                    "تعذر حفظ الإعدادات"
 
             });
         }
@@ -4187,7 +4409,7 @@ app.put(
 ========================================================= */
 
 app.get(
-    '/api/settings',
+    "/api/settings",
     requireDatabase,
     async (req, res) => {
 
@@ -4235,7 +4457,7 @@ app.get(
                 success: false,
 
                 message:
-                    'تعذر تحميل إعدادات الموقع'
+                    "تعذر تحميل إعدادات الموقع"
 
             });
         }
@@ -4248,11 +4470,11 @@ app.get(
 ========================================================= */
 
 app.get(
-    '/api/admin/activity',
+    "/api/admin/activity",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_view_activity'
+        "can_view_activity"
     ),
     async (req, res) => {
 
@@ -4305,7 +4527,7 @@ app.get(
                         l.created_at,
 
                         a.username
-                            AS admin_username
+                        AS admin_username
 
                     FROM activity_logs l
 
@@ -4343,7 +4565,7 @@ app.get(
                 success: false,
 
                 message:
-                    'تعذر تحميل سجل النشاط'
+                    "تعذر تحميل سجل النشاط"
 
             });
         }
@@ -4356,11 +4578,11 @@ app.get(
 ========================================================= */
 
 app.get(
-    '/api/admin/stats',
+    "/api/admin/stats",
     requireDatabase,
     requireAdmin,
     requirePermission(
-        'can_view_stats'
+        "can_view_stats"
     ),
     async (req, res) => {
 
@@ -4410,8 +4632,7 @@ app.get(
 
                         FROM catalog_items
 
-                        WHERE
-                            type = 'grade'
+                        WHERE type = 'grade'
                     `),
 
                     pool.query(`
@@ -4421,8 +4642,7 @@ app.get(
 
                         FROM catalog_items
 
-                        WHERE
-                            type = 'subject'
+                        WHERE type = 'subject'
                     `)
 
                 ]);
@@ -4507,7 +4727,7 @@ app.get(
                 success: false,
 
                 message:
-                    'تعذر تحميل الإحصائيات'
+                    "تعذر تحميل الإحصائيات"
 
             });
         }
@@ -4520,7 +4740,7 @@ app.get(
 ========================================================= */
 
 app.post(
-    '/api/stats/visit',
+    "/api/stats/visit",
     requireDatabase,
     async (req, res) => {
 
@@ -4561,7 +4781,7 @@ app.post(
 
 
 app.post(
-    '/api/stats/search',
+    "/api/stats/search",
     requireDatabase,
     async (req, res) => {
 
@@ -4602,11 +4822,11 @@ app.post(
 
 
 /* =========================================================
-   YOUTUBE SEARCH
+   YOUTUBE
 ========================================================= */
 
 app.get(
-    '/api/youtube-search',
+    "/api/youtube-search",
     async (req, res) => {
 
         try {
@@ -4622,7 +4842,7 @@ app.get(
                     success: false,
 
                     message:
-                        'YouTube API غير مفعّل'
+                        "YouTube API غير مفعّل"
 
                 });
             }
@@ -4632,7 +4852,7 @@ app.get(
                 String(
                     req.query.q
                     ||
-                    ''
+                    ""
                 ).trim();
 
 
@@ -4643,7 +4863,7 @@ app.get(
                     success: false,
 
                     message:
-                        'اكتب عبارة البحث'
+                        "اكتب عبارة البحث"
 
                 });
             }
@@ -4652,17 +4872,17 @@ app.get(
             const response =
                 await axios.get(
 
-                    'https://www.googleapis.com/youtube/v3/search',
+                    "https://www.googleapis.com/youtube/v3/search",
 
                     {
 
                         params: {
 
                             part:
-                                'snippet',
+                                "snippet",
 
                             type:
-                                'video',
+                                "video",
 
                             maxResults:
                                 8,
@@ -4672,10 +4892,12 @@ app.get(
 
                             key:
                                 apiKey
+
                         },
 
                         timeout:
                             15000
+
                     }
                 );
 
@@ -4692,22 +4914,22 @@ app.get(
                         videoId:
                             item.id?.videoId
                             ||
-                            '',
+                            "",
 
                         title:
                             item.snippet?.title
                             ||
-                            '',
+                            "",
 
                         channel:
                             item.snippet?.channelTitle
                             ||
-                            '',
+                            "",
 
                         description:
                             item.snippet?.description
                             ||
-                            '',
+                            "",
 
                         thumbnail:
                             item.snippet
@@ -4724,7 +4946,7 @@ app.get(
 
                             ||
 
-                            ''
+                            ""
                     })
                 )
                 .filter(
@@ -4745,10 +4967,13 @@ app.get(
         } catch (error) {
 
             console.error(
-                'YouTube error:',
+
+                "YouTube error:",
+
                 error.response?.data
                 ||
                 error.message
+
             );
 
 
@@ -4757,7 +4982,7 @@ app.get(
                 success: false,
 
                 message:
-                    'تعذر البحث في YouTube'
+                    "تعذر البحث في YouTube"
 
             });
         }
@@ -4770,7 +4995,7 @@ app.get(
 ========================================================= */
 
 app.use(
-    '/api',
+    "/api",
     (req, res) => {
 
         res.status(404).json({
@@ -4778,7 +5003,7 @@ app.use(
             success: false,
 
             message:
-                'مسار API غير موجود'
+                "مسار API غير موجود"
 
         });
     }
@@ -4786,7 +5011,7 @@ app.use(
 
 
 /* =========================================================
-   ERROR HANDLER
+   ERROR
 ========================================================= */
 
 app.use(
@@ -4798,7 +5023,7 @@ app.use(
     ) => {
 
         console.error(
-            'Server error:',
+            "Server error:",
             error
         );
 
@@ -4807,9 +5032,7 @@ app.use(
             res.headersSent
         ) {
 
-            return next(
-                error
-            );
+            return next(error);
         }
 
 
@@ -4818,7 +5041,7 @@ app.use(
             success: false,
 
             message:
-                'حدث خطأ في الخادم'
+                "حدث خطأ في الخادم"
 
         });
     }
@@ -4843,11 +5066,8 @@ async function startServer() {
 
 
         app.listen(
-
             PORT,
-
-            '0.0.0.0',
-
+            "0.0.0.0",
             () => {
 
                 console.log(
@@ -4861,8 +5081,8 @@ async function startServer() {
                 console.log(
                     `PostgreSQL: ${
                         pool
-                            ? 'Connected'
-                            : 'Not configured locally'
+                            ? "Connected"
+                            : "Not configured locally"
                     }`
                 );
             }
@@ -4872,7 +5092,7 @@ async function startServer() {
     } catch (error) {
 
         console.error(
-            'Startup error:',
+            "Startup error:",
             error
         );
 
