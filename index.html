@@ -4,19 +4,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b1020">
+<meta name="theme-color" content="#080c16">
 <title>شرح دروسي</title>
 
 <style>
 :root {
   --bg: #080c16;
   --panel: #111827;
-  --panel2: #0d1423;
   --line: #253247;
   --text: #f5f7fb;
   --muted: #aab5c7;
   --blue: #2878ff;
-  --blue2: #135bd8;
   --green: #16a34a;
   --red: #dc2626;
 }
@@ -27,7 +25,7 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(ellipse at top, #13213c 0, #080c16 48%);
+  background: radial-gradient(ellipse at top, #13213c, #080c16 60%);
   color: var(--text);
   font-family: Arial, Tahoma, sans-serif;
 }
@@ -35,67 +33,60 @@ body {
 header {
   position: sticky;
   top: 0;
-  z-index: 5;
-  background: rgba(8,12,22,.92);
-  backdrop-filter: blur(12px);
+  z-index: 10;
+  background: rgba(8,12,22,.94);
   border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(12px);
 }
 
 .header-inner {
   max-width: 1100px;
   width: 92%;
+  min-height: 72px;
   margin: auto;
-  min-height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
 }
 
-.logo {
-  font-size: 27px;
-  font-weight: 900;
-  letter-spacing: -.5px;
-}
-
+.logo { font-size: 27px; font-weight: 900; }
 .logo span { color: #65aaff; }
 
 .header-link {
-  border: 1px solid #31558e;
-  background: #10213d;
   color: #eaf2ff;
-  text-decoration: none;
+  background: #10213d;
+  border: 1px solid #31558e;
   border-radius: 12px;
-  padding: 10px 15px;
-  font-weight: 700;
+  text-decoration: none;
+  padding: 10px 14px;
 }
 
 .container {
-  max-width: 1050px;
   width: 92%;
-  margin: 30px auto 45px;
+  max-width: 1050px;
+  margin: 25px auto 45px;
 }
 
 .hero {
   text-align: center;
-  padding: 42px 20px 30px;
+  padding: 38px 12px 30px;
 }
 
 .hero-badge {
   display: inline-block;
+  padding: 8px 13px;
+  border-radius: 50px;
   background: #122344;
   border: 1px solid #2d4d7b;
   color: #acd1ff;
-  padding: 8px 13px;
-  border-radius: 999px;
   font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 15px;
 }
 
 h1 {
   font-size: clamp(28px, 5vw, 42px);
-  line-height: 1.35;
+  line-height: 1.4;
   margin: 0 0 12px;
 }
 
@@ -105,33 +96,29 @@ h1 span { color: #65aaff; }
   color: var(--muted);
   line-height: 1.9;
   max-width: 700px;
-  margin: 0 auto;
+  margin: auto;
 }
 
 .panel {
-  background: linear-gradient(160deg, rgba(17,24,39,.98), rgba(13,20,35,.98));
+  background: linear-gradient(160deg, #111827, #0d1423);
   border: 1px solid var(--line);
-  border-radius: 22px;
-  padding: 25px;
+  border-radius: 20px;
+  padding: 23px;
   margin-bottom: 20px;
-  box-shadow: 0 18px 55px rgba(0,0,0,.18);
+  box-shadow: 0 15px 45px rgba(0,0,0,.18);
 }
 
-.panel h2 {
-  font-size: 23px;
-  margin: 0 0 8px;
-}
+.panel h2, .card h2 { margin-top: 0; }
 
 .subtext {
   color: var(--muted);
   line-height: 1.8;
-  margin-bottom: 22px;
 }
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 15px;
 }
 
 .field-wide { grid-column: 1 / -1; }
@@ -143,14 +130,14 @@ label {
   margin-bottom: 8px;
 }
 
-select, input {
+select, input[type="text"] {
   width: 100%;
   min-height: 48px;
+  padding: 12px;
+  color: #fff;
   background: #080e1b;
   border: 1px solid #334158;
-  color: #fff;
   border-radius: 12px;
-  padding: 12px 13px;
   font-size: 16px;
   outline: none;
 }
@@ -162,115 +149,105 @@ select:focus, input:focus {
 
 button {
   font-family: inherit;
-  border: 0;
-  border-radius: 12px;
-  min-height: 46px;
-  padding: 12px 18px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
+  padding: 12px 17px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 11px;
   cursor: pointer;
-  transition: transform .15s, filter .15s;
 }
 
-button:hover { filter: brightness(1.08); }
-button:active { transform: scale(.99); }
 button:disabled { opacity: .6; cursor: wait; }
 
 .primary {
-  background: linear-gradient(135deg, var(--blue), var(--blue2));
-  color: #fff;
   width: 100%;
-  margin-top: 18px;
-  box-shadow: 0 8px 24px rgba(40,120,255,.2);
+  margin-top: 17px;
+  color: white;
+  background: linear-gradient(135deg, #2878ff, #135bd8);
 }
 
 .secondary {
+  color: #e4efff;
   background: #17243a;
   border: 1px solid #314460;
-  color: #e4efff;
 }
 
 .results-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 18px;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 .results-head h2 { margin: 0; }
 
-.result-count {
-  font-size: 13px;
-  color: #c6d6ee;
+.badge {
   background: #172238;
-  padding: 7px 11px;
-  border-radius: 999px;
+  color: #c6d6ee;
+  padding: 7px 10px;
+  border-radius: 30px;
+  font-size: 12px;
 }
 
 .message {
-  padding: 17px;
+  padding: 15px;
+  line-height: 1.9;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 13px;
   background: #0b1322;
-  color: #d8e5f7;
-  line-height: 1.8;
-  margin: 14px 0;
+  margin: 13px 0;
 }
 
 .message.error {
-  border-color: #7f1d1d;
   background: rgba(127,29,29,.15);
+  border-color: #7f1d1d;
   color: #fecaca;
 }
 
 .message.success {
-  border-color: #166534;
   background: rgba(22,163,74,.1);
+  border-color: #166534;
   color: #bbf7d0;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0,1fr));
   gap: 14px;
 }
 
-.lesson-card, .video-card, .source-card {
-  background: #0a1220;
-  border: 1px solid #253247;
-  border-radius: 16px;
-  padding: 17px;
+.card {
   min-width: 0;
+  padding: 17px;
+  border: 1px solid #253247;
+  border-radius: 15px;
+  background: #0a1220;
 }
 
-.lesson-card h3, .video-card h3, .source-card h3 {
-  margin: 0 0 10px;
-  font-size: 18px;
-  line-height: 1.65;
+.card h3 {
+  font-size: 17px;
+  line-height: 1.7;
+  margin: 0 0 8px;
   overflow-wrap: anywhere;
 }
 
-.lesson-card p, .video-card p, .source-card p {
+.card p {
   color: var(--muted);
   line-height: 1.8;
-  margin: 0 0 13px;
-  overflow-wrap: anywhere;
 }
 
 .tag {
   display: inline-block;
-  background: #142b4d;
-  border: 1px solid #254a7a;
-  color: #b6d8ff;
-  border-radius: 999px;
-  font-size: 12px;
+  margin-bottom: 10px;
   padding: 5px 9px;
-  margin-bottom: 11px;
+  font-size: 12px;
+  border-radius: 30px;
+  background: #142b4d;
+  color: #b6d8ff;
 }
-
-a { color: #83bdff; }
 
 .video-card {
   display: flex;
@@ -283,28 +260,25 @@ a { color: #83bdff; }
   aspect-ratio: 16 / 9;
   object-fit: cover;
   background: #111827;
-  border-radius: 11px;
+  border-radius: 10px;
 }
 
-.video-button, .source-button {
+.video-link, .web-link {
   display: inline-flex;
-  align-items: center;
   justify-content: center;
-  background: #b91c1c;
-  color: #fff;
-  text-decoration: none;
+  align-items: center;
+  padding: 11px;
   border-radius: 10px;
-  padding: 10px 14px;
+  color: white;
+  text-decoration: none;
   font-weight: 800;
+  background: #b91c1c;
   margin-top: auto;
 }
 
-.source-button { background: #1d4ed8; }
+.web-link { background: #1d4ed8; }
 
-.section-title {
-  font-size: 23px;
-  margin: 28px 0 15px;
-}
+.section-title { margin: 28px 0 15px; }
 
 .action-row {
   display: flex;
@@ -313,35 +287,77 @@ a { color: #83bdff; }
   margin-top: 20px;
 }
 
-.action-row a, .action-row button {
+.action-row a {
   flex: 1;
-  text-align: center;
   min-width: 180px;
+  text-align: center;
+}
+
+.test-links, .summary-card, .quiz-card {
+  margin-top: 22px;
+  padding: 21px;
+  border: 1px solid #2a3d59;
+  border-radius: 17px;
+  background: linear-gradient(150deg, #101b2e, #0c1321);
+}
+
+.test-links p, .summary-card p, .quiz-card .subtitle {
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.test-link-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 12px;
+}
+
+.test-link {
+  display: block;
+  padding: 14px;
+  color: #e8f1ff;
+  border: 1px solid #2b405e;
+  border-radius: 12px;
+  background: #0b1424;
+  line-height: 1.8;
   text-decoration: none;
 }
 
-.quiz-card {
-  margin-top: 20px;
-  background: #0a1220;
-  border: 1px solid #293950;
-  border-radius: 18px;
-  padding: 22px;
+.test-link strong {
+  display: block;
+  color: #8fc2ff;
+  margin-bottom: 5px;
 }
 
-.quiz-card h2 { margin: 0 0 8px; }
-
-.quiz-card .subtitle {
-  color: var(--muted);
-  line-height: 1.8;
-  margin-bottom: 18px;
+.test-link span {
+  display: block;
+  color: #aab8cd;
+  font-size: 13px;
 }
+
+.summary-content {
+  line-height: 1.9;
+  margin-top: 16px;
+}
+
+.summary-content h3 { color: #9bc7ff; }
+.summary-content li { margin: 7px 0; }
+
+.summary-term {
+  padding: 12px;
+  border: 1px solid #273b57;
+  border-radius: 10px;
+  margin: 9px 0;
+}
+
+.summary-term strong { color: #9bc7ff; }
 
 .question {
-  padding: 17px;
-  border: 1px solid #2d3a50;
-  border-radius: 13px;
-  background: #0d1524;
+  padding: 16px;
   margin-bottom: 14px;
+  border: 1px solid #2d3a50;
+  background: #0d1524;
+  border-radius: 12px;
 }
 
 .question h3 {
@@ -352,77 +368,123 @@ a { color: #83bdff; }
 
 .option {
   display: flex;
-  gap: 10px;
   align-items: flex-start;
+  gap: 10px;
   padding: 11px;
   margin: 8px 0;
   border: 1px solid #334158;
-  background: #121c2d;
   border-radius: 10px;
+  background: #121c2d;
+  line-height: 1.7;
   cursor: pointer;
-  line-height: 1.6;
 }
 
 .option input {
-  width: auto;
-  min-height: 0;
-  margin-top: 4px;
-  accent-color: var(--blue);
+  margin-top: 5px;
+  flex-shrink: 0;
 }
 
 .option.correct {
   border-color: #16a34a;
   background: rgba(22,163,74,.15);
-  color: #bbf7d0;
 }
 
 .option.wrong {
   border-color: #dc2626;
   background: rgba(220,38,38,.15);
-  color: #fecaca;
 }
 
-.question-feedback {
+.feedback {
   display: none;
-  margin-top: 12px;
-  padding: 11px 13px;
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid #24583c;
   border-radius: 10px;
   background: #10251d;
-  border: 1px solid #24583c;
   color: #c9f7d7;
   line-height: 1.8;
 }
 
-.score-meter {
-  height: 9px;
-  background: #253247;
-  border-radius: 999px;
-  overflow: hidden;
-  margin: 14px 0;
-}
-
-.score-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #2563eb, #22c55e);
-  width: 0;
-  transition: width .35s;
-}
-
 .quiz-result {
   display: none;
-  background: #101d31;
-  border: 1px solid #2b466b;
-  border-radius: 14px;
-  padding: 18px;
   margin-top: 15px;
+  padding: 18px;
+  border: 1px solid #2b466b;
+  border-radius: 13px;
   text-align: center;
+  background: #101d31;
 }
 
 .quiz-result strong {
   display: block;
   font-size: 28px;
-  margin: 6px 0 12px;
+  margin: 10px 0;
 }
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 12px;
+  margin: 15px 0 22px;
+}
+
+.progress-stat {
+  padding: 15px;
+  background: #0a1220;
+  border: 1px solid #253247;
+  border-radius: 13px;
+}
+
+.progress-stat span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.progress-stat strong {
+  display: block;
+  font-size: 25px;
+  margin-top: 6px;
+}
+
+.progress-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid #253247;
+}
+
+.progress-item h3 { margin: 0 0 5px; font-size: 15px; }
+.progress-item p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
+
+.progress-score {
+  flex-shrink: 0;
+  padding: 9px;
+  border-radius: 10px;
+  background: #11233c;
+  border: 1px solid #2d4d7b;
+  color: #b7d9ff;
+  text-align: center;
+  font-weight: 800;
+}
+
+.small { font-size: 12px; color: #8e9ab0; line-height: 1.8; }
+
+.spinner {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  border: 3px solid #50617c;
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
 
 footer {
   text-align: center;
@@ -432,35 +494,16 @@ footer {
   line-height: 1.9;
 }
 
-.small {
-  font-size: 13px;
-  color: #8e9ab0;
-  line-height: 1.7;
-}
-
-.spinner {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: 3px solid #50617c;
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin .8s linear infinite;
-  vertical-align: middle;
-  margin-left: 8px;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
 @media(max-width:680px) {
-  .form-grid, .grid { grid-template-columns: 1fr; }
+  .form-grid, .grid, .test-link-grid { grid-template-columns: 1fr; }
   .field-wide { grid-column: auto; }
-  .panel { padding: 19px; }
-  .hero { padding: 30px 10px 25px; }
-  .header-inner { min-height: 67px; }
-  .logo { font-size: 23px; }
+  .panel, .summary-card, .quiz-card, .test-links { padding: 17px; }
+  .hero { padding: 28px 5px; }
+  .header-inner { min-height: 65px; }
+  .logo { font-size: 22px; }
   .header-link { padding: 8px 10px; font-size: 13px; }
-  .container { margin-top: 18px; }
+  .progress-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .progress-item { align-items: flex-start; }
 }
 </style>
 </head>
@@ -477,7 +520,10 @@ footer {
   <section class="hero">
     <div class="hero-badge">📚 منصتك التعليمية</div>
     <h1 id="welcomeTitle">تعلّم • افهم • <span>اختبر نفسك</span></h1>
-    <p id="welcomeText">اختر صفك ومادتك واكتب اسم الدرس. سنبحث في دروسك، ونساعدك في الوصول إلى شروحات وفيديوهات مناسبة.</p>
+    <p id="welcomeText">
+      اختر صفك ومادتك واكتب اسم الدرس. سنبحث عن الشروحات والاختبارات
+      ونساعدك على تلخيص أهم المعلومات ومتابعة تقدمك.
+    </p>
   </section>
 
   <section class="panel" id="searchPanel">
@@ -524,138 +570,159 @@ footer {
 
       <div class="field-wide">
         <label for="lessonInput">اسم الدرس</label>
-        <input id="lessonInput" type="text" placeholder="مثال: المعادلات التربيعية" autocomplete="off">
+        <input id="lessonInput" type="text"
+          placeholder="مثال: قوانين نيوتن" autocomplete="off">
       </div>
     </div>
 
-    <button class="primary" id="searchButton" type="button">🔎 ابحث عن الدرس</button>
-    <p class="small" style="margin-top:12px">تلميح: اختر المعلومات المتاحة واكتب اسم الدرس، ثم اضغط زر البحث أو Enter.</p>
+    <button class="primary" id="searchButton" type="button">
+      🔎 ابحث عن الدرس
+    </button>
+    <p class="small">تستطيع الضغط على Enter بعد كتابة اسم الدرس.</p>
   </section>
 
   <section class="panel" id="resultsPanel" aria-live="polite">
     <div class="results-head">
       <h2>🎯 نتائج البحث</h2>
-      <span id="resultCount" class="result-count">بانتظار البحث</span>
+      <span id="resultCount" class="badge">بانتظار البحث</span>
     </div>
     <div id="results">
-      <div class="message">أدخل اسم الدرس ثم اضغط «ابحث عن الدرس» لعرض الشروحات المتاحة.</div>
+      <div class="message">
+        اكتب اسم الدرس ثم اضغط «ابحث عن الدرس».
+      </div>
     </div>
+  </section>
+
+  <section class="panel" id="progressPanel">
+    <div class="results-head">
+      <h2>📊 سجل النتائج والتقدم</h2>
+      <span class="badge">محفوظ على هذا الجهاز</span>
+    </div>
+    <p class="subtext">
+      تابع محاولاتك ومتوسط درجاتك وأفضل نتيجة.
+      السجل محفوظ في هذا المتصفح فقط.
+    </p>
+    <div id="progressStats" class="progress-grid"></div>
+    <div id="progressHistory"></div>
+    <button class="secondary" id="clearProgressButton" type="button">
+      🗑️ مسح سجل النتائج
+    </button>
   </section>
 </main>
 
-<footer id="footerText">© 2026 شرح دروسي · تعلّم • افهم • اختبر نفسك</footer>
+<footer id="footerText">
+  © 2026 شرح دروسي · تعلّم • افهم • اختبر نفسك
+</footer>
 
 <script>
 'use strict';
 
-const $ = (id) => document.getElementById(id);
-let currentQuiz = [];
-let searchSequence = 0;
-let appSettings = {};
+const $ = id => document.getElementById(id);
 
-// أسئلة مرتبطة بمواضيع دراسية معروفة
+let appSettings = {};
+let searchSequence = 0;
+let lastLocalLessons = [];
+let lastVideos = [];
+let currentQuiz = [];
+let currentQuizContext = null;
+let currentQuizMode = 'local';
+let hasSavedCurrentResult = false;
+
+const PROGRESS_KEY = 'shrh_progress_history_v1';
+
 const quizBanks = [
   {
-    keys: ['قوانين نيوتن', 'قانون نيوتن', 'newton law', 'newton laws'],
+    keys: ['قوانين نيوتن', 'قانون نيوتن', 'newton law'],
     questions: [
       {
         question: 'ما العلاقة التي يعبّر عنها قانون نيوتن الثاني؟',
-        options: ['القوة المحصلة = الكتلة × التسارع', 'القوة = السرعة × الزمن', 'القوة = الكتلة ÷ الزمن'],
+        options: [
+          'القوة = الكتلة × التسارع',
+          'القوة = المسافة × الزمن',
+          'القوة = الكتلة ÷ السرعة'
+        ],
         answer: 0,
-        explanation: 'قانون نيوتن الثاني يكتب عادةً F = m × a.'
+        explanation: 'قانون نيوتن الثاني يكتب F = m × a.'
       },
       {
-        question: 'إذا كانت القوة المحصلة على جسم تساوي صفرًا، فما الذي يحدث له؟',
-        options: ['يتوقف دائمًا', 'يبقى ساكنًا أو يتحرك بسرعة ثابتة في خط مستقيم', 'يتسارع دائمًا'],
-        answer: 1,
-        explanation: 'هذا هو مضمون قانون نيوتن الأول.'
+        question: 'إذا كانت القوة المحصلة صفرًا، فإن الجسم الساكن:',
+        options: [
+          'يبقى ساكنًا',
+          'يتسارع دائمًا',
+          'تزداد كتلته'
+        ],
+        answer: 0,
+        explanation: 'هذا يوافق قانون نيوتن الأول.'
       },
       {
-        question: 'أي قانون يصف أن لكل فعل رد فعل مساويًا له في المقدار ومعاكسًا في الاتجاه؟',
-        options: ['قانون نيوتن الأول', 'قانون نيوتن الثاني', 'قانون نيوتن الثالث'],
+        question: 'أي قانون يصف الفعل ورد الفعل؟',
+        options: [
+          'قانون نيوتن الأول',
+          'قانون نيوتن الثاني',
+          'قانون نيوتن الثالث'
+        ],
         answer: 2,
-        explanation: 'قوتا الفعل ورد الفعل تؤثران في جسمين مختلفين.'
+        explanation: 'لكل فعل رد فعل مساوٍ له في المقدار ومعاكس له في الاتجاه.'
       },
       {
-        question: 'إذا زادت كتلة الجسم وبقيت القوة المحصلة ثابتة، فإن تسارعه:',
-        options: ['يزداد', 'يقل', 'لا يتغير'],
-        answer: 1,
-        explanation: 'من a = F ÷ m، زيادة الكتلة مع ثبات القوة تقلل التسارع.'
-      },
-      {
-        question: 'ما وحدة قياس القوة في النظام الدولي؟',
+        question: 'ما وحدة قياس القوة؟',
         options: ['الجول', 'النيوتن', 'الواط'],
         answer: 1,
-        explanation: 'تقاس القوة بوحدة النيوتن (N).'
+        explanation: 'تقاس القوة بوحدة النيوتن.'
+      },
+      {
+        question: 'إذا زادت الكتلة وبقيت القوة ثابتة، فإن التسارع:',
+        options: ['يزداد', 'يقل', 'يبقى نفسه دائمًا'],
+        answer: 1,
+        explanation: 'التسارع يساوي القوة المحصلة مقسومة على الكتلة.'
       }
     ]
   },
   {
-    keys: ['الحركة', 'السرعة', 'التسارع', 'motion', 'speed', 'acceleration'],
+    keys: ['الحركة', 'السرعة', 'التسارع', 'motion', 'speed'],
     questions: [
       {
         question: 'كيف نحسب السرعة المتوسطة؟',
-        options: ['المسافة ÷ الزمن', 'الزمن ÷ المسافة', 'الكتلة × التسارع'],
+        options: [
+          'المسافة ÷ الزمن',
+          'الزمن ÷ المسافة',
+          'الكتلة × التسارع'
+        ],
         answer: 0,
-        explanation: 'السرعة المتوسطة تساوي المسافة المقطوعة مقسومة على الزمن.'
+        explanation: 'السرعة المتوسطة تساوي المسافة مقسومة على الزمن.'
       },
       {
-        question: 'ما وحدة السرعة في النظام الدولي؟',
+        question: 'ما وحدة السرعة الشائعة في النظام الدولي؟',
         options: ['متر/ثانية', 'نيوتن', 'كيلوجرام'],
         answer: 0,
-        explanation: 'الوحدة الشائعة في النظام الدولي هي m/s.'
+        explanation: 'تقاس السرعة بالمتر لكل ثانية.'
       },
       {
         question: 'ماذا يعني التسارع؟',
-        options: ['تغير السرعة مع الزمن', 'المسافة فقط', 'ثبات الموقع دائمًا'],
+        options: [
+          'تغير السرعة مع الزمن',
+          'المسافة فقط',
+          'ثبات الموقع دائمًا'
+        ],
         answer: 0,
-        explanation: 'التسارع هو معدل تغير السرعة المتجهة بالنسبة للزمن.'
+        explanation: 'التسارع هو معدل تغير السرعة بالنسبة إلى الزمن.'
       },
       {
-        question: 'قطع جسم مسافة أكبر خلال الزمن نفسه. ماذا يحدث لسرعته المتوسطة؟',
+        question: 'إذا قطعت مسافة أكبر في الزمن نفسه، فإن السرعة المتوسطة:',
         options: ['تقل', 'تزداد', 'تصبح صفرًا'],
         answer: 1,
-        explanation: 'عند ثبات الزمن، زيادة المسافة تعني زيادة السرعة المتوسطة.'
+        explanation: 'زيادة المسافة مع ثبات الزمن تعني زيادة السرعة المتوسطة.'
       }
     ]
   },
   {
-    keys: ['الطاقة', 'energy', 'طاقة حركية', 'طاقة الوضع'],
+    keys: ['الذرة', 'تركيب الذرة', 'atom'],
     questions: [
       {
-        question: 'ما الطاقة التي يمتلكها الجسم بسبب حركته؟',
-        options: ['الطاقة الحركية', 'طاقة الوضع', 'الطاقة الصوتية فقط'],
+        question: 'أين توجد البروتونات والنيوترونات؟',
+        options: ['في النواة', 'في الهواء', 'خارج الذرة'],
         answer: 0,
-        explanation: 'ترتبط الطاقة الحركية بحركة الجسم.'
-      },
-      {
-        question: 'أي مثال يوضح طاقة الوضع؟',
-        options: ['كرة مرفوعة عن الأرض', 'سيارة تتحرك على الطريق', 'صوت جرس'],
-        answer: 0,
-        explanation: 'تخزن الكرة طاقة وضع بسبب ارتفاعها.'
-      },
-      {
-        question: 'ما وحدة قياس الطاقة في النظام الدولي؟',
-        options: ['الجول', 'النيوتن', 'الأمبير'],
-        answer: 0,
-        explanation: 'تقاس الطاقة بوحدة الجول (J).'
-      },
-      {
-        question: 'بحسب مبدأ حفظ الطاقة، الطاقة:',
-        options: ['تختفي كليًا', 'تتحول من شكل إلى آخر', 'تتحول كلها دائمًا إلى كتلة'],
-        answer: 1,
-        explanation: 'الطاقة لا تفنى ولا تستحدث من العدم، بل تتحول بين الأشكال.'
-      }
-    ]
-  },
-  {
-    keys: ['الذرة', 'تركيب الذرة', 'atom', 'atomic structure'],
-    questions: [
-      {
-        question: 'أين توجد البروتونات والنيوترونات في الذرة؟',
-        options: ['في النواة', 'في الغلاف الخارجي فقط', 'خارج الذرة'],
-        answer: 0,
-        explanation: 'تتركز البروتونات والنيوترونات داخل نواة الذرة.'
+        explanation: 'توجد البروتونات والنيوترونات داخل نواة الذرة.'
       },
       {
         question: 'ما شحنة الإلكترون؟',
@@ -667,7 +734,7 @@ const quizBanks = [
         question: 'ما شحنة البروتون؟',
         options: ['موجبة', 'سالبة', 'متعادلة'],
         answer: 0,
-        explanation: 'يحمل البروتون شحنة كهربائية موجبة.'
+        explanation: 'يحمل البروتون شحنة موجبة.'
       },
       {
         question: 'أي جسيم متعادل كهربائيًا؟',
@@ -678,36 +745,7 @@ const quizBanks = [
     ]
   },
   {
-    keys: ['الكسور', 'كسر اعتيادي', 'fractions'],
-    questions: [
-      {
-        question: 'ما ناتج 1/2 + 1/4؟',
-        options: ['2/6', '3/4', '1/8'],
-        answer: 1,
-        explanation: 'نحوّل 1/2 إلى 2/4، ثم 2/4 + 1/4 = 3/4.'
-      },
-      {
-        question: 'أي كسر يكافئ 1/2؟',
-        options: ['2/4', '2/3', '3/5'],
-        answer: 0,
-        explanation: 'ضرب البسط والمقام في 2 يعطي 2/4.'
-      },
-      {
-        question: 'ما ناتج 3/4 − 1/4؟',
-        options: ['2/4 أو 1/2', '4/8', '1/4'],
-        answer: 0,
-        explanation: 'المقام متساوٍ، لذا نطرح البسطين: 3 − 1 = 2.'
-      },
-      {
-        question: 'في الكسر 5/8، ما المقام؟',
-        options: ['5', '8', '13'],
-        answer: 1,
-        explanation: 'المقام هو العدد الذي يأتي أسفل خط الكسر.'
-      }
-    ]
-  },
-  {
-    keys: ['المعادلات', 'معادلة خطية', 'حل المعادلة', 'equation', 'algebra'],
+    keys: ['المعادلات', 'حل المعادلة', 'equation', 'algebra'],
     questions: [
       {
         question: 'إذا كان x + 5 = 12، فما قيمة x؟',
@@ -716,404 +754,116 @@ const quizBanks = [
         explanation: 'نطرح 5 من الطرفين، فيكون x = 7.'
       },
       {
-        question: 'إذا كان 3x = 18، فإن x يساوي:',
+        question: 'إذا كان 3x = 18، فما قيمة x؟',
         options: ['6', '15', '21'],
         answer: 0,
-        explanation: 'نقسم الطرفين على 3 فنحصل على x = 6.'
+        explanation: 'نقسم الطرفين على 3، فيكون x = 6.'
       },
       {
         question: 'ما العملية العكسية للجمع؟',
-        options: ['الطرح', 'الضرب', 'القسمة فقط'],
+        options: ['الطرح', 'الضرب', 'الجمع'],
         answer: 0,
-        explanation: 'نستخدم الطرح لإلغاء عملية الجمع عند حل المعادلة.'
+        explanation: 'الطرح هو العملية العكسية للجمع.'
       },
       {
         question: 'إذا كان 2x + 1 = 9، فما قيمة x؟',
         options: ['4', '5', '8'],
         answer: 0,
-        explanation: 'نطرح 1 فيصبح 2x = 8 ثم نقسم على 2.'
+        explanation: 'نطرح 1 ثم نقسم على 2، فيكون x = 4.'
       }
     ]
   },
   {
-    keys: ['النسبة المئوية', 'النسب المئوية', 'percentage', 'percent'],
-    questions: [
-      {
-        question: 'كم تساوي 25% من 200؟',
-        options: ['25', '50', '100'],
-        answer: 1,
-        explanation: '25% = 0.25، و0.25 × 200 = 50.'
-      },
-      {
-        question: 'النسبة المئوية 50% تساوي أي كسر؟',
-        options: ['1/4', '1/2', '3/4'],
-        answer: 1,
-        explanation: '50 من كل 100 تساوي النصف.'
-      },
-      {
-        question: 'سلعة سعرها 10 ريالات، وزاد سعرها ريالين. ما نسبة الزيادة؟',
-        options: ['2%', '10%', '20%'],
-        answer: 2,
-        explanation: 'الزيادة 2 من أصل 10؛ أي 2 ÷ 10 × 100 = 20%.'
-      },
-      {
-        question: 'كم تساوي 10% من 80؟',
-        options: ['8', '10', '18'],
-        answer: 0,
-        explanation: '10% تعني عُشر العدد، وعُشر 80 يساوي 8.'
-      }
-    ]
-  },
-  {
-    keys: ['فيثاغورس', 'نظرية فيثاغورس', 'pythagoras', 'pythagorean'],
-    questions: [
-      {
-        question: 'في المثلث القائم، ما العلاقة بين أضلاع المثلث؟',
-        options: ['a + b = c دائمًا', 'a² + b² = c²', 'a × b = c²'],
-        answer: 1,
-        explanation: 'مربع الوتر يساوي مجموع مربعي الضلعين القائمين.'
-      },
-      {
-        question: 'مثلث قائم ضلعاه القائمان 3 و4. ما طول الوتر؟',
-        options: ['5', '6', '7'],
-        answer: 0,
-        explanation: 'الوتر = √(3² + 4²) = √25 = 5.'
-      },
-      {
-        question: 'أي ضلع هو الوتر؟',
-        options: ['الضلع المقابل للزاوية القائمة', 'أقصر ضلع دائمًا', 'أي ضلع نختاره'],
-        answer: 0,
-        explanation: 'الوتر هو أطول أضلاع المثلث القائم ويقابل الزاوية القائمة.'
-      }
-    ]
-  },
-  {
-    keys: ['الكهرباء', 'التيار الكهربائي', 'الدائرة الكهربائية', 'electricity', 'electric circuit'],
-    questions: [
-      {
-        question: 'ما وحدة قياس شدة التيار الكهربائي؟',
-        options: ['الأمبير', 'الفولت', 'الأوم'],
-        answer: 0,
-        explanation: 'تقاس شدة التيار بوحدة الأمبير.'
-      },
-      {
-        question: 'ما وحدة قياس فرق الجهد؟',
-        options: ['الجول', 'الفولت', 'الواط'],
-        answer: 1,
-        explanation: 'يقاس فرق الجهد الكهربائي بالفولت.'
-      },
-      {
-        question: 'ماذا يحتاج المصباح في دائرة بسيطة لكي يضيء؟',
-        options: ['دائرة مكتملة ومصدر طاقة', 'سلك مقطوع', 'مفتاح مفتوح دائمًا'],
-        answer: 0,
-        explanation: 'يجب أن تكون الدائرة مكتملة كي يمر التيار.'
-      },
-      {
-        question: 'ما وحدة قياس المقاومة الكهربائية؟',
-        options: ['الأوم', 'الأمبير', 'المتر'],
-        answer: 0,
-        explanation: 'تقاس المقاومة الكهربائية بوحدة الأوم.'
-      }
-    ]
-  },
-  {
-    keys: ['الخلية', 'الخلايا', 'تركيب الخلية', 'cell', 'cells'],
-    questions: [
-      {
-        question: 'ما الوحدة الأساسية في بناء الكائنات الحية؟',
-        options: ['الخلية', 'الصخر', 'الجزيء المعدني فقط'],
-        answer: 0,
-        explanation: 'الخلية هي الوحدة الأساسية للتركيب والوظيفة في الكائن الحي.'
-      },
-      {
-        question: 'ما الجزء الذي يحتوي غالبًا على المادة الوراثية في الخلية حقيقية النواة؟',
-        options: ['النواة', 'الجدار الخلوي فقط', 'الغشاء الخارجي فقط'],
-        answer: 0,
-        explanation: 'توجد معظم المادة الوراثية داخل النواة في الخلايا حقيقية النواة.'
-      },
-      {
-        question: 'ما وظيفة الغشاء البلازمي؟',
-        options: ['تنظيم دخول المواد وخروجها', 'صنع الضوء', 'تحويل الخلية إلى صخر'],
-        answer: 0,
-        explanation: 'الغشاء البلازمي ينظم تبادل المواد بين الخلية ومحيطها.'
-      },
-      {
-        question: 'أي عضية ترتبط بإنتاج الطاقة في كثير من الخلايا؟',
-        options: ['الميتوكوندريا', 'الفجوة فقط', 'الجدار الخلوي'],
-        answer: 0,
-        explanation: 'تشارك الميتوكوندريا في إنتاج معظم ATP في الخلية.'
-      }
-    ]
-  },
-  {
-    keys: ['البناء الضوئي', 'التمثيل الضوئي', 'photosynthesis'],
-    questions: [
-      {
-        question: 'أين تتم معظم عملية البناء الضوئي في النبات؟',
-        options: ['في البلاستيدات الخضراء', 'في الجذور فقط', 'في الأزهار فقط'],
-        answer: 0,
-        explanation: 'تحتوي البلاستيدات الخضراء على الكلوروفيل الذي يلتقط الضوء.'
-      },
-      {
-        question: 'ما الغاز الذي تمتصه النباتات في البناء الضوئي؟',
-        options: ['ثاني أكسيد الكربون', 'الأكسجين فقط', 'النيتروجين فقط'],
-        answer: 0,
-        explanation: 'تستخدم النباتات ثاني أكسيد الكربون والماء لصنع السكريات بوجود الضوء.'
-      },
-      {
-        question: 'ما مصدر الطاقة لعملية البناء الضوئي؟',
-        options: ['ضوء الشمس', 'الصوت', 'المغناطيس فقط'],
-        answer: 0,
-        explanation: 'توفر الطاقة الضوئية الطاقة اللازمة للتفاعلات.'
-      },
-      {
-        question: 'أي مادة تنتجها النباتات خلال البناء الضوئي وتطلق جزءًا منها؟',
-        options: ['الأكسجين', 'الحديد', 'الملح فقط'],
-        answer: 0,
-        explanation: 'ينتج الأكسجين من التفاعلات المرتبطة بشطر الماء.'
-      }
-    ]
-  },
-  {
-    keys: ['الجدول الدوري', 'العناصر الكيميائية', 'periodic table'],
-    questions: [
-      {
-        question: 'ماذا يمثّل الرمز الكيميائي O؟',
-        options: ['الأكسجين', 'الذهب', 'الهيدروجين'],
-        answer: 0,
-        explanation: 'الرمز O هو رمز عنصر الأكسجين.'
-      },
-      {
-        question: 'ما الذي يحدد هوية العنصر؟',
-        options: ['عدد البروتونات في النواة', 'عدد النيوترونات فقط', 'حجم العينة'],
-        answer: 0,
-        explanation: 'العدد الذري، أي عدد البروتونات، يحدد هوية العنصر.'
-      },
-      {
-        question: 'أين تقع الفلزات عمومًا في الجدول الدوري؟',
-        options: ['في الجهة اليسرى والوسطى غالبًا', 'في أقصى اليمين فقط', 'خارج الجدول'],
-        answer: 0,
-        explanation: 'توجد معظم الفلزات في يسار الجدول الدوري ووسطه.'
-      },
-      {
-        question: 'ما الرمز الكيميائي للهيدروجين؟',
-        options: ['H', 'He', 'Hg'],
-        answer: 0,
-        explanation: 'الرمز H يمثل الهيدروجين.'
-      }
-    ]
-  },
-  {
-    keys: ['التفاعل الكيميائي', 'التفاعلات الكيميائية', 'chemical reaction'],
-    questions: [
-      {
-        question: 'ماذا يحدث في التفاعل الكيميائي؟',
-        options: ['تتكون مواد جديدة', 'تختفي الذرات تمامًا', 'لا يحدث أي تغير'],
-        answer: 0,
-        explanation: 'يعيد التفاعل ترتيب الذرات لتكوين مواد ذات خواص جديدة.'
-      },
-      {
-        question: 'ما المقصود بالمتفاعلات؟',
-        options: ['المواد الموجودة قبل التفاعل', 'المواد الناتجة فقط', 'الأدوات المستخدمة في المختبر'],
-        answer: 0,
-        explanation: 'المتفاعلات هي المواد التي تبدأ التفاعل الكيميائي.'
-      },
-      {
-        question: 'لماذا نوازن المعادلة الكيميائية؟',
-        options: ['لتحقيق حفظ عدد ذرات كل عنصر', 'لتغيير رموز العناصر', 'لجعل الناتج دائمًا غازًا'],
-        answer: 0,
-        explanation: 'يجب أن يتساوى عدد ذرات كل عنصر في طرفي المعادلة.'
-      },
-      {
-        question: 'أي علامة قد تدل على حدوث تفاعل كيميائي؟',
-        options: ['تكوّن غاز أو راسب جديد', 'تغيير مكان الكأس فقط', 'الكتابة على الورق'],
-        answer: 0,
-        explanation: 'من الدلائل المحتملة انطلاق غاز أو تكوّن راسب أو تغير حراري أو لوني.'
-      }
-    ]
-  },
-  {
-    keys: ['الماضي البسيط', 'past simple', 'simple past'],
+    keys: ['الماضي البسيط', 'past simple'],
     questions: [
       {
         question: 'أي جملة مكتوبة بالماضي البسيط؟',
-        options: ['I played football yesterday.', 'I play football every day.', 'I am playing now.'],
+        options: [
+          'I played football yesterday.',
+          'I play football every day.',
+          'I am playing now.'
+        ],
         answer: 0,
-        explanation: 'تدل كلمة yesterday على الماضي، والفعل played هو الماضي من play.'
+        explanation: 'Played هي صيغة الماضي من play.'
       },
       {
         question: 'ما الماضي من الفعل go؟',
         options: ['goed', 'went', 'going'],
         answer: 1,
-        explanation: 'الفعل go غير منتظم وماضيه went.'
+        explanation: 'ماضي go هو went.'
       },
       {
-        question: 'أي كلمة شائعة للدلالة على الماضي؟',
-        options: ['tomorrow', 'yesterday', 'now'],
+        question: 'ما معنى yesterday؟',
+        options: ['غدًا', 'أمس', 'الآن'],
         answer: 1,
-        explanation: 'Yesterday تعني أمس، وغالبًا تشير إلى زمن ماضٍ.'
+        explanation: 'Yesterday تعني أمس.'
       },
       {
-        question: 'كيف ننفي غالبًا جملة بالماضي البسيط مع فعل عادي؟',
-        options: ['did not + الفعل الأساسي', 'does not + فعل الماضي', 'am not + الفعل الماضي'],
+        question: 'كيف ننفي غالبًا فعلًا عاديًا في الماضي؟',
+        options: [
+          'did not + الفعل الأساسي',
+          'does not + فعل الماضي',
+          'am not + الفعل الماضي'
+        ],
         answer: 0,
-        explanation: 'نستخدم did not أو didn’t ثم نعيد الفعل إلى صورته الأساسية.'
-      }
-    ]
-  },
-  {
-    keys: ['المضارع البسيط', 'present simple', 'simple present'],
-    questions: [
-      {
-        question: 'أي جملة تعبّر عن عادة؟',
-        options: ['She walks to school every day.', 'She walked yesterday.', 'She is walking now.'],
-        answer: 0,
-        explanation: 'Every day تشير إلى عادة متكررة، ويُستخدم معها المضارع البسيط.'
-      },
-      {
-        question: 'مع he أو she أو it في المضارع البسيط، ماذا يحدث غالبًا للفعل؟',
-        options: ['نضيف s أو es', 'نضيف ed دائمًا', 'نضع will قبل الفعل'],
-        answer: 0,
-        explanation: 'غالبًا نضيف s أو es مع he/she/it في الجملة المثبتة.'
-      },
-      {
-        question: 'اختر الفعل الصحيح: They ___ English.',
-        options: ['speaks', 'speak', 'speaking'],
-        answer: 1,
-        explanation: 'مع they نستخدم الفعل الأساسي speak.'
-      },
-      {
-        question: 'أي كلمة تدل غالبًا على التكرار؟',
-        options: ['usually', 'yesterday', 'last week'],
-        answer: 0,
-        explanation: 'Usually تعني عادةً، وهي من كلمات التكرار الشائعة.'
-      }
-    ]
-  },
-  {
-    keys: ['المبتدأ والخبر', 'الجملة الاسمية', 'subject and predicate'],
-    questions: [
-      {
-        question: 'في جملة «الجوُّ جميلٌ»، ما المبتدأ؟',
-        options: ['الجوُّ', 'جميلٌ', 'لا يوجد مبتدأ'],
-        answer: 0,
-        explanation: 'الجوُّ هو الاسم الذي تبدأ به الجملة الاسمية ويُخبر عنه.'
-      },
-      {
-        question: 'ما الخبر في جملة «الطالبُ مجتهدٌ»؟',
-        options: ['الطالبُ', 'مجتهدٌ', 'الجملة كلها مبتدأ'],
-        answer: 1,
-        explanation: 'مجتهدٌ هو الخبر الذي يكمّل معنى المبتدأ.'
-      },
-      {
-        question: 'بماذا تبدأ الجملة الاسمية غالبًا؟',
-        options: ['باسم', 'بحرف جر دائمًا', 'بفعل ماضٍ دائمًا'],
-        answer: 0,
-        explanation: 'الجملة الاسمية تبدأ غالبًا باسم، وتتكون في أصلها من مبتدأ وخبر.'
-      },
-      {
-        question: 'ما علامة رفع المفرد غالبًا؟',
-        options: ['الضمة', 'الكسرة', 'السكون دائمًا'],
-        answer: 0,
-        explanation: 'الضمة هي علامة الرفع الأصلية للاسم المفرد.'
+        explanation: 'نستخدم did not ثم الفعل في صورته الأساسية.'
       }
     ]
   }
 ];
 
-// أسئلة عامة لكل مادة
-const subjectQuizBanks = [
+const subjectBanks = [
   {
-    subjects: ['الرياضيات', 'رياضيات'],
+    subject: 'الرياضيات',
     questions: [
-      { question: 'ما ناتج 7 × 8؟', options: ['54', '56', '64'], answer: 1, explanation: '7 × 8 = 56.' },
-      { question: 'ما متوسط الأعداد 2 و4 و6؟', options: ['3', '4', '6'], answer: 1, explanation: 'المتوسط = (2 + 4 + 6) ÷ 3 = 4.' },
-      { question: 'ما ناتج 15% من 100؟', options: ['10', '15', '25'], answer: 1, explanation: '15% من 100 تساوي 15.' },
-      { question: 'إذا كان x − 3 = 9، فما قيمة x؟', options: ['6', '12', '27'], answer: 1, explanation: 'نضيف 3 إلى الطرفين، فتكون x = 12.' }
+      {question:'ما ناتج 7 × 8؟',options:['54','56','64'],answer:1,explanation:'7 × 8 = 56.'},
+      {question:'ما متوسط 2 و4 و6؟',options:['3','4','6'],answer:1,explanation:'(2 + 4 + 6) ÷ 3 = 4.'},
+      {question:'ما ناتج 15% من 100؟',options:['10','15','25'],answer:1,explanation:'15% من 100 تساوي 15.'},
+      {question:'إذا كان x − 3 = 9، فما قيمة x؟',options:['6','12','27'],answer:1,explanation:'نضيف 3 إلى الطرفين، فتكون x = 12.'}
     ]
   },
   {
-    subjects: ['الفيزياء', 'فيزياء'],
+    subject: 'الفيزياء',
     questions: [
-      { question: 'ما وحدة قياس الكتلة؟', options: ['الكيلوجرام', 'النيوتن', 'الفولت'], answer: 0, explanation: 'تقاس الكتلة بالكيلوجرام في النظام الدولي.' },
-      { question: 'ما وحدة قياس القوة؟', options: ['الجول', 'النيوتن', 'الأمبير'], answer: 1, explanation: 'وحدة القوة هي النيوتن.' },
-      { question: 'إذا بقي جسم ساكنًا ولم تؤثر فيه قوة محصلة، فماذا يحدث؟', options: ['يبقى ساكنًا', 'تزداد سرعته تلقائيًا', 'تقل كتلته'], answer: 0, explanation: 'هذا يتفق مع قانون نيوتن الأول.' },
-      { question: 'ما وحدة قياس الطاقة؟', options: ['الجول', 'المتر', 'الثانية'], answer: 0, explanation: 'تقاس الطاقة بالجول.' }
+      {question:'ما وحدة قياس الكتلة؟',options:['الكيلوجرام','النيوتن','الفولت'],answer:0,explanation:'تقاس الكتلة بالكيلوجرام.'},
+      {question:'ما وحدة قياس القوة؟',options:['الجول','النيوتن','الأمبير'],answer:1,explanation:'وحدة القوة هي النيوتن.'},
+      {question:'ما وحدة قياس الطاقة؟',options:['الجول','المتر','الثانية'],answer:0,explanation:'تقاس الطاقة بالجول.'},
+      {question:'ما الذي يحتاجه المصباح ليضيء في دائرة بسيطة؟',options:['دائرة مكتملة ومصدر طاقة','سلك مقطوع','دائرة مفتوحة'],answer:0,explanation:'يجب أن تكون الدائرة مكتملة كي يمر التيار.'}
     ]
   },
   {
-    subjects: ['الكيمياء', 'كيمياء'],
+    subject: 'الكيمياء',
     questions: [
-      { question: 'ما أصغر وحدة تحتفظ بخواص العنصر الكيميائي؟', options: ['الذرة', 'المخلوط', 'المحلول'], answer: 0, explanation: 'الذرة هي أصغر وحدة تحتفظ بخواص العنصر الكيميائية.' },
-      { question: 'ما الرمز الكيميائي للأكسجين؟', options: ['O', 'Ox', 'Og'], answer: 0, explanation: 'رمز عنصر الأكسجين هو O.' },
-      { question: 'ما الجسيم ذو الشحنة السالبة؟', options: ['الإلكترون', 'البروتون', 'النيوترون'], answer: 0, explanation: 'الإلكترون سالب الشحنة.' },
-      { question: 'عند موازنة معادلة كيميائية يجب أن يتساوى عدد ذرات كل عنصر في:', options: ['طرفي المعادلة', 'طرف المتفاعلات فقط', 'طرف النواتج فقط'], answer: 0, explanation: 'يُحفظ عدد ذرات كل عنصر في المعادلة الكيميائية الموزونة.' }
+      {question:'ما الرمز الكيميائي للأكسجين؟',options:['O','Ox','Og'],answer:0,explanation:'رمز الأكسجين هو O.'},
+      {question:'ما الجسيم ذو الشحنة السالبة؟',options:['الإلكترون','البروتون','النيوترون'],answer:0,explanation:'الإلكترون سالب الشحنة.'},
+      {question:'أين توجد البروتونات؟',options:['في النواة','خارج الذرة فقط','في الهواء'],answer:0,explanation:'توجد البروتونات في نواة الذرة.'},
+      {question:'لماذا نوازن المعادلات الكيميائية؟',options:['لحفظ عدد الذرات','لتغيير رموز العناصر','لجعل كل المواد غازات'],answer:0,explanation:'يجب أن يتساوى عدد ذرات كل عنصر في طرفي المعادلة.'}
     ]
   },
   {
-    subjects: ['الأحياء', 'احياء', 'علم الأحياء'],
+    subject: 'الأحياء',
     questions: [
-      { question: 'ما الوحدة الأساسية للكائنات الحية؟', options: ['الخلية', 'النسيج فقط', 'العضو فقط'], answer: 0, explanation: 'الخلية هي الوحدة الأساسية للحياة.' },
-      { question: 'أي جزء من النبات يمتص الماء غالبًا من التربة؟', options: ['الجذور', 'الأزهار فقط', 'الثمار فقط'], answer: 0, explanation: 'تمتص الجذور الماء والأملاح المعدنية من التربة.' },
-      { question: 'ما العملية التي يصنع بها النبات غذاءه باستخدام الضوء؟', options: ['البناء الضوئي', 'الهضم', 'التبخر فقط'], answer: 0, explanation: 'يستخدم النبات الضوء لصنع السكريات في عملية البناء الضوئي.' },
-      { question: 'ما وظيفة القلب الأساسية؟', options: ['ضخ الدم', 'هضم الطعام', 'تبادل الغازات مباشرة مع الهواء'], answer: 0, explanation: 'يضخ القلب الدم إلى أنحاء الجسم.' }
-    ]
-  },
-  {
-    subjects: ['اللغة الإنجليزية', 'الانجليزي', 'الإنجليزية', 'الانجليزية'],
-    questions: [
-      { question: 'اختر الترجمة الصحيحة لكلمة “book”.', options: ['كتاب', 'قلم', 'مدرسة'], answer: 0, explanation: 'Book تعني كتاب.' },
-      { question: 'اختر الجملة الصحيحة.', options: ['She are happy.', 'She is happy.', 'She am happy.'], answer: 1, explanation: 'نستخدم is مع she.' },
-      { question: 'ما جمع كلمة “child”؟', options: ['childs', 'children', 'childes'], answer: 1, explanation: 'جمع child غير المنتظم هو children.' },
-      { question: 'ما معنى “yesterday”؟', options: ['غدًا', 'أمس', 'الآن'], answer: 1, explanation: 'Yesterday تعني أمس.' }
-    ]
-  },
-  {
-    subjects: ['اللغة العربية', 'عربي', 'العربية'],
-    questions: [
-      { question: 'ما نوع كلمة «يكتب»؟', options: ['فعل مضارع', 'اسم', 'حرف جر'], answer: 0, explanation: 'يكتب فعل مضارع يدل على حدث يقع في الحاضر أو المستقبل.' },
-      { question: 'ما جمع كلمة «كتاب»؟', options: ['كاتب', 'كتب', 'مكتبة'], answer: 1, explanation: 'جمع كتاب هو كتب.' },
-      { question: 'ما ضد كلمة «قريب»؟', options: ['بعيد', 'صغير', 'سريع'], answer: 0, explanation: 'ضد قريب هو بعيد.' },
-      { question: 'أي كلمة من الآتي اسم؟', options: ['في', 'ذهب', 'مدرسة'], answer: 2, explanation: 'مدرسة اسم، أما في فحرف وذهب فعل.' }
-    ]
-  },
-  {
-    subjects: ['الدراسات الاجتماعية', 'اجتماعيات', 'الجغرافيا', 'التاريخ'],
-    questions: [
-      { question: 'ما عاصمة سلطنة عُمان؟', options: ['مسقط', 'صلالة', 'نزوى'], answer: 0, explanation: 'مسقط هي عاصمة سلطنة عُمان.' },
-      { question: 'في أي شبه جزيرة تقع سلطنة عُمان؟', options: ['شبه الجزيرة العربية', 'شبه الجزيرة الإيبيرية', 'شبه جزيرة الهند الصينية'], answer: 0, explanation: 'تقع عُمان في جنوب شرقي شبه الجزيرة العربية.' },
-      { question: 'ما فائدة مفتاح الخريطة؟', options: ['توضيح معاني الرموز', 'تحديد درجة حرارة الغرفة', 'قياس وزن الأشياء'], answer: 0, explanation: 'يفسر مفتاح الخريطة الرموز والألوان المستخدمة فيها.' },
-      { question: 'أي اتجاه يقع مقابل الشمال؟', options: ['الجنوب', 'الشرق', 'الغرب'], answer: 0, explanation: 'الجنوب هو الاتجاه المقابل للشمال.' }
-    ]
-  },
-  {
-    subjects: ['معلومات عامة'],
-    questions: [
-      { question: 'ما الكوكب الذي نعيش عليه؟', options: ['الأرض', 'المريخ', 'الزهرة'], answer: 0, explanation: 'نعيش على كوكب الأرض.' },
-      { question: 'ما الغاز الذي يحتاجه الإنسان عادةً للتنفس؟', options: ['الأكسجين', 'الهيليوم', 'الهيدروجين'], answer: 0, explanation: 'يستخدم جسم الإنسان الأكسجين في عمليات إنتاج الطاقة.' },
-      { question: 'كم دقيقة في الساعة؟', options: ['30', '60', '100'], answer: 1, explanation: 'الساعة الواحدة تساوي 60 دقيقة.' },
-      { question: 'ما النجم الأقرب إلى الأرض؟', options: ['الشمس', 'الشعرى اليمانية', 'نجم القطب'], answer: 0, explanation: 'الشمس هي أقرب نجم إلى الأرض.' }
+      {question:'ما الوحدة الأساسية للحياة؟',options:['الخلية','الصخر','الماء'],answer:0,explanation:'الخلية هي الوحدة الأساسية للحياة.'},
+      {question:'ما وظيفة القلب الأساسية؟',options:['ضخ الدم','هضم الطعام','امتصاص الضوء'],answer:0,explanation:'يضخ القلب الدم إلى أنحاء الجسم.'},
+      {question:'ما العملية التي يستخدم فيها النبات الضوء لصنع الغذاء؟',options:['البناء الضوئي','الهضم','التكاثف'],answer:0,explanation:'يصنع النبات السكريات بعملية البناء الضوئي.'},
+      {question:'أي جزء من النبات يمتص الماء من التربة؟',options:['الجذور','الأزهار فقط','الثمار فقط'],answer:0,explanation:'تمتص الجذور الماء والأملاح من التربة.'}
     ]
   }
 ];
 
-function escapeHTML(value) {
-  const element = document.createElement('span');
-  element.textContent = String(value ?? '');
-  return element.innerHTML;
+function esc(value) {
+  const el = document.createElement('span');
+  el.textContent = String(value ?? '');
+  return el.innerHTML;
 }
 
-function normalizeVideo(item) {
-  return {
-    videoId: item?.videoId || item?.id?.videoId || '',
-    title: item?.title || item?.snippet?.title || 'شرح الدرس',
-    channel: item?.channel || item?.snippet?.channelTitle || 'YouTube',
-    thumbnail:
-      item?.thumbnail ||
-      item?.snippet?.thumbnails?.medium?.url ||
-      item?.snippet?.thumbnails?.high?.url ||
-      ''
-  };
+function normalize(value) {
+  return String(value ?? '')
+    .toLocaleLowerCase('ar')
+    .replace(/[\u064B-\u065F\u0670]/g, '')
+    .replace(/[أإآ]/g, 'ا')
+    .replace(/ى/g, 'ي')
+    .trim();
 }
 
 async function api(url, options = {}) {
@@ -1123,11 +873,11 @@ async function api(url, options = {}) {
   try {
     data = await response.json();
   } catch {
-    throw new Error('استجاب السيرفر ببيانات غير متوقعة. حاول تحديث الصفحة.');
+    throw new Error('استجاب الخادم ببيانات غير متوقعة.');
   }
 
   if (!response.ok) {
-    throw new Error(data.message || `فشل الطلب (${response.status})`);
+    throw new Error(data.message || `فشل الطلب: ${response.status}`);
   }
 
   return data;
@@ -1151,10 +901,6 @@ async function loadSettings() {
       document.title = appSettings.site_title;
     }
 
-    if (appSettings.welcome_title) {
-      $('welcomeTitle').textContent = appSettings.welcome_title;
-    }
-
     if (appSettings.welcome_text) {
       $('welcomeText').textContent = appSettings.welcome_text;
     }
@@ -1164,23 +910,22 @@ async function loadSettings() {
     }
 
     if (appSettings.site_enabled === 'false') {
-      $('results').innerHTML =
-        '<div class="message">الموقع متوقف مؤقتًا. يرجى العودة لاحقًا.</div>';
       $('searchButton').disabled = true;
+      $('results').innerHTML =
+        '<div class="message">الموقع متوقف مؤقتًا.</div>';
     }
   } catch (error) {
-    console.warn('تعذر تحميل إعدادات الموقع:', error.message);
+    console.warn('تعذر تحميل الإعدادات:', error.message);
   }
 }
 
 async function registerVisit() {
   try {
     if (sessionStorage.getItem('shrh_visit_counted') === '1') return;
-
     await fetch('/api/stats/visit', { method: 'POST' });
     sessionStorage.setItem('shrh_visit_counted', '1');
   } catch (error) {
-    console.warn('تعذر تسجيل الزيارة:', error.message);
+    console.warn(error.message);
   }
 }
 
@@ -1188,98 +933,87 @@ async function registerSearch() {
   try {
     await fetch('/api/stats/search', { method: 'POST' });
   } catch (error) {
-    console.warn('تعذر تسجيل البحث:', error.message);
+    console.warn(error.message);
   }
 }
 
-function setLoading(isLoading) {
-  $('searchButton').disabled = isLoading;
-  $('searchButton').innerHTML = isLoading
-    ? '<span class="spinner"></span> جاري البحث...'
-    : '🔎 ابحث عن الدرس';
-}
-
-function buildSearchQuery(context) {
+function makeQuery(context, suffix = 'شرح') {
   return [
     context.grade,
     context.subject,
     context.semester,
     context.lesson,
-    'شرح'
+    suffix
   ].filter(Boolean).join(' ');
 }
 
-function matchesContext(lesson, context) {
-  const same = (field, selected) =>
-    !selected || !field || String(field).trim() === selected;
-
-  return same(lesson.semester, context.semester)
-    && same(lesson.grade, context.grade)
-    && same(lesson.subject, context.subject);
-}
-
-async function searchLocalLessons(context) {
+async function findLocalLessons(context) {
   try {
     const data = await api('/api/lessons');
-    const list = Array.isArray(data.items) ? data.items : [];
-    const term = context.lesson.toLocaleLowerCase('ar');
+    const items = Array.isArray(data.items) ? data.items : [];
+    const term = normalize(context.lesson);
 
-    return list.filter(item => {
-      const title = String(item.title || '').toLocaleLowerCase('ar');
-      return matchesContext(item, context) && title.includes(term);
+    return items.filter(item => {
+      const title = normalize(item.title);
+      const matchesTitle = title.includes(term);
+      const matchesGrade =
+        !context.grade || !item.grade || item.grade === context.grade;
+      const matchesSubject =
+        !context.subject || !item.subject || item.subject === context.subject;
+      const matchesSemester =
+        !context.semester || !item.semester ||
+        item.semester === context.semester;
+
+      return matchesTitle && matchesGrade &&
+        matchesSubject && matchesSemester;
     });
   } catch (error) {
-    console.warn('تعذر البحث في الدروس المخزنة:', error.message);
+    console.warn('تعذر قراءة الدروس المخزنة:', error.message);
     return [];
   }
 }
 
-function renderLocalLessons(lessons) {
-  if (!lessons.length) return '';
+function renderLocalLessons(items) {
+  if (!items.length) return '';
 
-  let html =
-    '<h2 class="section-title">📚 دروس مضافة في المنصة</h2><div class="grid">';
-
-  for (const lesson of lessons) {
-    html += `
-      <article class="lesson-card">
-        <span class="tag">${
-          escapeHTML(
-            [lesson.grade, lesson.subject, lesson.semester]
+  return `
+    <h2 class="section-title">📚 دروس مضافة في المنصة</h2>
+    <div class="grid">
+      ${items.map(item => `
+        <article class="card">
+          <span class="tag">${esc(
+            [item.grade, item.subject, item.semester]
               .filter(Boolean).join(' • ') || 'درس'
-          )
-        }</span>
-        <h3>${escapeHTML(lesson.title)}</h3>
-        <p>${escapeHTML(
-          lesson.description || lesson.summary ||
-          'هذا الدرس مضاف في محتوى المنصة.'
-        )}</p>
-        ${
-          lesson.video_url
-            ? `<a class="source-button"
-                href="${escapeHTML(lesson.video_url)}"
-                target="_blank"
-                rel="noopener noreferrer">
-                ▶️ مشاهدة فيديو الدرس
-              </a>`
-            : ''
-        }
-      </article>`;
-  }
-
-  html += '</div>';
-  return html;
+          )}</span>
+          <h3>${esc(item.title)}</h3>
+          <p>${esc(item.description || item.summary || 'درس من محتوى المنصة.')}</p>
+          ${
+            item.video_url
+              ? `<a class="web-link" target="_blank" rel="noopener noreferrer"
+                    href="${esc(item.video_url)}">▶️ مشاهدة الدرس</a>`
+              : ''
+          }
+        </article>
+      `).join('')}
+    </div>`;
 }
 
 async function searchYouTube(query) {
-  // يبحث من خلال الخادم نفسه، سواء على Render أو أثناء التشغيل المحلي.
   const data = await api(
     '/api/youtube-search?q=' + encodeURIComponent(query)
   );
 
   return (Array.isArray(data.items) ? data.items : [])
-    .map(normalizeVideo)
-    .filter(video => video.videoId);
+    .map(item => ({
+      videoId: item.videoId || item.id?.videoId || '',
+      title: item.title || item.snippet?.title || 'شرح الدرس',
+      channel: item.channel || item.snippet?.channelTitle || 'YouTube',
+      description: item.description || item.snippet?.description || '',
+      thumbnail: item.thumbnail ||
+        item.snippet?.thumbnails?.medium?.url ||
+        item.snippet?.thumbnails?.high?.url || ''
+    }))
+    .filter(item => item.videoId);
 }
 
 function renderVideos(videos) {
@@ -1287,110 +1021,224 @@ function renderVideos(videos) {
     return '<div class="message">لم يتم العثور على فيديوهات من YouTube لهذه العبارة.</div>';
   }
 
-  let html =
-    '<h2 class="section-title">🎥 شروحات من YouTube</h2><div class="grid">';
-
-  for (const video of videos) {
-    html += `
-      <article class="video-card">
-        <img
-          class="video-thumb"
-          src="${escapeHTML(video.thumbnail)}"
-          alt="صورة الفيديو"
-          loading="lazy">
-        <div>
-          <h3>${escapeHTML(video.title)}</h3>
-          <p>📺 ${escapeHTML(video.channel)}</p>
-        </div>
-        <a class="video-button"
-          href="https://www.youtube.com/watch?v=${encodeURIComponent(video.videoId)}"
-          target="_blank"
-          rel="noopener noreferrer">
-          ▶️ شاهد الشرح
-        </a>
-      </article>`;
-  }
-
-  html += '</div>';
-  return html;
+  return `
+    <h2 class="section-title">🎥 شروحات من YouTube</h2>
+    <div class="grid">
+      ${videos.map(video => `
+        <article class="card video-card">
+          ${
+            video.thumbnail
+              ? `<img class="video-thumb"
+                  src="${esc(video.thumbnail)}"
+                  alt="صورة الفيديو" loading="lazy">`
+              : ''
+          }
+          <h3>${esc(video.title)}</h3>
+          <p>📺 ${esc(video.channel)}</p>
+          <a class="video-link"
+            target="_blank" rel="noopener noreferrer"
+            href="https://www.youtube.com/watch?v=${encodeURIComponent(video.videoId)}">
+            ▶️ شاهد الشرح
+          </a>
+        </article>
+      `).join('')}
+    </div>`;
 }
 
-function renderWebSearch(query) {
-  const googleUrl =
-    'https://www.google.com/search?q=' + encodeURIComponent(query);
-
-  const youtubeUrl =
-    'https://www.youtube.com/results?search_query=' +
+function renderWebLinks(context) {
+  const query = makeQuery(context);
+  const google = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+  const youtube = 'https://www.youtube.com/results?search_query=' +
     encodeURIComponent(query);
 
   return `
     <div class="action-row">
-      <a class="source-button"
-        href="${googleUrl}"
-        target="_blank"
-        rel="noopener noreferrer">
-        🌐 البحث عن المزيد في الويب
-      </a>
-      <a class="video-button"
-        href="${youtubeUrl}"
-        target="_blank"
-        rel="noopener noreferrer">
-        ▶️ فتح بحث YouTube
-      </a>
+      <a class="web-link" href="${google}" target="_blank"
+        rel="noopener noreferrer">🌐 البحث في الويب</a>
+      <a class="video-link" href="${youtube}" target="_blank"
+        rel="noopener noreferrer">▶️ بحث YouTube</a>
     </div>`;
 }
 
-function normalizeText(value) {
-  return String(value ?? '')
-    .toLocaleLowerCase('ar')
-    .replace(/[\u064B-\u065F\u0670]/g, '')
-    .replace(/[أإآ]/g, 'ا')
-    .replace(/ى/g, 'ي')
-    .replace(/\s+/g, ' ')
-    .trim();
+function renderExternalTests(context) {
+  const terms = [
+    context.grade,
+    context.subject,
+    context.lesson
+  ].filter(Boolean).join(' ');
+
+  const searches = [
+    ['📝 اختبارات إلكترونية', 'ابحث عن اختبارات تفاعلية', 'اختبار إلكتروني'],
+    ['✅ أسئلة مع الحل', 'تدريبات وإجابات للمراجعة', 'أسئلة وتمارين مع الحل'],
+    ['📄 اختبارات PDF', 'نماذج قابلة للتحميل والطباعة', 'اختبار PDF'],
+    ['✍️ أوراق عمل', 'تدريبات إضافية على الدرس', 'ورقة عمل تدريبات']
+  ];
+
+  return `
+    <section class="test-links">
+      <h2>🔎 اختبارات إضافية عن الدرس</h2>
+      <p>روابط بحث Google حسب الصف والمادة والدرس. تحقّق من ملاءمة النتائج لمنهجك.</p>
+      <div class="test-link-grid">
+        ${searches.map(item => {
+          const url = 'https://www.google.com/search?q=' +
+            encodeURIComponent(`${terms} ${item[2]}`);
+          return `
+            <a class="test-link" href="${url}" target="_blank"
+              rel="noopener noreferrer">
+              <strong>${item[0]}</strong>
+              <span>${item[1]}</span>
+            </a>`;
+        }).join('')}
+      </div>
+    </section>`;
+}
+
+function renderSummarySection() {
+  return `
+    <section class="summary-card">
+      <h2>📘 ملخص الدرس الذكي</h2>
+      <p>أنشئ ملخصًا بالعربية يتضمن الفكرة الأساسية والنقاط المهمة والمصطلحات والأمثلة وأسئلة للمراجعة.</p>
+      <button class="secondary" id="generateSummaryButton" type="button">
+        ✨ أنشئ ملخص الدرس
+      </button>
+      <div id="summaryMessage" aria-live="polite"></div>
+      <div id="summaryContent" class="summary-content"></div>
+    </section>`;
+}
+
+function renderSummary(summary) {
+  const list = items => Array.isArray(items) && items.length
+    ? `<ul>${items.map(item => `<li>${esc(item)}</li>`).join('')}</ul>`
+    : '<p class="small">لا توجد عناصر في هذا القسم.</p>';
+
+  const terms = Array.isArray(summary.terms) ? summary.terms : [];
+
+  return `
+    <h3>${esc(summary.title || 'ملخص الدرس')}</h3>
+    <p>${esc(summary.overview || '')}</p>
+    <h3>⭐ أهم النقاط</h3>
+    ${list(summary.keyPoints)}
+    <h3>📖 المصطلحات الأساسية</h3>
+    ${
+      terms.length
+        ? terms.map(term => `
+          <div class="summary-term">
+            <strong>${esc(term.term || '')}</strong><br>
+            ${esc(term.definition || '')}
+          </div>`).join('')
+        : '<p class="small">لا توجد مصطلحات مضافة.</p>'
+    }
+    <h3>💡 أمثلة للتوضيح</h3>
+    ${list(summary.examples)}
+    <h3>🧠 أسئلة للمراجعة</h3>
+    ${list(summary.reviewQuestions)}
+    <p class="small">راجع الملخص مع كتابك المدرسي للتأكد من التفاصيل.</p>
+    <button class="secondary" id="copySummaryButton" type="button">
+      📋 نسخ الملخص
+    </button>`;
+}
+
+async function generateSummary(context) {
+  const button = $('generateSummaryButton');
+  const message = $('summaryMessage');
+  const content = $('summaryContent');
+  if (!button || !message || !content) return;
+
+  button.disabled = true;
+  button.textContent = '⏳ جاري إعداد الملخص...';
+  message.innerHTML = '<div class="message">نجهز أهم الأفكار للدرس.</div>';
+  content.innerHTML = '';
+
+  try {
+    const sources = [
+      ...lastLocalLessons.map(item => ({
+        title: item.title || '',
+        description: item.description || item.summary || ''
+      })),
+      ...lastVideos.map(item => ({
+        title: item.title || '',
+        description: item.description || ''
+      }))
+    ].slice(0, 5);
+
+    const data = await api('/api/summary/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...context, sources })
+    });
+
+    if (!data.summary || !data.summary.overview) {
+      throw new Error('لم يصل ملخص كامل من الخادم.');
+    }
+
+    const summary = data.summary;
+    content.innerHTML = renderSummary(summary);
+
+    const plainText = [
+      summary.title || context.lesson,
+      summary.overview || '',
+      'أهم النقاط:',
+      ...(summary.keyPoints || []).map(item => '• ' + item),
+      'المصطلحات:',
+      ...(summary.terms || []).map(item =>
+        `${item.term}: ${item.definition}`),
+      'الأمثلة:',
+      ...(summary.examples || []).map(item => '• ' + item),
+      'أسئلة المراجعة:',
+      ...(summary.reviewQuestions || []).map(item => '• ' + item)
+    ].join('\n');
+
+    message.innerHTML =
+      '<div class="message success">تم إنشاء الملخص.</div>';
+
+    $('copySummaryButton').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(plainText);
+        $('copySummaryButton').textContent = '✅ تم نسخ الملخص';
+      } catch {
+        message.innerHTML =
+          '<div class="message error">تعذر النسخ تلقائيًا؛ حدد النص وانسخه يدويًا.</div>';
+      }
+    });
+
+  } catch (error) {
+    message.innerHTML = `
+      <div class="message error">
+        ⚠️ ${esc(error.message || 'تعذر إنشاء الملخص.')}
+        <br><span class="small">
+          تأكد من إضافة مسار /api/summary/generate في server.js
+          وإعداد OPENAI_API_KEY في Render.
+        </span>
+      </div>`;
+  } finally {
+    button.disabled = false;
+    button.textContent = '✨ أنشئ ملخص الدرس';
+  }
 }
 
 function buildQuiz(context) {
-  const lesson = normalizeText(context.lesson);
+  const lesson = normalize(context.lesson);
+  const exact = quizBanks.find(bank => bank.keys.some(key => {
+    const k = normalize(key);
+    return lesson.includes(k) || (k.includes(lesson) && lesson.length >= 5);
+  }));
 
-  const exactBank = quizBanks.find(bank =>
-    bank.keys.some(key => {
-      const normalizedKey = normalizeText(key);
-
-      return lesson.includes(normalizedKey)
-        || (normalizedKey.includes(lesson) && lesson.length >= 5);
-    })
-  );
-
-  if (exactBank) {
+  if (exact) {
     return {
-      questions: exactBank.questions.map(question => ({
-        ...question,
-        options: [...question.options]
-      })),
-      mode: 'lesson'
+      mode: 'lesson',
+      questions: exact.questions.map(q => ({...q, options:[...q.options]}))
     };
   }
 
-  const subject = normalizeText(context.subject);
-
-  const subjectBank = subjectQuizBanks.find(bank =>
-    bank.subjects.some(name => {
-      const normalizedName = normalizeText(name);
-
-      return subject === normalizedName
-        || subject.includes(normalizedName)
-        || (normalizedName.includes(subject) && subject.length >= 3);
-    })
+  const subject = normalize(context.subject);
+  const bank = subjectBanks.find(item =>
+    subject.includes(normalize(item.subject))
   );
 
-  if (subjectBank) {
+  if (bank) {
     return {
-      questions: subjectBank.questions.map(question => ({
-        ...question,
-        options: [...question.options]
-      })),
-      mode: 'subject'
+      mode: 'subject',
+      questions: bank.questions.map(q => ({...q, options:[...q.options]}))
     };
   }
 
@@ -1398,96 +1246,246 @@ function buildQuiz(context) {
     mode: 'general',
     questions: [
       {
-        question: `ما أفضل طريقة للبدء في فهم درس «${context.lesson}»؟`,
+        question: 'ما أفضل طريقة لفهم درس جديد؟',
         options: [
-          'قراءة الفكرة الأساسية ثم حل أمثلة',
-          'حفظ عنوان الدرس فقط',
+          'فهم الفكرة ثم تطبيق أمثلة',
+          'حفظ العنوان فقط',
           'تجاوز الشرح'
         ],
         answer: 0,
-        explanation: 'ابدأ بفهم الفكرة، ثم تابع أمثلة محلولة وطبّق بنفسك.'
+        explanation: 'فهم الفكرة ثم التدرب يساعد على التعلم.'
       },
       {
-        question: 'إذا واجهت خطوة غير واضحة في الحل، ماذا تفعل؟',
+        question: 'إذا لم تفهم خطوة في الحل، ماذا تفعل؟',
         options: [
           'أراجع الخطوة وأبحث عن سببها',
-          'أترك السؤال دون مراجعة',
+          'أتجاهلها',
           'أختار جوابًا عشوائيًا'
         ],
         answer: 0,
-        explanation: 'مراجعة الخطوة ومعرفة سببها تساعدك على التعلم من الخطأ.'
+        explanation: 'مراجعة الخطوات تساعد على اكتشاف الأخطاء.'
       },
       {
-        question: 'ما الذي يساعد على تثبيت ما تعلمته؟',
+        question: 'ما الذي يساعد على تثبيت المعلومات؟',
         options: [
-          'حل أسئلة ومراجعة الأخطاء',
+          'التدرب ومراجعة الأخطاء',
           'قراءة العنوان فقط',
-          'عدم العودة إلى الدرس'
+          'عدم المراجعة'
         ],
         answer: 0,
-        explanation: 'التدرب واسترجاع المعلومات ومراجعة الأخطاء تساعد على التذكر.'
+        explanation: 'الاختبارات والتدرب تساعد على استرجاع المعلومات.'
       },
       {
-        question: 'قبل الإجابة عن أي سؤال، الأفضل أن:',
+        question: 'قبل الإجابة عن السؤال، الأفضل أن:',
         options: [
-          'أقرأ المطلوب جيدًا',
-          'أتجاهل الكلمات المهمة',
-          'أختار بسرعة دون قراءة'
+          'أقرأ السؤال جيدًا',
+          'أتجاهل المطلوب',
+          'أجيب دون قراءة'
         ],
         answer: 0,
-        explanation: 'اقرأ السؤال وحدد المطلوب قبل اختيار الإجابة.'
+        explanation: 'حدد المطلوب قبل اختيار الإجابة.'
       }
     ]
   };
 }
 
-function renderQuiz(context) {
-  const quiz = buildQuiz(context);
+function renderQuiz(context, override = null) {
+  const quiz = override || buildQuiz(context);
   currentQuiz = quiz.questions;
+  currentQuizContext = {...context};
+  currentQuizMode = quiz.mode || 'local';
+  hasSavedCurrentResult = false;
 
-  const questionsHtml = currentQuiz.map((question, index) => {
-    const optionsHtml = question.options.map((option, optionIndex) => `
-      <label class="option" id="option-${index}-${optionIndex}">
-        <input type="radio" name="question-${index}" value="${optionIndex}">
-        <span>${escapeHTML(option)}</span>
-      </label>
-    `).join('');
-
-    return `
-      <div class="question" id="question-${index}">
-        <h3>${index + 1}. ${escapeHTML(question.question)}</h3>
-        ${optionsHtml}
-        <div class="question-feedback" id="feedback-${index}"></div>
-      </div>`;
-  }).join('');
-
-  const scopeNote = quiz.mode === 'lesson'
-    ? 'هذه الأسئلة مرتبطة بموضوع الدرس من بنك الأسئلة المتاح.'
-    : quiz.mode === 'subject'
-      ? `لم تتوفر أسئلة مضافة لهذا الدرس تحديدًا بعد؛ هذا تدريب عام في مادة ${context.subject || 'المادة'}، وليس اختبارًا خاصًا بالدرس.`
-      : 'لم يُضف بنك أسئلة خاص بهذا الدرس بعد؛ هذا تدريب على مهارات المذاكرة وليس اختبارًا في محتوى الدرس.';
-
-  const contextLabel = [context.grade, context.subject]
-    .filter(Boolean).join(' • ');
+  const note = quiz.mode === 'ai'
+    ? 'تم إعداد هذه الأسئلة بالذكاء الاصطناعي. راجع شرح الدرس عند الحاجة.'
+    : quiz.mode === 'lesson'
+      ? 'هذه الأسئلة مرتبطة بموضوع الدرس من بنك الأسئلة المتاح.'
+      : quiz.mode === 'subject'
+        ? `هذا تدريب عام في مادة ${context.subject}، وليس اختبارًا خاصًا بهذا الدرس.`
+        : 'لم يتوفر بنك أسئلة لهذا الدرس بعد؛ هذا تدريب عام على مهارات المذاكرة.';
 
   return `
     <div class="quiz-card" id="quizCard">
       <h2>🧠 اختبر نفسك</h2>
       <p class="subtitle">
-        الدرس: <b>${escapeHTML(context.lesson)}</b>
-        ${
-          contextLabel
-            ? `<br><span class="small">${escapeHTML(contextLabel)}</span>`
-            : ''
-        }
-        <br>${escapeHTML(scopeNote)}
+        الدرس: <b>${esc(context.lesson)}</b><br>
+        ${esc(context.grade)} • ${esc(context.subject)}<br>
+        ${esc(note)}
       </p>
-      ${questionsHtml}
+      <button class="secondary" id="generateAIQuiz" type="button">
+        ✨ أنشئ اختبارًا بالذكاء الاصطناعي
+      </button>
+      <div id="aiQuizMessage" aria-live="polite"></div>
+
+      ${currentQuiz.map((q, i) => `
+        <div class="question" id="question-${i}">
+          <h3>${i + 1}. ${esc(q.question)}</h3>
+          ${q.options.map((option, j) => `
+            <label class="option" id="option-${i}-${j}">
+              <input type="radio" name="question-${i}" value="${j}">
+              <span>${esc(option)}</span>
+            </label>
+          `).join('')}
+          <div class="feedback" id="feedback-${i}"></div>
+        </div>
+      `).join('')}
+
       <button class="primary" id="submitQuiz" type="button">
         ✅ تصحيح الإجابات
       </button>
       <div class="quiz-result" id="quizResult"></div>
     </div>`;
+}
+
+function attachQuizControls(context) {
+  $('submitQuiz')?.addEventListener('click', gradeQuiz);
+  $('generateAIQuiz')?.addEventListener('click', () => generateAIQuiz(context));
+}
+
+async function generateAIQuiz(context) {
+  const button = $('generateAIQuiz');
+  const message = $('aiQuizMessage');
+  if (!button || !message) return;
+
+  button.disabled = true;
+  button.textContent = '⏳ جاري إنشاء الاختبار...';
+  message.innerHTML = '<div class="message">جاري إنشاء أسئلة تناسب الدرس.</div>';
+
+  try {
+    const sources = [
+      ...lastLocalLessons.map(item => ({
+        title: item.title || '',
+        description: item.description || item.summary || ''
+      })),
+      ...lastVideos.map(item => ({
+        title: item.title || '',
+        description: item.description || ''
+      }))
+    ].slice(0, 5);
+
+    const data = await api('/api/quiz/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...context, sources })
+    });
+
+    if (!Array.isArray(data.questions) || data.questions.length < 3) {
+      throw new Error('لم تصل أسئلة كافية من الخادم.');
+    }
+
+    $('quizContainer').innerHTML = renderQuiz(context, {
+      mode: 'ai',
+      questions: data.questions
+    });
+
+    attachQuizControls(context);
+
+  } catch (error) {
+    const currentMessage = $('aiQuizMessage');
+    const currentButton = $('generateAIQuiz');
+
+    if (currentMessage) {
+      currentMessage.innerHTML = `
+        <div class="message error">
+          ⚠️ ${esc(error.message || 'تعذر إنشاء الاختبار.')}
+          <br><span class="small">
+            تأكد من إضافة مسار /api/quiz/generate
+            وإعداد OPENAI_API_KEY في Render.
+          </span>
+        </div>`;
+    }
+
+    if (currentButton) {
+      currentButton.disabled = false;
+      currentButton.textContent = '✨ أعد محاولة إنشاء اختبار';
+    }
+  }
+}
+
+function readHistory() {
+  try {
+    const data = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '[]');
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveResult(record) {
+  try {
+    const history = readHistory();
+    history.unshift({...record, date:new Date().toISOString()});
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(history.slice(0, 50)));
+    renderProgress();
+  } catch (error) {
+    console.warn('تعذر حفظ النتيجة:', error.message);
+  }
+}
+
+function renderProgress() {
+  const history = readHistory();
+  const attempts = history.length;
+  const average = attempts
+    ? Math.round(history.reduce((sum, x) => sum + Number(x.percentage || 0), 0) / attempts)
+    : 0;
+  const best = attempts
+    ? Math.max(...history.map(x => Number(x.percentage || 0)))
+    : 0;
+
+  const unique = new Set(history.map(x =>
+    `${x.grade}|${x.subject}|${x.lesson}`
+  )).size;
+
+  const stats = [
+    ['🧪 المحاولات', attempts],
+    ['📈 متوسط الدرجات', average + '%'],
+    ['🏆 أفضل نتيجة', best + '%'],
+    ['📚 دروس اختبرتها', unique]
+  ];
+
+  $('progressStats').innerHTML = stats.map(item => `
+    <div class="progress-stat">
+      <span>${item[0]}</span>
+      <strong>${item[1]}</strong>
+    </div>
+  `).join('');
+
+  if (!history.length) {
+    $('progressHistory').innerHTML = `
+      <div class="message">
+        لا توجد نتائج بعد. أكمل اختبارًا واضغط «تصحيح الإجابات» لتظهر نتائجك هنا.
+      </div>`;
+    return;
+  }
+
+  $('progressHistory').innerHTML = `
+    <h3 class="section-title">آخر المحاولات</h3>
+    ${history.slice(0, 10).map(item => {
+      const date = item.date ? new Date(item.date) : null;
+      const dateText = date && !Number.isNaN(date.getTime())
+        ? date.toLocaleString('ar-OM')
+        : '';
+
+      return `
+        <div class="progress-item">
+          <div>
+            <h3>${esc(item.lesson || 'اختبار')}</h3>
+            <p>${esc([item.grade, item.subject].filter(Boolean).join(' • '))}
+              ${dateText ? ' · ' + esc(dateText) : ''}
+            </p>
+          </div>
+          <div class="progress-score">
+            ${Number(item.score || 0)} / ${Number(item.total || 0)}<br>
+            ${Number(item.percentage || 0)}%
+          </div>
+        </div>`;
+    }).join('')}`;
+}
+
+function clearProgress() {
+  if (!confirm('هل تريد مسح سجل النتائج المحفوظ في هذا المتصفح؟')) return;
+  localStorage.removeItem(PROGRESS_KEY);
+  renderProgress();
 }
 
 function resetQuiz() {
@@ -1497,99 +1495,91 @@ function resetQuiz() {
   document.querySelectorAll('#quizCard .option')
     .forEach(option => option.classList.remove('correct', 'wrong'));
 
-  document.querySelectorAll('#quizCard .question-feedback')
-    .forEach(feedback => {
-      feedback.style.display = 'none';
-      feedback.textContent = '';
+  document.querySelectorAll('#quizCard .feedback')
+    .forEach(item => {
+      item.style.display = 'none';
+      item.textContent = '';
     });
 
   $('quizResult').style.display = 'none';
   $('quizResult').innerHTML = '';
   $('submitQuiz').disabled = false;
-  $('submitQuiz').focus();
+  hasSavedCurrentResult = false;
 }
 
 function gradeQuiz() {
   let score = 0;
   let unanswered = 0;
 
-  currentQuiz.forEach((question, index) => {
+  currentQuiz.forEach((question, i) => {
     const selected = document.querySelector(
-      `input[name="question-${index}"]:checked`
+      `input[name="question-${i}"]:checked`
     );
 
     if (!selected) unanswered++;
 
-    question.options.forEach((_, optionIndex) => {
-      const label = $('option-' + index + '-' + optionIndex);
+    question.options.forEach((option, j) => {
+      const label = $('option-' + i + '-' + j);
       label.classList.remove('correct', 'wrong');
 
-      if (optionIndex === question.answer) {
-        label.classList.add('correct');
-      }
+      if (j === question.answer) label.classList.add('correct');
 
-      if (
-        selected &&
-        Number(selected.value) === optionIndex &&
-        optionIndex !== question.answer
-      ) {
+      if (selected && Number(selected.value) === j &&
+          j !== question.answer) {
         label.classList.add('wrong');
       }
     });
 
-    if (selected && Number(selected.value) === question.answer) {
-      score++;
-    }
+    if (selected && Number(selected.value) === question.answer) score++;
 
-    const feedback = $('feedback-' + index);
+    const feedback = $('feedback-' + i);
     feedback.style.display = 'block';
     feedback.innerHTML =
-      `<b>الإجابة الصحيحة: ${
-        escapeHTML(question.options[question.answer])
-      }</b>${
-        question.explanation
-          ? `<br>${escapeHTML(question.explanation)}`
-          : ''
-      }`;
+      `<b>الإجابة الصحيحة: ${esc(question.options[question.answer])}</b>` +
+      (question.explanation ? `<br>${esc(question.explanation)}` : '');
   });
 
-  const result = $('quizResult');
   const percentage = Math.round(score / currentQuiz.length * 100);
-
   const encouragement = percentage === 100
     ? 'ممتاز! أجبت عن جميع الأسئلة بشكل صحيح 👏'
     : percentage >= 70
       ? 'أحسنت! نتيجتك جيدة، وراجع الإجابات التي أخطأت فيها.'
       : percentage >= 40
         ? 'بداية جيدة! راجع التصحيح ثم جرّب مرة أخرى.'
-        : 'لا بأس، التعلّم بالتدريب. راجع الشرح وحاول مجددًا.';
+        : 'لا بأس، راجع الشرح وحاول مرة أخرى.';
 
+  const result = $('quizResult');
   result.style.display = 'block';
-
   result.innerHTML = `
     <div>نتيجتك النهائية</div>
     <strong>${score} من ${currentQuiz.length} (${percentage}%)</strong>
-    <div class="score-meter">
-      <div class="score-fill" style="width:${percentage}%"></div>
-    </div>
     <div>${encouragement}</div>
-    ${
-      unanswered
-        ? `<p class="small">أسئلة لم تجب عنها: ${unanswered}</p>`
-        : ''
-    }
-    <button class="secondary" id="retryQuiz" type="button" style="margin-top:14px">
-      🔄 أعد الاختبار
-    </button>`;
+    ${unanswered ? `<p class="small">أسئلة لم تجب عنها: ${unanswered}</p>` : ''}
+    <p class="small">تم حفظ النتيجة في سجل هذا المتصفح.</p>
+    <button class="secondary" id="retryQuiz" type="button">🔄 أعد الاختبار</button>`;
+
+  if (!hasSavedCurrentResult && currentQuizContext) {
+    saveResult({
+      lesson: currentQuizContext.lesson,
+      grade: currentQuizContext.grade,
+      subject: currentQuizContext.subject,
+      semester: currentQuizContext.semester,
+      score,
+      total: currentQuiz.length,
+      percentage,
+      mode: currentQuizMode
+    });
+
+    hasSavedCurrentResult = true;
+  }
 
   $('submitQuiz').disabled = true;
   $('retryQuiz').addEventListener('click', resetQuiz);
-
-  result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  result.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 async function searchLesson() {
-  const mySequence = ++searchSequence;
+  const sequence = ++searchSequence;
   const context = getContext();
 
   if (!context.lesson) {
@@ -1600,64 +1590,75 @@ async function searchLesson() {
     return;
   }
 
-  setLoading(true);
+  $('searchButton').disabled = true;
+  $('searchButton').innerHTML = '<span class="spinner"></span> جاري البحث...';
   $('resultCount').textContent = 'جاري البحث';
   $('results').innerHTML =
-    '<div class="message"><span class="spinner"></span> جاري البحث في محتوى المنصة وYouTube...</div>';
+    '<div class="message">جاري البحث عن الدرس والفيديوهات...</div>';
 
   await registerSearch();
 
-  const query = buildSearchQuery(context);
-
-  let localLessons = [];
+  const query = makeQuery(context);
+  let lessons = [];
   let videos = [];
-  let youtubeError = '';
+  let videoError = '';
 
-  const localPromise = searchLocalLessons(context)
-    .then(result => { localLessons = result; });
+  const lessonPromise = findLocalLessons(context).then(items => {
+    lessons = items;
+  });
 
-  const youtubePromise = appSettings.youtube_enabled === 'false'
+  const videoPromise = appSettings.youtube_enabled === 'false'
     ? Promise.resolve()
-    : searchYouTube(query)
-        .then(result => { videos = result; })
-        .catch(error => {
-          youtubeError = error.message || 'تعذر البحث في YouTube';
-        });
+    : searchYouTube(query).then(items => {
+        videos = items;
+      }).catch(error => {
+        videoError = error.message;
+      });
 
-  await Promise.all([localPromise, youtubePromise]);
+  await Promise.all([lessonPromise, videoPromise]);
 
-  if (mySequence !== searchSequence) return;
+  if (sequence !== searchSequence) return;
+
+  lastLocalLessons = lessons;
+  lastVideos = videos;
 
   let html = '';
 
-  if (!localLessons.length) {
-    html += '<div class="message">لم يتم العثور على الدرس في المحتوى المضاف. نعرض لك نتائج خارجية وروابط بحث تساعدك على المتابعة.</div>';
+  if (!lessons.length) {
+    html += '<div class="message">لم يتم العثور على درس مضاف بهذه العبارة. يمكنك متابعة الشروحات الخارجية وروابط الاختبارات.</div>';
   } else {
-    html += renderLocalLessons(localLessons);
+    html += renderLocalLessons(lessons);
   }
 
   if (appSettings.youtube_enabled !== 'false') {
     if (videos.length) {
       html += renderVideos(videos);
     } else {
-      html += `<div class="message ${youtubeError ? 'error' : ''}">${
-        youtubeError
-          ? '⚠️ تعذر البحث في YouTube: ' + escapeHTML(youtubeError)
-          : 'لم يتم العثور على فيديوهات من YouTube لهذه العبارة.'
-      }</div>`;
+      html += `<div class="message ${videoError ? 'error' : ''}">
+        ${videoError
+          ? 'تعذر البحث في YouTube: ' + esc(videoError)
+          : 'لم يتم العثور على فيديوهات لهذه العبارة.'}
+      </div>`;
     }
   }
 
-  html += renderWebSearch(query);
-  html += renderQuiz(context);
+  html += renderWebLinks(context);
+  html += renderSummarySection();
+  html += `<div id="quizContainer">${renderQuiz(context)}</div>`;
+  html += renderExternalTests(context);
 
   $('results').innerHTML = html;
-  $('resultCount').textContent =
-    `${localLessons.length} درس · ${videos.length} فيديو`;
+  $('resultCount').textContent = `${lessons.length} درس · ${videos.length} فيديو`;
 
-  $('submitQuiz').addEventListener('click', gradeQuiz);
-  $('resultsPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  setLoading(false);
+  attachQuizControls(context);
+  $('generateSummaryButton').addEventListener(
+    'click', () => generateSummary(context)
+  );
+
+  $('resultsPanel').scrollIntoView({behavior:'smooth', block:'start'});
+
+  $('searchButton').disabled = false;
+  $('searchButton').textContent = '🔎 ابحث عن الدرس';
 }
 
 $('searchButton').addEventListener('click', searchLesson);
@@ -1666,6 +1667,9 @@ $('lessonInput').addEventListener('keydown', event => {
   if (event.key === 'Enter') searchLesson();
 });
 
+$('clearProgressButton').addEventListener('click', clearProgress);
+
+renderProgress();
 loadSettings();
 registerVisit();
 </script>
