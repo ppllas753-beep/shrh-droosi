@@ -1,2224 +1,1687 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="theme-color" content="#0b1020">
 <title>شرح دروسي</title>
 
 <style>
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+:root{
+    --bg:#080c16;
+    --panel:#111827;
+    --panel2:#0d1423;
+    --line:#253247;
+    --text:#f5f7fb;
+    --muted:#aab5c7;
+    --blue:#2878ff;
+    --blue2:#135bd8;
+    --green:#16a34a;
+    --red:#dc2626
 }
 
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
 body{
-    font-family:Arial,Tahoma,sans-serif;
-    background:#080b12;
-    color:#fff;
+    margin:0;
     min-height:100vh;
+    background:radial-gradient(ellipse at top,#13213c 0,#080c16 48%);
+    color:var(--text);
+    font-family:Arial,Tahoma,sans-serif
 }
 
 header{
-    background:#101522;
-    padding:20px;
-    text-align:center;
-    border-bottom:1px solid #202838;
+    position:sticky;
+    top:0;
+    z-index:5;
+    background:rgba(8,12,22,.92);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line)
+}
+
+.header-inner{
+    max-width:1100px;
+    width:92%;
+    margin:auto;
+    min-height:76px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px
 }
 
 .logo{
-    font-size:30px;
-    font-weight:bold;
+    font-size:27px;
+    font-weight:900;
+    letter-spacing:-.5px
 }
 
-.logo span{
-    color:#4da3ff;
+.logo span{color:#65aaff}
+
+.header-link{
+    border:1px solid #31558e;
+    background:#10213d;
+    color:#eaf2ff;
+    text-decoration:none;
+    border-radius:12px;
+    padding:10px 15px;
+    font-weight:700
 }
 
 .container{
-    width:90%;
-    max-width:1000px;
-    margin:30px auto;
+    max-width:1050px;
+    width:92%;
+    margin:30px auto 45px
 }
 
-.card{
-    background:#111827;
-    border:1px solid #202838;
-    border-radius:18px;
+.hero{
+    text-align:center;
+    padding:42px 20px 30px
+}
+
+.hero-badge{
+    display:inline-block;
+    background:#122344;
+    border:1px solid #2d4d7b;
+    color:#acd1ff;
+    padding:8px 13px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:16px
+}
+
+h1{
+    font-size:clamp(28px,5vw,42px);
+    line-height:1.35;
+    margin:0 0 12px
+}
+
+h1 span{color:#65aaff}
+
+.hero p{
+    color:var(--muted);
+    line-height:1.9;
+    max-width:700px;
+    margin:0 auto
+}
+
+.panel{
+    background:linear-gradient(160deg,rgba(17,24,39,.98),rgba(13,20,35,.98));
+    border:1px solid var(--line);
+    border-radius:22px;
     padding:25px;
     margin-bottom:20px;
+    box-shadow:0 18px 55px rgba(0,0,0,.18)
 }
 
-h2{
-    margin-bottom:20px;
+.panel h2{
+    font-size:23px;
+    margin:0 0 8px
 }
+
+.subtext{
+    color:var(--muted);
+    line-height:1.8;
+    margin-bottom:22px
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:16px
+}
+
+.field-wide{grid-column:1/-1}
 
 label{
     display:block;
-    margin-bottom:8px;
-    color:#bbb;
+    color:#d9e2f0;
+    font-weight:700;
+    margin-bottom:8px
 }
 
-select,
-input{
+select,input{
     width:100%;
-    padding:14px;
-    border:none;
-    outline:none;
-    border-radius:10px;
-    background:#080b12;
+    min-height:48px;
+    background:#080e1b;
+    border:1px solid #334158;
     color:#fff;
-    margin-bottom:15px;
+    border-radius:12px;
+    padding:12px 13px;
     font-size:16px;
+    outline:none
+}
+
+select:focus,input:focus{
+    border-color:#65aaff;
+    box-shadow:0 0 0 3px rgba(40,120,255,.15)
 }
 
 button{
-    border:none;
-    cursor:pointer;
-    border-radius:10px;
-    padding:13px 20px;
+    font-family:inherit;
+    border:0;
+    border-radius:12px;
+    min-height:46px;
+    padding:12px 18px;
     font-size:16px;
-    color:white;
-    background:#2563eb;
+    font-weight:800;
+    cursor:pointer;
+    transition:transform .15s,filter .15s
 }
 
-button:hover{
-    opacity:.9;
-}
+button:hover{filter:brightness(1.08)}
+button:active{transform:scale(.99)}
+button:disabled{opacity:.6;cursor:wait}
 
-.search-btn{
+.primary{
+    background:linear-gradient(135deg,var(--blue),var(--blue2));
+    color:#fff;
     width:100%;
-    margin-top:5px;
+    margin-top:18px;
+    box-shadow:0 8px 24px rgba(40,120,255,.2)
+}
+
+.secondary{
+    background:#17243a;
+    border:1px solid #314460;
+    color:#e4efff
+}
+
+.results-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:18px
+}
+
+.results-head h2{margin:0}
+
+.result-count{
+    font-size:13px;
+    color:#c6d6ee;
+    background:#172238;
+    padding:7px 11px;
+    border-radius:999px
 }
 
 .message{
-    background:#111827;
-    border:1px solid #202838;
-    border-radius:15px;
-    padding:20px;
-    text-align:center;
-    margin-top:20px;
-}
-
-.loading{
-    text-align:center;
-    padding:25px;
-    font-size:18px;
-}
-
-.lesson{
-    background:#111827;
-    border:1px solid #202838;
-    border-radius:15px;
-    padding:18px;
-    margin-bottom:15px;
-}
-
-.lesson h3{
-    margin-bottom:10px;
-}
-
-.lesson p{
-    color:#bbb;
-    line-height:1.7;
-}
-
-.youtube-title{
-    font-size:24px;
-    font-weight:bold;
-    margin:30px 0 15px;
-}
-
-.youtube-card{
-    background:#111827;
-    border:1px solid #202838;
-    border-radius:16px;
-    padding:12px;
-    margin-bottom:15px;
-    display:flex;
-    gap:15px;
-    align-items:center;
-}
-
-.youtube-card img{
-    width:230px;
-    border-radius:10px;
-    display:block;
-}
-
-.youtube-info{
-    flex:1;
-}
-
-.youtube-video-title{
-    font-size:18px;
-    font-weight:bold;
-    line-height:1.5;
-    margin-bottom:8px;
-}
-
-.youtube-channel{
-    color:#aaa;
-    margin-bottom:15px;
-}
-
-.youtube-button{
-    display:inline-block;
-    background:#ff0000;
-    color:#fff;
-    padding:10px 18px;
-    border-radius:8px;
-    text-decoration:none;
-}
-
-.web-button{
-    display:block;
-    text-align:center;
-    background:#2563eb;
-    color:#fff;
-    padding:14px;
-    border-radius:10px;
-    text-decoration:none;
-    margin-top:20px;
-}
-
-.quiz{
-    background:#111827;
-    border:1px solid #202838;
-    border-radius:18px;
-    padding:25px;
-    margin-top:25px;
-}
-
-.quiz-title{
-    font-size:25px;
-    font-weight:bold;
-    margin-bottom:8px;
-}
-
-.quiz-subtitle{
-    color:#aaa;
-    margin-bottom:25px;
-    line-height:1.7;
-}
-
-.quiz-question{
-    background:#080b12;
-    border:1px solid #202838;
+    padding:17px;
+    border:1px solid var(--line);
     border-radius:14px;
-    padding:18px;
-    margin-bottom:18px;
+    background:#0b1322;
+    color:#d8e5f7;
+    line-height:1.8;
+    margin:14px 0
 }
 
-.quiz-question-title{
+.message.error{
+    border-color:#7f1d1d;
+    background:rgba(127,29,29,.15);
+    color:#fecaca
+}
+
+.message.success{
+    border-color:#166534;
+    background:rgba(22,163,74,.1);
+    color:#bbf7d0
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px
+}
+
+.lesson-card,.video-card,.source-card{
+    background:#0a1220;
+    border:1px solid #253247;
+    border-radius:16px;
+    padding:17px;
+    min-width:0
+}
+
+.lesson-card h3,.video-card h3,.source-card h3{
+    margin:0 0 10px;
     font-size:18px;
-    font-weight:bold;
-    margin-bottom:15px;
-    line-height:1.7;
+    line-height:1.65;
+    overflow-wrap:anywhere
 }
 
-.quiz-option{
-    display:block;
-    background:#111827;
-    border:1px solid #30394c;
-    border-radius:10px;
-    padding:12px;
-    margin-bottom:10px;
-    cursor:pointer;
-    transition:.2s;
+.lesson-card p,.video-card p,.source-card p{
+    color:var(--muted);
+    line-height:1.8;
+    margin:0 0 13px;
+    overflow-wrap:anywhere
 }
 
-.quiz-option:hover{
-    border-color:#4da3ff;
+.tag{
+    display:inline-block;
+    background:#142b4d;
+    border:1px solid #254a7a;
+    color:#b6d8ff;
+    border-radius:999px;
+    font-size:12px;
+    padding:5px 9px;
+    margin-bottom:11px
 }
 
-.quiz-option input{
-    width:auto;
-    margin:0 8px 0 0;
-    cursor:pointer;
+a{color:#83bdff}
+
+.video-card{
+    display:flex;
+    flex-direction:column;
+    gap:10px
 }
 
-.quiz-submit{
+.video-thumb{
     width:100%;
-    margin-top:10px;
-    background:#16a34a;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    background:#111827;
+    border-radius:11px
+}
+
+.video-button,.source-button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:#b91c1c;
+    color:#fff;
+    text-decoration:none;
+    border-radius:10px;
+    padding:10px 14px;
+    font-weight:800;
+    margin-top:auto
+}
+
+.source-button{background:#1d4ed8}
+
+.section-title{
+    font-size:23px;
+    margin:28px 0 15px
+}
+
+.action-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:20px
+}
+
+.action-row a,.action-row button{
+    flex:1;
+    text-align:center;
+    min-width:180px;
+    text-decoration:none
+}
+
+.quiz-card{
+    margin-top:20px;
+    background:#0a1220;
+    border:1px solid #293950;
+    border-radius:18px;
+    padding:22px
+}
+
+.quiz-card h2{margin:0 0 8px}
+
+.quiz-card .subtitle{
+    color:var(--muted);
+    line-height:1.8;
+    margin-bottom:18px
+}
+
+.question{
+    padding:17px;
+    border:1px solid #2d3a50;
+    border-radius:13px;
+    background:#0d1524;
+    margin-bottom:14px
+}
+
+.question h3{
+    font-size:17px;
+    line-height:1.8;
+    margin:0 0 12px
+}
+
+.option{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:11px;
+    margin:8px 0;
+    border:1px solid #334158;
+    background:#121c2d;
+    border-radius:10px;
+    cursor:pointer;
+    line-height:1.6
+}
+
+.option input{
+    width:auto;
+    min-height:0;
+    margin-top:4px;
+    accent-color:var(--blue)
+}
+
+.option.correct{
+    border-color:#16a34a;
+    background:rgba(22,163,74,.14)
+}
+
+.option.wrong{
+    border-color:#dc2626;
+    background:rgba(220,38,38,.14)
 }
 
 .quiz-result{
     display:none;
-    text-align:center;
-    margin-top:20px;
-    padding:20px;
-    border-radius:14px;
-    background:#080b12;
-    border:1px solid #202838;
-}
-
-.score{
-    font-size:30px;
-    font-weight:bold;
-    margin-bottom:10px;
-}
-
-.restart-btn{
-    margin-top:15px;
-    background:#2563eb;
-}
-
-.correct{
-    border-color:#16a34a !important;
-    background:rgba(22,163,74,.12);
-}
-
-.wrong{
-    border-color:#dc2626 !important;
-    background:rgba(220,38,38,.12);
-}
-
-.info-box{
-    background:#080b12;
-    border:1px solid #202838;
+    background:#101d31;
+    border:1px solid #2b466b;
     border-radius:14px;
     padding:18px;
-    line-height:1.8;
-    margin-top:20px;
+    margin-top:15px;
+    text-align:center
 }
 
-.search-info{
-    color:#aaa;
-    margin-top:10px;
-    font-size:14px;
+.quiz-result strong{
+    display:block;
+    font-size:28px;
+    margin:6px 0 12px
 }
 
 footer{
     text-align:center;
-    color:#777;
-    padding:30px;
+    color:#8491a6;
+    border-top:1px solid #1e293b;
+    padding:27px 15px;
+    line-height:1.9
 }
 
-@media(max-width:700px){
-
-    .container{
-        width:94%;
-    }
-
-    .youtube-card{
-        flex-direction:column;
-        align-items:stretch;
-    }
-
-    .youtube-card img{
-        width:100%;
-    }
-
+.small{
+    font-size:13px;
+    color:#8e9ab0;
+    line-height:1.7
 }
 
+.spinner{
+    display:inline-block;
+    width:18px;
+    height:18px;
+    border:3px solid #50617c;
+    border-top-color:#fff;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+    vertical-align:middle;
+    margin-left:8px
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
+
+@media(max-width:680px){
+    .form-grid,.grid{grid-template-columns:1fr}
+    .field-wide{grid-column:auto}
+    .panel{padding:19px}
+    .hero{padding:30px 10px 25px}
+    .header-inner{min-height:67px}
+    .logo{font-size:23px}
+    .header-link{padding:8px 10px;font-size:13px}
+    .container{margin-top:18px}
+}
 </style>
-
 </head>
-
 
 <body>
 
-
 <header>
-
-    <div class="logo">
-        شرح <span>دروسي</span>
+    <div class="header-inner">
+        <div class="logo">شرح <span>دروسي</span></div>
+        <a class="header-link" href="#searchPanel">🔎 ابدأ التعلم</a>
     </div>
-
 </header>
 
+<main class="container">
 
-<div class="container">
+    <section class="hero">
+        <div class="hero-badge">📚 منصتك التعليمية</div>
+        <h1 id="welcomeTitle">تعلّم • افهم • <span>اختبر نفسك</span></h1>
+        <p id="welcomeText">
+            اختر صفك ومادتك واكتب اسم الدرس.
+            سنبحث في دروسك، ونساعدك في الوصول إلى شروحات وفيديوهات مناسبة.
+        </p>
+    </section>
 
-
-    <!-- =========================
-         اختيار الدرس
-    ========================== -->
-
-    <div class="card">
+    <section class="panel" id="searchPanel">
 
         <h2>📚 اختر درسك</h2>
 
+        <p class="subtext">
+            اختر الفصل والصف والمادة للحصول على نتائج أدق.
+        </p>
 
-        <label>الفصل الدراسي</label>
+        <div class="form-grid">
 
-        <select id="semester">
+            <div>
+                <label for="semester">الفصل الدراسي</label>
+                <select id="semester">
+                    <option value="">اختر الفصل</option>
+                    <option>الفصل الأول</option>
+                    <option>الفصل الثاني</option>
+                </select>
+            </div>
 
-            <option value="">اختر الفصل</option>
+            <div>
+                <label for="grade">الصف</label>
+                <select id="grade">
+                    <option value="">اختر الصف</option>
+                    <option>الصف السابع</option>
+                    <option>الصف الثامن</option>
+                    <option>الصف التاسع</option>
+                    <option>الصف العاشر</option>
+                    <option>الصف الحادي عشر</option>
+                    <option>الصف الثاني عشر</option>
+                </select>
+            </div>
 
-            <option value="الفصل الأول">
-                الفصل الأول
-            </option>
+            <div class="field-wide">
+                <label for="subject">المادة</label>
+                <select id="subject">
+                    <option value="">اختر المادة</option>
+                    <option>الرياضيات</option>
+                    <option>الفيزياء</option>
+                    <option>الكيمياء</option>
+                    <option>الأحياء</option>
+                    <option>اللغة الإنجليزية</option>
+                    <option>اللغة العربية</option>
+                    <option>الدراسات الاجتماعية</option>
+                    <option>معلومات عامة</option>
+                </select>
+            </div>
 
-            <option value="الفصل الثاني">
-                الفصل الثاني
-            </option>
+            <div class="field-wide">
+                <label for="lessonInput">اسم الدرس</label>
+                <input
+                    id="lessonInput"
+                    type="text"
+                    placeholder="مثال: المعادلات التربيعية"
+                    autocomplete="off"
+                >
+            </div>
 
-        </select>
+        </div>
 
-
-        <label>الصف</label>
-
-        <select id="grade">
-
-            <option value="">اختر الصف</option>
-
-            <option value="الصف السابع">
-                الصف السابع
-            </option>
-
-            <option value="الصف الثامن">
-                الصف الثامن
-            </option>
-
-            <option value="الصف التاسع">
-                الصف التاسع
-            </option>
-
-            <option value="الصف العاشر">
-                الصف العاشر
-            </option>
-
-            <option value="الصف الحادي عشر">
-                الصف الحادي عشر
-            </option>
-
-            <option value="الصف الثاني عشر">
-                الصف الثاني عشر
-            </option>
-
-        </select>
-
-
-        <label>المادة</label>
-
-        <select id="subject">
-
-            <option value="">اختر المادة</option>
-
-            <option value="الرياضيات">
-                الرياضيات
-            </option>
-
-            <option value="الفيزياء">
-                الفيزياء
-            </option>
-
-            <option value="الكيمياء">
-                الكيمياء
-            </option>
-
-            <option value="الأحياء">
-                الأحياء
-            </option>
-
-            <option value="اللغة الإنجليزية">
-                اللغة الإنجليزية
-            </option>
-
-            <option value="اللغة العربية">
-                اللغة العربية
-            </option>
-
-            <option value="الدراسات الاجتماعية">
-                الدراسات الاجتماعية
-            </option>
-
-        </select>
-
-
-        <label>اسم الدرس</label>
-
-        <input
-            id="lessonInput"
-            type="text"
-            placeholder="مثال: قوانين نيوتن"
-        >
-
-
-        <button
-            class="search-btn"
-            onclick="searchLesson()"
-        >
-
+        <button class="primary" id="searchButton" type="button">
             🔎 ابحث عن الدرس
-
         </button>
 
+        <p class="small" style="margin-top:12px">
+            تلميح: اختر المعلومات المتاحة واكتب اسم الدرس،
+            ثم اضغط زر البحث أو Enter.
+        </p>
 
-        <div class="search-info">
-            اختر الصف والمادة والفصل للحصول على نتائج أدق.
+    </section>
+
+    <section class="panel" id="resultsPanel" aria-live="polite">
+
+        <div class="results-head">
+            <h2>🎯 نتائج البحث</h2>
+            <span id="resultCount" class="result-count">بانتظار البحث</span>
         </div>
 
-    </div>
+        <div id="results">
+            <div class="message">
+                أدخل اسم الدرس ثم اضغط «ابحث عن الدرس»
+                لعرض الشروحات المتاحة.
+            </div>
+        </div>
 
+    </section>
 
-    <!-- =========================
-         النتائج
-    ========================== -->
+</main>
 
-    <div id="results"></div>
-
-
-</div>
-
-
-<footer>
-
-    شرح دروسي © 2026
-
+<footer id="footerText">
+    © 2026 شرح دروسي · تعلّم • افهم • اختبر نفسك
 </footer>
 
-
 <script>
+'use strict';
 
+const $ = id => document.getElementById(id);
 
-/* =========================================
-   البيانات المحلية
-========================================= */
+let currentQuiz = [];
+let searchSequence = 0;
+let appSettings = {};
 
-const localGrades =
-    JSON.parse(
-        localStorage.getItem("shrh_grades") || "[]"
-    );
 
-const localSubjects =
-    JSON.parse(
-        localStorage.getItem("shrh_subjects") || "[]"
-    );
-
-const localLessons =
-    JSON.parse(
-        localStorage.getItem("shrh_lessons") || "[]"
-    );
-
-
-/* =========================================
-   حماية النصوص
-========================================= */
-
-function escapeHTML(text){
-
-    const div =
-        document.createElement("div");
-
-    div.textContent =
-        text;
-
-    return div.innerHTML;
-
-}
-
-
-/* =========================================
-   البحث في الدروس المحلية
-========================================= */
-
-function searchLocalLessons(query){
-
-    const q =
-        query.toLowerCase().trim();
-
-
-    return localLessons.filter(
-        lesson => {
-
-            const title =
-                String(
-                    lesson.title ||
-                    lesson.name ||
-                    ""
-                ).toLowerCase();
-
-
-            return title.includes(q);
-
-        }
-    );
-
-}
-
-
-/* =========================================
-   عرض الدروس المحلية
-========================================= */
-
-function renderLocalLessons(lessons){
-
-    const results =
-        document.getElementById("results");
-
-
-    let html = `
-
-        <div class="youtube-title">
-
-            📚 الدروس الموجودة في شرح دروسي
-
-        </div>
-
-    `;
-
-
-    lessons.forEach(lesson => {
-
-        const title =
-            lesson.title ||
-            lesson.name ||
-            "درس بدون اسم";
-
-
-        const description =
-            lesson.description ||
-            "شرح الدرس";
-
-
-        html += `
-
-            <div class="lesson">
-
-                <h3>
-                    ${escapeHTML(title)}
-                </h3>
-
-                <p>
-                    ${escapeHTML(description)}
-                </p>
-
-            </div>
-
-        `;
-
-    });
-
-
-    results.innerHTML += html;
-
-}
-
-
-/* =========================================
-   البحث في YouTube
-========================================= */
-
-async function searchYouTube(query){
-
-    const results =
-        document.getElementById("results");
-
-
-    try{
-
-        const response =
-            await fetch(
-                `/api/youtube-search?q=${encodeURIComponent(query)}`
-            );
-
-
-        if(!response.ok){
-
-            throw new Error(
-                `HTTP ${response.status}`
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        if(
-            !data.success ||
-            !data.items ||
-            !data.items.length
-        ){
-
-            results.innerHTML += `
-
-                <div class="message">
-
-                    لم يتم العثور على شروحات
-                    في YouTube.
-
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-
-        let html = `
-
-            <div class="youtube-title">
-
-                🎥 شروحات من YouTube
-
-            </div>
-
-        `;
-
-
-        data.items.forEach(video => {
-
-            if(
-                !video.id ||
-                !video.id.videoId
-            ){
-
-                return;
-
-            }
-
-
-            const videoId =
-                video.id.videoId;
-
-
-            const title =
-                video.snippet?.title ||
-                "شرح بدون عنوان";
-
-
-            const channel =
-                video.snippet?.channelTitle ||
-                "YouTube";
-
-
-            const thumbnail =
-                video.snippet?.thumbnails?.medium?.url ||
-                video.snippet?.thumbnails?.default?.url ||
-                "";
-
-
-            html += `
-
-                <div class="youtube-card">
-
-                    <img
-                        src="${escapeHTML(thumbnail)}"
-                        alt="صورة الفيديو"
-                    >
-
-
-                    <div class="youtube-info">
-
-                        <div class="youtube-video-title">
-
-                            ${escapeHTML(title)}
-
-                        </div>
-
-
-                        <div class="youtube-channel">
-
-                            📺 ${escapeHTML(channel)}
-
-                        </div>
-
-
-                        <a
-                            class="youtube-button"
-                            href="https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-
-                            ▶️ شاهد الشرح
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            `;
-
-        });
-
-
-        results.innerHTML += html;
-
-
-    }catch(error){
-
-        console.error(
-            "خطأ في البحث في YouTube:",
-            error
-        );
-
-
-        results.innerHTML += `
-
-            <div class="message">
-
-                ⚠️ حدث خطأ أثناء البحث في YouTube.
-
-                <br><br>
-
-                تأكد أن الموقع مفتوح من:
-
-                <br>
-
-                <b>http://localhost:3000</b>
-
-            </div>
-
-        `;
-
-    }
-
-}
-
-
-/* =========================================
-   البحث في الويب
-========================================= */
-
-function showWebSearch(query){
-
-    const results =
-        document.getElementById("results");
-
-
-    const googleURL =
-        `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-
-
-    results.innerHTML += `
-
-        <a
-            class="web-button"
-            href="${googleURL}"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-
-            🌐 البحث عن المزيد في الويب
-
-        </a>
-
-    `;
-
-}
-
-
-/* =========================================
-   بنك الأسئلة
-========================================= */
+/* =========================================================
+   QUIZ QUESTIONS
+========================================================= */
 
 const quizBanks = {
 
-
-    "قوانين نيوتن":[
-
+    'قوانين نيوتن': [
         {
-            question:"ما العلاقة التي يعبّر عنها قانون نيوتن الثاني؟",
-
-            options:[
-                "القوة = الكتلة × التسارع",
-                "القوة = السرعة × الزمن",
-                "القوة = الكتلة ÷ التسارع"
+            question: 'ما العلاقة التي يعبّر عنها قانون نيوتن الثاني؟',
+            options: [
+                'القوة = الكتلة × التسارع',
+                'القوة = السرعة × الزمن',
+                'القوة = الكتلة ÷ التسارع'
             ],
-
-            answer:0
+            answer: 0
         },
-
-
         {
-            question:"ماذا يحدث لجسم عندما تكون القوة المحصلة عليه تساوي صفرًا؟",
-
-            options:[
-                "يتوقف دائمًا",
-                "يبقى على حالته الحركية",
-                "يتسارع دائمًا"
+            question: 'ماذا يحدث لجسم عندما تكون القوة المحصلة عليه صفرًا؟',
+            options: [
+                'يتوقف دائمًا',
+                'يبقى على حالته الحركية ما لم تؤثر قوة محصلة',
+                'يتسارع دائمًا'
             ],
-
-            answer:1
+            answer: 1
         },
-
-
         {
-            question:"لكل قوة فعل قوة رد فعل مساوية لها في المقدار ومعاكسة لها في الاتجاه. هذا هو:",
-
-            options:[
-                "قانون نيوتن الأول",
-                "قانون نيوتن الثاني",
-                "قانون نيوتن الثالث"
+            question: 'أي قانون يعبّر عن أن لكل فعل رد فعل مساويًا له في المقدار ومعاكسًا في الاتجاه؟',
+            options: [
+                'قانون نيوتن الأول',
+                'قانون نيوتن الثاني',
+                'قانون نيوتن الثالث'
             ],
-
-            answer:2
+            answer: 2
         },
-
-
         {
-            question:"إذا زادت كتلة جسم وبقيت القوة ثابتة، فإن التسارع:",
-
-            options:[
-                "يزداد",
-                "يقل",
-                "لا يتغير"
+            question: 'إذا زادت كتلة الجسم وبقيت القوة ثابتة فإن تسارعه:',
+            options: [
+                'يزداد',
+                'يقل',
+                'لا يتغير'
             ],
-
-            answer:1
+            answer: 1
         },
-
-
         {
-            question:"ما الوحدة الأساسية للقوة في النظام الدولي؟",
-
-            options:[
-                "الجول",
-                "النيوتن",
-                "الواط"
+            question: 'ما وحدة قياس القوة في النظام الدولي؟',
+            options: [
+                'الجول',
+                'النيوتن',
+                'الواط'
             ],
-
-            answer:1
+            answer: 1
         }
-
     ],
 
-
-    "الحركة":[
-
+    'الحركة': [
         {
-            question:"ما الكمية التي تعبّر عن المسافة التي يقطعها الجسم في وحدة الزمن؟",
-
-            options:[
-                "السرعة",
-                "القوة",
-                "الكتلة"
+            question: 'ما الكمية التي تعبّر عن المسافة المقطوعة في وحدة الزمن؟',
+            options: [
+                'السرعة',
+                'القوة',
+                'الكتلة'
             ],
-
-            answer:0
+            answer: 0
         },
-
-
         {
-            question:"عندما تتغير سرعة الجسم مع الزمن فإن الجسم لديه:",
-
-            options:[
-                "تسارع",
-                "كتلة ثابتة فقط",
-                "طاقة حرارية فقط"
+            question: 'عندما تتغير سرعة الجسم مع الزمن يكون لديه:',
+            options: [
+                'تسارع',
+                'كتلة فقط',
+                'طاقة حرارية فقط'
             ],
-
-            answer:0
+            answer: 0
         },
-
-
         {
-            question:"ما وحدة السرعة في النظام الدولي؟",
-
-            options:[
-                "متر/ثانية",
-                "نيوتن",
-                "كيلوجرام"
+            question: 'ما وحدة السرعة في النظام الدولي؟',
+            options: [
+                'متر/ثانية',
+                'نيوتن',
+                'كيلوجرام'
             ],
-
-            answer:0
+            answer: 0
         },
-
-
         {
-            question:"إذا قطع جسم مسافة أكبر في الزمن نفسه فإن سرعته:",
-
-            options:[
-                "تقل",
-                "تزداد",
-                "تصبح صفرًا"
+            question: 'إذا قطع جسم مسافة أكبر في الزمن نفسه فإن سرعته:',
+            options: [
+                'تقل',
+                'تزداد',
+                'تصبح صفرًا'
             ],
-
-            answer:1
+            answer: 1
         },
-
-
         {
-            question:"ما العاملان المستخدمان لحساب السرعة؟",
-
-            options:[
-                "المسافة والزمن",
-                "القوة والكتلة",
-                "الطاقة والزمن"
+            question: 'ما العاملان المستخدمان لحساب السرعة المتوسطة؟',
+            options: [
+                'المسافة والزمن',
+                'القوة والكتلة',
+                'الطاقة والزمن'
             ],
-
-            answer:0
+            answer: 0
         }
-
     ],
 
-
-    "الطاقة":[
-
+    'الطاقة': [
         {
-            question:"ما الطاقة التي يمتلكها الجسم بسبب حركته؟",
-
-            options:[
-                "طاقة حركية",
-                "طاقة وضع",
-                "طاقة كيميائية"
+            question: 'ما الطاقة التي يمتلكها الجسم بسبب حركته؟',
+            options: [
+                'طاقة حركية',
+                'طاقة وضع',
+                'طاقة كيميائية فقط'
             ],
-
-            answer:0
+            answer: 0
         },
-
-
         {
-            question:"ما الطاقة المرتبطة بموضع الجسم أو ارتفاعه؟",
-
-            options:[
-                "الطاقة الحركية",
-                "طاقة الوضع",
-                "الطاقة الصوتية"
+            question: 'ما الطاقة المرتبطة بموضع الجسم أو ارتفاعه؟',
+            options: [
+                'الطاقة الحركية',
+                'طاقة الوضع',
+                'الطاقة الصوتية'
             ],
-
-            answer:1
+            answer: 1
         },
-
-
         {
-            question:"ما وحدة قياس الطاقة؟",
-
-            options:[
-                "الجول",
-                "النيوتن",
-                "الباسكال"
+            question: 'ما وحدة قياس الطاقة؟',
+            options: [
+                'الجول',
+                'النيوتن',
+                'الباسكال'
             ],
-
-            answer:0
+            answer: 0
         },
-
-
         {
-            question:"الطاقة لا تفنى ولا تستحدث من العدم، ولكنها:",
-
-            options:[
-                "تختفي",
-                "تتحول من شكل إلى آخر",
-                "تبقى دائمًا بالشكل نفسه"
+            question: 'الطاقة لا تفنى ولا تستحدث من العدم، لكنها:',
+            options: [
+                'تختفي تمامًا',
+                'تتحول من شكل إلى آخر',
+                'تبقى دائمًا بالشكل نفسه'
             ],
-
-            answer:1
+            answer: 1
         }
-
     ],
 
-
-    "الذرة":[
-
+    'الذرة': [
         {
-            question:"ما أصغر جزء من العنصر يحتفظ بخواصه؟",
-
-            options:[
-                "الذرة",
-                "المركب",
-                "المحلول"
+            question: 'ما أصغر جزء من العنصر يحتفظ بخواصه الكيميائية؟',
+            options: [
+                'الذرة',
+                'المركب',
+                'المحلول'
             ],
-
-            answer:0
+            answer: 0
         },
-
-
         {
-            question:"أين توجد البروتونات والنيوترونات؟",
-
-            options:[
-                "في النواة",
-                "خارج الذرة",
-                "في الغلاف الإلكتروني فقط"
+            question: 'أين توجد البروتونات والنيوترونات؟',
+            options: [
+                'في النواة',
+                'خارج الذرة',
+                'في الغلاف الإلكتروني فقط'
             ],
-
-            answer:0
+            answer: 0
         },
-
-
         {
-            question:"ما شحنة الإلكترون؟",
-
-            options:[
-                "موجبة",
-                "سالبة",
-                "متعادلة"
+            question: 'ما شحنة الإلكترون؟',
+            options: [
+                'موجبة',
+                'سالبة',
+                'متعادلة'
             ],
-
-            answer:1
+            answer: 1
         },
-
-
         {
-            question:"ما الجسيم المتعادل كهربائيًا؟",
-
-            options:[
-                "الإلكترون",
-                "البروتون",
-                "النيوترون"
+            question: 'ما الجسيم المتعادل كهربائيًا؟',
+            options: [
+                'الإلكترون',
+                'البروتون',
+                'النيوترون'
             ],
-
-            answer:2
+            answer: 2
         }
-
-    ],
-
-
-    "الخلية":[
-
-        {
-            question:"ما الوحدة الأساسية في بناء الكائنات الحية؟",
-
-            options:[
-                "الخلية",
-                "النسيج",
-                "العضو"
-            ],
-
-            answer:0
-        },
-
-
-        {
-            question:"ما العضية التي تتحكم في معظم أنشطة الخلية؟",
-
-            options:[
-                "النواة",
-                "الجدار الخلوي",
-                "الفجوة"
-            ],
-
-            answer:0
-        },
-
-
-        {
-            question:"ما العضيات المسؤولة عن إنتاج الطاقة في الخلية؟",
-
-            options:[
-                "الميتوكوندريا",
-                "الريبوسومات",
-                "النواة"
-            ],
-
-            answer:0
-        },
-
-
-        {
-            question:"ما الجزء الذي يحيط بالخلية وينظم مرور المواد؟",
-
-            options:[
-                "الغشاء الخلوي",
-                "النواة",
-                "السيتوبلازم"
-            ],
-
-            answer:0
-        }
-
-    ],
-
-
-    "past simple":[
-
-        {
-            question:"متى نستخدم Past Simple في اللغة الإنجليزية؟",
-
-            options:[
-                "للحديث عن حدث وقع في الماضي",
-                "للحديث عن شيء يحدث الآن فقط",
-                "للحديث عن المستقبل فقط"
-            ],
-
-            answer:0
-        },
-
-
-        {
-            question:"أي كلمة تدل غالبًا على الماضي البسيط؟",
-
-            options:[
-                "yesterday",
-                "tomorrow",
-                "now"
-            ],
-
-            answer:0
-        },
-
-
-        {
-            question:"ما صيغة الفعل في الجملة: I played football yesterday؟",
-
-            options:[
-                "Played",
-                "Play",
-                "Playing"
-            ],
-
-            answer:0
-        },
-
-
-        {
-            question:"أي جملة صحيحة؟",
-
-            options:[
-                "I visited Oman yesterday.",
-                "I visit Oman yesterday.",
-                "I visiting Oman yesterday."
-            ],
-
-            answer:0
-        }
-
-    ],
-
-
-    "present simple":[
-
-        {
-            question:"متى نستخدم Present Simple غالبًا؟",
-
-            options:[
-                "للعادات والحقائق",
-                "للأحداث الماضية فقط",
-                "لشيء انتهى أمس"
-            ],
-
-            answer:0
-        },
-
-
-        {
-            question:"أي جملة صحيحة؟",
-
-            options:[
-                "He plays football.",
-                "He play football.",
-                "He playing football."
-            ],
-
-            answer:0
-        },
-
-
-        {
-            question:"ما الكلمة التي تناسب العادات المتكررة؟",
-
-            options:[
-                "usually",
-                "yesterday",
-                "last week"
-            ],
-
-            answer:0
-        }
-
-    ],
-
-
-    "المعادلات":[
-
-        {
-            question:"ما الهدف الأساسي من حل المعادلة؟",
-
-            options:[
-                "إيجاد قيمة المجهول",
-                "تغيير جميع الأعداد",
-                "حذف المتغير"
-            ],
-
-            answer:0
-        },
-
-
-        {
-            question:"إذا كان x + 5 = 12، فما قيمة x؟",
-
-            options:[
-                "7",
-                "17",
-                "5"
-            ],
-
-            answer:0
-        },
-
-
-        {
-            question:"إذا كان 2x = 10، فما قيمة x؟",
-
-            options:[
-                "5",
-                "8",
-                "20"
-            ],
-
-            answer:0
-        }
-
-    ],
-
-
-    "المثلثات":[
-
-        {
-            question:"كم عدد أضلاع المثلث؟",
-
-            options:[
-                "3",
-                "4",
-                "5"
-            ],
-
-            answer:0
-        },
-
-
-        {
-            question:"مجموع زوايا أي مثلث يساوي:",
-
-            options:[
-                "180°",
-                "90°",
-                "360°"
-            ],
-
-            answer:0
-        },
-
-
-        {
-            question:"المثلث الذي جميع أضلاعه متساوية يسمى:",
-
-            options:[
-                "متساوي الأضلاع",
-                "قائم الزاوية",
-                "مختلف الأضلاع"
-            ],
-
-            answer:0
-        }
-
     ]
-
 };
 
 
-/* =========================================
-   إيجاد الاختبار المناسب
-========================================= */
+/* =========================================================
+   HELPERS
+========================================================= */
 
-function getQuizForLesson(lesson,subject){
+function escapeHTML(value) {
+    const element = document.createElement('span');
+    element.textContent = String(value ?? '');
+    return element.innerHTML;
+}
 
-    const text =
-        `${lesson} ${subject}`.toLowerCase();
+
+function normalizeVideo(item) {
+    return {
+        videoId:
+            item?.videoId ||
+            item?.id?.videoId ||
+            '',
+
+        title:
+            item?.title ||
+            item?.snippet?.title ||
+            'شرح الدرس',
+
+        channel:
+            item?.channel ||
+            item?.snippet?.channelTitle ||
+            'YouTube',
+
+        thumbnail:
+            item?.thumbnail ||
+            item?.snippet?.thumbnails?.medium?.url ||
+            item?.snippet?.thumbnails?.high?.url ||
+            ''
+    };
+}
 
 
-    for(const key of Object.keys(quizBanks)){
+async function api(url, options = {}) {
 
-        if(
-            text.includes(
-                key.toLowerCase()
-            )
-        ){
+    const response = await fetch(url, options);
 
-            return quizBanks[key];
+    let data;
 
+    try {
+        data = await response.json();
+    } catch {
+        throw new Error(
+            'استجاب السيرفر ببيانات غير متوقعة. حاول تحديث الصفحة.'
+        );
+    }
+
+    if (!response.ok) {
+        throw new Error(
+            data.message ||
+            `فشل الطلب (${response.status})`
+        );
+    }
+
+    return data;
+}
+
+
+/* =========================================================
+   SEARCH CONTEXT
+========================================================= */
+
+function getContext() {
+    return {
+        semester: $('semester').value.trim(),
+        grade: $('grade').value.trim(),
+        subject: $('subject').value.trim(),
+        lesson: $('lessonInput').value.trim()
+    };
+}
+
+
+/* =========================================================
+   LOAD SETTINGS FROM BACKEND
+========================================================= */
+
+async function loadSettings() {
+    try {
+
+        const data = await api('/api/settings');
+
+        appSettings = data.settings || {};
+
+        if (appSettings.site_title) {
+            document.title = appSettings.site_title;
         }
 
+        if (appSettings.welcome_title) {
+            $('welcomeTitle').textContent =
+                appSettings.welcome_title;
+        }
+
+        if (appSettings.welcome_text) {
+            $('welcomeText').textContent =
+                appSettings.welcome_text;
+        }
+
+        if (appSettings.footer_text) {
+            $('footerText').textContent =
+                appSettings.footer_text;
+        }
+
+        if (appSettings.site_enabled === 'false') {
+
+            $('results').innerHTML =
+                '<div class="message">الموقع متوقف مؤقتًا. يرجى العودة لاحقًا.</div>';
+
+            $('searchButton').disabled = true;
+        }
+
+    } catch (error) {
+        console.warn(
+            'تعذر تحميل إعدادات الموقع:',
+            error.message
+        );
+    }
+}
+
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+async function registerVisit() {
+    try {
+
+        if (
+            sessionStorage.getItem('shrh_visit_counted')
+            === '1'
+        ) {
+            return;
+        }
+
+        await fetch('/api/stats/visit', {
+            method: 'POST'
+        });
+
+        sessionStorage.setItem(
+            'shrh_visit_counted',
+            '1'
+        );
+
+    } catch (error) {
+        console.warn(
+            'تعذر تسجيل الزيارة:',
+            error.message
+        );
+    }
+}
+
+
+async function registerSearch() {
+    try {
+
+        await fetch('/api/stats/search', {
+            method: 'POST'
+        });
+
+    } catch (error) {
+        console.warn(
+            'تعذر تسجيل البحث:',
+            error.message
+        );
+    }
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+function setLoading(isLoading) {
+
+    $('searchButton').disabled = isLoading;
+
+    $('searchButton').innerHTML = isLoading
+        ? '<span class="spinner"></span> جاري البحث...'
+        : '🔎 ابحث عن الدرس';
+}
+
+
+/* =========================================================
+   BUILD SEARCH QUERY
+========================================================= */
+
+function buildSearchQuery(context) {
+
+    return [
+        context.grade,
+        context.subject,
+        context.semester,
+        context.lesson,
+        'شرح'
+    ]
+    .filter(Boolean)
+    .join(' ');
+}
+
+
+/* =========================================================
+   MATCH LESSON CONTEXT
+========================================================= */
+
+function matchesContext(lesson, context) {
+
+    const same = (field, selected) =>
+        !selected ||
+        !field ||
+        String(field).trim() === selected;
+
+    return same(lesson.semester, context.semester)
+        && same(lesson.grade, context.grade)
+        && same(lesson.subject, context.subject);
+}
+
+
+/* =========================================================
+   SEARCH LOCAL LESSONS
+========================================================= */
+
+async function searchLocalLessons(context) {
+
+    try {
+
+        const data = await api('/api/lessons');
+
+        const list = Array.isArray(data.items)
+            ? data.items
+            : [];
+
+        const term =
+            context.lesson.toLocaleLowerCase('ar');
+
+        return list.filter(item => {
+
+            const title =
+                String(item.title || '')
+                    .toLocaleLowerCase('ar');
+
+            return matchesContext(item, context)
+                && title.includes(term);
+        });
+
+    } catch (error) {
+
+        console.warn(
+            'تعذر البحث في الدروس المخزنة:',
+            error.message
+        );
+
+        return [];
+    }
+}
+
+
+/* =========================================================
+   RENDER LOCAL LESSONS
+========================================================= */
+
+function renderLocalLessons(lessons) {
+
+    if (!lessons.length) return '';
+
+    let html =
+        '<h2 class="section-title">📚 دروس مضافة في المنصة</h2><div class="grid">';
+
+    for (const lesson of lessons) {
+
+        html += `
+            <article class="lesson-card">
+
+                <span class="tag">
+                    ${escapeHTML(
+                        [
+                            lesson.grade,
+                            lesson.subject,
+                            lesson.semester
+                        ]
+                        .filter(Boolean)
+                        .join(' • ') || 'درس'
+                    )}
+                </span>
+
+                <h3>
+                    ${escapeHTML(lesson.title)}
+                </h3>
+
+                <p>
+                    ${escapeHTML(
+                        lesson.description ||
+                        lesson.summary ||
+                        'هذا الدرس مضاف في محتوى المنصة.'
+                    )}
+                </p>
+
+                ${
+                    lesson.video_url
+                    ? `
+                        <a
+                            class="source-button"
+                            href="${escapeHTML(lesson.video_url)}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            ▶️ مشاهدة فيديو الدرس
+                        </a>
+                    `
+                    : ''
+                }
+
+            </article>
+        `;
     }
 
+    html += '</div>';
 
-    if(
-        text.includes("نيوتن")
-    ){
+    return html;
+}
 
-        return quizBanks["قوانين نيوتن"];
 
+/* =========================================================
+   YOUTUBE SEARCH — RENDER/LOCAL SUPPORT
+========================================================= */
+
+async function searchYouTube(query) {
+
+    /*
+       مهم:
+       نستخدم مسارًا نسبيًا، حتى يتصل الطلب
+       بنفس السيرفر الذي يعرض الصفحة.
+
+       يعمل ذلك على Render وكذلك محليًا.
+       لا نضع مفتاح YouTube API داخل HTML.
+    */
+
+    const data = await api(
+        '/api/youtube-search?q=' +
+        encodeURIComponent(query)
+    );
+
+    return (
+        Array.isArray(data.items)
+            ? data.items
+            : []
+    )
+    .map(normalizeVideo)
+    .filter(video => video.videoId);
+}
+
+
+/* =========================================================
+   RENDER YOUTUBE VIDEOS
+========================================================= */
+
+function renderVideos(videos) {
+
+    if (!videos.length) {
+
+        return `
+            <div class="message">
+                لم يتم العثور على فيديوهات من YouTube لهذه العبارة.
+            </div>
+        `;
     }
 
+    let html =
+        '<h2 class="section-title">🎥 شروحات من YouTube</h2><div class="grid">';
 
-    if(
-        text.includes("حركة") ||
-        text.includes("سرعة")
-    ){
+    for (const video of videos) {
 
-        return quizBanks["الحركة"];
+        html += `
+            <article class="video-card">
 
+                <img
+                    class="video-thumb"
+                    src="${escapeHTML(video.thumbnail)}"
+                    alt="صورة الفيديو"
+                    loading="lazy"
+                >
+
+                <div>
+                    <h3>
+                        ${escapeHTML(video.title)}
+                    </h3>
+
+                    <p>
+                        📺 ${escapeHTML(video.channel)}
+                    </p>
+                </div>
+
+                <a
+                    class="video-button"
+                    href="https://www.youtube.com/watch?v=${encodeURIComponent(video.videoId)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    ▶️ شاهد الشرح
+                </a>
+
+            </article>
+        `;
     }
 
+    html += '</div>';
 
-    if(
-        text.includes("طاقة")
-    ){
+    return html;
+}
 
-        return quizBanks["الطاقة"];
 
+/* =========================================================
+   WEB SEARCH LINKS
+========================================================= */
+
+function renderWebSearch(query) {
+
+    const googleUrl =
+        'https://www.google.com/search?q=' +
+        encodeURIComponent(query);
+
+    const youtubeUrl =
+        'https://www.youtube.com/results?search_query=' +
+        encodeURIComponent(query);
+
+    return `
+        <div class="action-row">
+
+            <a
+                class="source-button"
+                href="${googleUrl}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                🌐 البحث عن المزيد في الويب
+            </a>
+
+            <a
+                class="video-button"
+                href="${youtubeUrl}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                ▶️ فتح بحث YouTube
+            </a>
+
+        </div>
+    `;
+}
+
+
+/* =========================================================
+   QUIZ BANK
+========================================================= */
+
+function buildQuiz(lessonName) {
+
+    const key = Object.keys(quizBanks).find(
+        k =>
+            lessonName
+                .toLocaleLowerCase('ar')
+                .includes(
+                    k.toLocaleLowerCase('ar')
+                )
+    );
+
+    if (key) {
+        return quizBanks[key].map(q => ({
+            ...q,
+            options: [...q.options]
+        }));
     }
 
-
-    if(
-        text.includes("ذرة") ||
-        text.includes("كيمياء")
-    ){
-
-        return quizBanks["الذرة"];
-
-    }
-
-
-    if(
-        text.includes("خلية") ||
-        text.includes("أحياء")
-    ){
-
-        return quizBanks["الخلية"];
-
-    }
-
-
-    if(
-        text.includes("past")
-    ){
-
-        return quizBanks["past simple"];
-
-    }
-
-
-    if(
-        text.includes("present")
-    ){
-
-        return quizBanks["present simple"];
-
-    }
-
-
-    if(
-        text.includes("مثلث")
-    ){
-
-        return quizBanks["المثلثات"];
-
-    }
-
-
-    if(
-        text.includes("معادلة") ||
-        text.includes("رياضيات")
-    ){
-
-        return quizBanks["المعادلات"];
-
-    }
-
+    /*
+       هذه أسئلة تدريب عامة عند عدم وجود
+       مجموعة أسئلة خاصة باسم الدرس.
+    */
 
     return [
 
         {
-            question:`ما الفكرة الأساسية التي يشرحها درس "${lesson}"؟`,
+            question:
+                `ما أفضل طريقة لفهم درس «${lessonName}»؟`,
 
-            options:[
-                "فهم المفاهيم والقواعد المرتبطة بالدرس",
-                "حفظ الاسم فقط",
-                "تجاهل الأمثلة"
+            options: [
+                'فهم الفكرة ثم تطبيق أمثلة',
+                'حفظ الاسم فقط',
+                'تجاوز الشرح'
             ],
 
-            answer:0
+            answer: 0
         },
 
-
         {
-            question:`ما أفضل طريقة لدراسة "${lesson}"؟`,
+            question:
+                'إذا لم تفهم خطوة في الحل، ماذا تفعل؟',
 
-            options:[
-                "فهم الشرح ثم حل أمثلة",
-                "الحفظ فقط",
-                "عدم المراجعة"
+            options: [
+                'أراجع الخطوة وأحاول مرة أخرى',
+                'أختار جوابًا عشوائيًا دائمًا',
+                'أتوقف عن الدراسة'
             ],
 
-            answer:0
+            answer: 0
         },
 
-
         {
-            question:`ماذا تفعل عندما تجد سؤالًا صعبًا في "${lesson}"؟`,
+            question:
+                'ما الذي يساعد على تثبيت المعلومات؟',
 
-            options:[
-                "أراجع القاعدة وأحل السؤال خطوة بخطوة",
-                "أتوقف مباشرة",
-                "أترك السؤال بدون محاولة"
+            options: [
+                'حل أسئلة ومراجعة الشرح',
+                'عدم المراجعة',
+                'قراءة العنوان فقط'
             ],
 
-            answer:0
+            answer: 0
         },
 
-
         {
-            question:`لماذا نراجع درس "${lesson}" بعد شرحه؟`,
+            question:
+                'قبل الإجابة عن سؤال، الأفضل أن:',
 
-            options:[
-                "لتثبيت المعلومات وفهمها أكثر",
-                "لنسيان المعلومات",
-                "لإلغاء الأمثلة"
+            options: [
+                'أقرأ السؤال جيدًا',
+                'أتجاهل المطلوب',
+                'أختار بسرعة دون قراءة'
             ],
 
-            answer:0
+            answer: 0
         },
 
-
         {
-            question:`أي طريقة تساعد على تحسين مستواك في "${lesson}"؟`,
+            question:
+                'بعد إكمال الاختبار، الأفضل أن:',
 
-            options:[
-                "التدرب على أسئلة متنوعة",
-                "عدم حل الأسئلة",
-                "قراءة اسم الدرس فقط"
+            options: [
+                'أراجع إجاباتي وأتعلم من الأخطاء',
+                'أنسى الأخطاء',
+                'لا أراجع الإجابات'
             ],
 
-            answer:0
+            answer: 0
         }
 
     ];
-
 }
 
 
-/* =========================================
-   المتغير الحالي للاختبار
-========================================= */
+/* =========================================================
+   RENDER QUIZ
+========================================================= */
 
-let currentQuiz = [];
+function renderQuiz(lessonName) {
 
+    currentQuiz = buildQuiz(lessonName);
 
-/* =========================================
-   إنشاء الاختبار
-========================================= */
+    const questionsHtml =
+        currentQuiz.map(
+            (question, index) => {
 
-function showQuizButton(){
+                const optionsHtml =
+                    question.options.map(
+                        (option, optionIndex) => `
 
-    const results =
-        document.getElementById("results");
+                            <label
+                                class="option"
+                                id="option-${index}-${optionIndex}"
+                            >
 
+                                <input
+                                    type="radio"
+                                    name="question-${index}"
+                                    value="${optionIndex}"
+                                >
 
-    const lesson =
-        document
-        .getElementById("lessonInput")
-        .value
-        .trim();
+                                <span>
+                                    ${escapeHTML(option)}
+                                </span>
 
+                            </label>
 
-    const subject =
-        document
-        .getElementById("subject")
-        .value;
+                        `
+                    ).join('');
 
+                return `
 
-    currentQuiz =
-        getQuizForLesson(
-            lesson,
-            subject
-        );
+                    <div
+                        class="question"
+                        id="question-${index}"
+                    >
 
+                        <h3>
+                            ${index + 1}.
+                            ${escapeHTML(question.question)}
+                        </h3>
 
-    currentQuiz =
-        [...currentQuiz]
-        .sort(
-            () => Math.random() - 0.5
-        )
-        .slice(0,5);
-
-
-    renderQuiz();
-
-}
-
-
-/* =========================================
-   رسم الاختبار
-========================================= */
-
-function renderQuiz(){
-
-    const results =
-        document.getElementById("results");
-
-
-    const lesson =
-        document
-        .getElementById("lessonInput")
-        .value
-        .trim();
-
-
-    let html = `
-
-        <div class="quiz">
-
-            <div class="quiz-title">
-
-                🧠 اختبر نفسك
-
-            </div>
-
-
-            <div class="quiz-subtitle">
-
-                اختبار خاص بدرس:
-
-                <b>
-                    ${escapeHTML(lesson)}
-                </b>
-
-                <br>
-
-                اختر الإجابة الصحيحة ثم اضغط
-                على "تصحيح الاختبار".
-
-            </div>
-
-    `;
-
-
-    currentQuiz.forEach(
-        (question,index) => {
-
-            html += `
-
-                <div
-                    class="quiz-question"
-                    id="question-${index}"
-                >
-
-                    <div class="quiz-question-title">
-
-                        ${index + 1}️⃣
-
-                        ${escapeHTML(
-                            question.question
-                        )}
+                        ${optionsHtml}
 
                     </div>
 
-            `;
+                `;
+            }
+        ).join('');
 
 
-            question.options.forEach(
-                (option,optionIndex) => {
+    return `
 
-                    html += `
+        <div
+            class="quiz-card"
+            id="quizCard"
+        >
 
-                        <label
-                            class="quiz-option"
-                            id="option-${index}-${optionIndex}"
-                        >
+            <h2>
+                🧠 اختبر نفسك
+            </h2>
 
-                            <input
-                                type="radio"
-                                name="q${index}"
-                                value="${optionIndex}"
-                            >
+            <p class="subtitle">
+                اختبار تدريبي لدرس:
+                <b>${escapeHTML(lessonName)}</b>.
+                الأسئلة العامة ليست بديلًا عن اختبار الكتاب المدرسي.
+            </p>
 
-                            ${escapeHTML(option)}
-
-                        </label>
-
-                    `;
-
-                }
-            );
-
-
-            html += `
-
-                </div>
-
-            `;
-
-        }
-    );
-
-
-    html += `
+            ${questionsHtml}
 
             <button
-                class="quiz-submit"
-                onclick="checkQuiz()"
+                class="primary"
+                id="submitQuiz"
+                type="button"
             >
-
-                ✅ تصحيح الاختبار
-
+                ✅ تصحيح الإجابات
             </button>
 
-
             <div
-                id="quizResult"
                 class="quiz-result"
+                id="quizResult"
             ></div>
 
         </div>
 
     `;
-
-
-    results.innerHTML += html;
-
 }
 
 
-/* =========================================
-   تصحيح الاختبار
-========================================= */
+/* =========================================================
+   GRADE QUIZ
+========================================================= */
 
-function checkQuiz(){
-
-    if(!currentQuiz.length){
-
-        return;
-
-    }
-
+function gradeQuiz() {
 
     let score = 0;
 
-
     currentQuiz.forEach(
-        (question,index) => {
+        (question, index) => {
 
             const selected =
                 document.querySelector(
-                    `input[name="q${index}"]:checked`
+                    `input[name="question-${index}"]:checked`
                 );
 
-
             question.options.forEach(
-                (_,optionIndex) => {
+                (_, optionIndex) => {
 
-                    const option =
-                        document.getElementById(
-                            `option-${index}-${optionIndex}`
+                    const label =
+                        $(
+                            'option-' +
+                            index +
+                            '-' +
+                            optionIndex
                         );
 
+                    label.classList.remove(
+                        'correct',
+                        'wrong'
+                    );
 
-                    if(option){
+                    if (
+                        optionIndex === question.answer
+                    ) {
+                        label.classList.add('correct');
+                    }
 
-                        option.classList.remove(
-                            "correct",
-                            "wrong"
-                        );
-
+                    if (
+                        selected &&
+                        Number(selected.value) === optionIndex &&
+                        optionIndex !== question.answer
+                    ) {
+                        label.classList.add('wrong');
                     }
 
                 }
             );
 
-
-            const correctOption =
-                document.getElementById(
-                    `option-${index}-${question.answer}`
-                );
-
-
-            if(correctOption){
-
-                correctOption.classList.add(
-                    "correct"
-                );
-
-            }
-
-
-            if(selected){
-
-                const selectedIndex =
-                    Number(
-                        selected.value
-                    );
-
-
-                if(
-                    selectedIndex ===
-                    question.answer
-                ){
-
-                    score++;
-
-                }else{
-
-                    const wrongOption =
-                        document.getElementById(
-                            `option-${index}-${selectedIndex}`
-                        );
-
-
-                    if(wrongOption){
-
-                        wrongOption.classList.add(
-                            "wrong"
-                        );
-
-                    }
-
-                }
-
+            if (
+                selected &&
+                Number(selected.value) === question.answer
+            ) {
+                score++;
             }
 
         }
     );
 
 
-    const result =
-        document.getElementById(
-            "quizResult"
-        );
+    const result = $('quizResult');
 
-
-    const total =
-        currentQuiz.length;
-
-
-    const percentage =
-        Math.round(
-            (score / total) * 100
-        );
-
-
-    let message;
-
-
-    if(percentage === 100){
-
-        message =
-            "🔥 ممتاز جدًا! كل إجاباتك صحيحة.";
-
-    }else if(percentage >= 80){
-
-        message =
-            "👏 ممتاز! مستواك رائع.";
-
-    }else if(percentage >= 60){
-
-        message =
-            "👍 جيد، واصل المراجعة والتدريب.";
-
-    }else{
-
-        message =
-            "📚 راجع الدرس وحاول الاختبار مرة أخرى.";
-
-    }
-
+    result.style.display = 'block';
 
     result.innerHTML = `
 
-        <div class="score">
+        <div>نتيجتك</div>
 
-            ${score} / ${total}
-
-        </div>
-
-
-        <div style="margin-bottom:8px;">
-
-            النسبة: ${percentage}%
-
-        </div>
-
+        <strong>
+            ${score} من ${currentQuiz.length}
+        </strong>
 
         <div>
-
-            ${message}
-
+            ${
+                score === currentQuiz.length
+                ? 'ممتاز! أحسنت 👏'
+                : score >= Math.ceil(currentQuiz.length / 2)
+                    ? 'عمل جيد! راجع الأسئلة التي أخطأت فيها.'
+                    : 'واصل التدرّب وراجع الشرح ثم حاول مرة أخرى.'
+            }
         </div>
-
-
-        <button
-            class="restart-btn"
-            onclick="restartQuiz()"
-        >
-
-            🔄 اختبار جديد
-
-        </button>
 
     `;
 
-
-    result.style.display =
-        "block";
-
-
-    document
-    .querySelectorAll(
-        '.quiz input[type="radio"]'
-    )
-    .forEach(
-        input => {
-
-            input.disabled = true;
-
-        }
-    );
-
+    $('submitQuiz').disabled = true;
 }
 
 
-/* =========================================
-   اختبار جديد
-========================================= */
+/* =========================================================
+   SEARCH LESSON
+========================================================= */
 
-function restartQuiz(){
+async function searchLesson() {
 
-    const lesson =
-        document
-        .getElementById("lessonInput")
-        .value
-        .trim();
+    const mySequence =
+        ++searchSequence;
 
-
-    const subject =
-        document
-        .getElementById("subject")
-        .value;
+    const context =
+        getContext();
 
 
-    currentQuiz =
-        getQuizForLesson(
-            lesson,
-            subject
-        );
+    if (!context.lesson) {
 
+        $('results').innerHTML = `
+            <div class="message error">
+                اكتب اسم الدرس أولًا.
+            </div>
+        `;
 
-    currentQuiz =
-        [...currentQuiz]
-        .sort(
-            () => Math.random() - 0.5
-        )
-        .slice(0,5);
+        $('resultCount').textContent =
+            'اسم الدرس مطلوب';
 
-
-    const oldQuiz =
-        document.querySelector(
-            ".quiz"
-        );
-
-
-    if(!oldQuiz){
+        $('lessonInput').focus();
 
         return;
-
     }
 
 
-    let html = `
+    setLoading(true);
 
-        <div class="quiz-title">
+    $('resultCount').textContent =
+        'جاري البحث';
 
-            🧠 اختبار جديد
-
+    $('results').innerHTML = `
+        <div class="message">
+            <span class="spinner"></span>
+            جاري البحث في محتوى المنصة وYouTube...
         </div>
-
-
-        <div class="quiz-subtitle">
-
-            درس:
-
-            <b>
-                ${escapeHTML(lesson)}
-            </b>
-
-        </div>
-
     `;
 
 
-    currentQuiz.forEach(
-        (question,index) => {
+    await registerSearch();
+
+
+    const query =
+        buildSearchQuery(context);
+
+
+    let localLessons = [];
+
+    let videos = [];
+
+    let youtubeError = '';
+
+
+    const localPromise =
+        searchLocalLessons(context)
+        .then(result => {
+            localLessons = result;
+        });
+
+
+    const youtubePromise =
+        appSettings.youtube_enabled === 'false'
+
+        ? Promise.resolve()
+
+        : searchYouTube(query)
+
+            .then(result => {
+                videos = result;
+            })
+
+            .catch(error => {
+                youtubeError =
+                    error.message ||
+                    'تعذر البحث في YouTube';
+            });
+
+
+    await Promise.all([
+        localPromise,
+        youtubePromise
+    ]);
+
+
+    if (
+        mySequence !== searchSequence
+    ) {
+        setLoading(false);
+        return;
+    }
+
+
+    let html = '';
+
+
+    if (!localLessons.length) {
+
+        html += `
+            <div class="message">
+                لم يتم العثور على الدرس في المحتوى المضاف.
+                نعرض لك نتائج خارجية وروابط بحث تساعدك على المتابعة.
+            </div>
+        `;
+
+    } else {
+
+        html +=
+            renderLocalLessons(localLessons);
+    }
+
+
+    if (
+        appSettings.youtube_enabled !== 'false'
+    ) {
+
+        if (videos.length) {
+
+            html +=
+                renderVideos(videos);
+
+        } else {
 
             html += `
 
                 <div
-                    class="quiz-question"
-                    id="question-${index}"
+                    class="message ${youtubeError ? 'error' : ''}"
                 >
 
-                    <div class="quiz-question-title">
-
-                        ${index + 1}️⃣
-
-                        ${escapeHTML(
-                            question.question
-                        )}
-
-                    </div>
-
-            `;
-
-
-            question.options.forEach(
-                (option,optionIndex) => {
-
-                    html += `
-
-                        <label
-                            class="quiz-option"
-                            id="option-${index}-${optionIndex}"
-                        >
-
-                            <input
-                                type="radio"
-                                name="q${index}"
-                                value="${optionIndex}"
-                            >
-
-                            ${escapeHTML(option)}
-
-                        </label>
-
-                    `;
-
-                }
-            );
-
-
-            html += `
+                    ${
+                        youtubeError
+                        ? '⚠️ تعذر البحث في YouTube: ' +
+                            escapeHTML(youtubeError)
+                        : 'لم يتم العثور على فيديوهات من YouTube لهذه العبارة.'
+                    }
 
                 </div>
 
             `;
-
         }
+    }
+
+
+    html +=
+        renderWebSearch(query);
+
+
+    html +=
+        renderQuiz(context.lesson);
+
+
+    $('results').innerHTML = html;
+
+
+    $('resultCount').textContent =
+        `${localLessons.length} درس · ${videos.length} فيديو`;
+
+
+    $('submitQuiz').addEventListener(
+        'click',
+        gradeQuiz
     );
 
 
-    html += `
-
-        <button
-            class="quiz-submit"
-            onclick="checkQuiz()"
-        >
-
-            ✅ تصحيح الاختبار
-
-        </button>
+    $('resultsPanel').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
 
 
-        <div
-            id="quizResult"
-            class="quiz-result"
-        ></div>
-
-    `;
-
-
-    oldQuiz.innerHTML =
-        html;
-
+    setLoading(false);
 }
 
 
-/* =========================================
-   البحث الرئيسي
-========================================= */
-
-async function searchLesson(){
-
-    const input =
-        document.getElementById(
-            "lessonInput"
-        );
-
-
-    const query =
-        input.value.trim();
-
-
-    if(!query){
-
-        alert(
-            "اكتب اسم الدرس أولاً."
-        );
-
-        return;
-
-    }
-
-
-    const semester =
-        document.getElementById(
-            "semester"
-        ).value;
-
-
-    const grade =
-        document.getElementById(
-            "grade"
-        ).value;
-
-
-    const subject =
-        document.getElementById(
-            "subject"
-        ).value;
-
-
-    const fullQuery = [
-
-        grade,
-        subject,
-        semester,
-        query
-
-    ]
-
-    .filter(Boolean)
-    .join(" ");
-
-
-    const results =
-        document.getElementById(
-            "results"
-        );
-
-
-    results.innerHTML = `
-
-        <div class="loading">
-
-            🔎 جاري البحث عن شرح الدرس...
-
-        </div>
-
-    `;
-
-
-    /* =====================================
-       الاتصال بالسيرفر
-    ===================================== */
-
-    try{
-
-        const serverResponse =
-            await fetch(
-                `/api/search?q=${encodeURIComponent(fullQuery)}`
-            );
-
-
-        const serverData =
-            await serverResponse.json();
-
-
-        console.log(
-            "Server:",
-            serverData
-        );
-
-    }catch(error){
-
-        console.error(
-            "خطأ في الاتصال بالسيرفر:",
-            error
-        );
-
-    }
-
-
-    /* =====================================
-       البحث المحلي
-    ===================================== */
-
-    const localResult =
-        searchLocalLessons(
-            query
-        );
-
-
-    if(localResult.length){
-
-        results.innerHTML = "";
-
-        renderLocalLessons(
-            localResult
-        );
-
-    }else{
-
-        results.innerHTML = `
-
-            <div class="message">
-
-                لم يتم العثور على الدرس
-                في المحتوى المضاف.
-
-                <br><br>
-
-                🔎 جاري البحث عن
-                شروحات خارجية...
-
-            </div>
-
-        `;
-
-    }
-
-
-    /* =====================================
-       YouTube
-    ===================================== */
-
-    await searchYouTube(
-        fullQuery
-    );
-
-
-    /* =====================================
-       الويب
-    ===================================== */
-
-    showWebSearch(
-        fullQuery
-    );
-
-
-    /* =====================================
-       الاختبار
-    ===================================== */
-
-    showQuizButton();
-
-}
-
-
-/* =========================================
-   Enter للبحث
-========================================= */
-
-document
-.getElementById("lessonInput")
-.addEventListener(
-    "keydown",
-    function(event){
-
-        if(event.key === "Enter"){
-
+/* =========================================================
+   EVENTS
+========================================================= */
+
+$('searchButton').addEventListener(
+    'click',
+    searchLesson
+);
+
+
+$('lessonInput').addEventListener(
+    'keydown',
+    event => {
+        if (event.key === 'Enter') {
             searchLesson();
-
         }
-
     }
 );
 
+
+/* =========================================================
+   START
+========================================================= */
+
+loadSettings();
+
+registerVisit();
+
 </script>
 
-
 </body>
-
 </html>
