@@ -3,507 +3,366 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080c16">
 <title>شرح دروسي</title>
 
 <style>
-:root {
-  --bg: #080c16;
-  --panel: #111827;
-  --line: #253247;
-  --text: #f5f7fb;
-  --muted: #aab5c7;
-  --blue: #2878ff;
-  --green: #16a34a;
-  --red: #dc2626;
+:root{
+  --bg:#080c16;
+  --panel:#111827;
+  --line:#253247;
+  --text:#f5f7fb;
+  --muted:#aab5c7;
+  --blue:#2878ff;
+  --green:#16a34a;
+  --red:#dc2626;
 }
-
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: radial-gradient(ellipse at top, #13213c, #080c16 60%);
-  color: var(--text);
-  font-family: Arial, Tahoma, sans-serif;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,Tahoma,sans-serif;
+  background:radial-gradient(ellipse at top,#13213c,#080c16 60%);
+  color:var(--text);
 }
-
-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: rgba(8,12,22,.94);
-  border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(12px);
+header{
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:rgba(8,12,22,.94);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
 }
-
-.header-inner {
-  max-width: 1100px;
-  width: 92%;
-  min-height: 72px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+.header-inner{
+  max-width:1100px;
+  width:92%;
+  min-height:72px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
 }
-
-.logo { font-size: 27px; font-weight: 900; }
-.logo span { color: #65aaff; }
-
-.header-link {
-  color: #eaf2ff;
-  background: #10213d;
-  border: 1px solid #31558e;
-  border-radius: 12px;
-  text-decoration: none;
-  padding: 10px 14px;
+.logo{font-size:27px;font-weight:900}
+.logo span{color:#65aaff}
+.header-link{
+  color:white;
+  background:#10213d;
+  border:1px solid #31558e;
+  padding:10px 14px;
+  text-decoration:none;
+  border-radius:12px;
 }
-
-.container {
-  width: 92%;
-  max-width: 1050px;
-  margin: 25px auto 45px;
+.container{
+  width:92%;
+  max-width:1050px;
+  margin:28px auto 45px;
 }
-
-.hero {
-  text-align: center;
-  padding: 38px 12px 30px;
+.hero{text-align:center;padding:35px 12px}
+.hero-badge{
+  display:inline-block;
+  background:#122344;
+  border:1px solid #2d4d7b;
+  color:#acd1ff;
+  padding:8px 13px;
+  border-radius:30px;
+  font-size:13px;
+  margin-bottom:15px;
 }
-
-.hero-badge {
-  display: inline-block;
-  padding: 8px 13px;
-  border-radius: 50px;
-  background: #122344;
-  border: 1px solid #2d4d7b;
-  color: #acd1ff;
-  font-size: 13px;
-  margin-bottom: 15px;
+h1{font-size:clamp(28px,5vw,42px);line-height:1.4}
+h1 span{color:#65aaff}
+.hero p,.subtext{color:var(--muted);line-height:1.9}
+.panel{
+  background:linear-gradient(160deg,#111827,#0d1423);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:23px;
+  margin-bottom:20px;
+  box-shadow:0 15px 45px rgba(0,0,0,.18);
 }
-
-h1 {
-  font-size: clamp(28px, 5vw, 42px);
-  line-height: 1.4;
-  margin: 0 0 12px;
+.panel h2{margin-top:0}
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
 }
-
-h1 span { color: #65aaff; }
-
-.hero p {
-  color: var(--muted);
-  line-height: 1.9;
-  max-width: 700px;
-  margin: auto;
+.field-wide{grid-column:1/-1}
+label{display:block;font-weight:700;margin-bottom:8px}
+select,input[type="text"]{
+  width:100%;
+  min-height:48px;
+  background:#080e1b;
+  border:1px solid #334158;
+  color:white;
+  border-radius:12px;
+  padding:12px;
+  font-size:16px;
+  outline:none;
 }
-
-.panel {
-  background: linear-gradient(160deg, #111827, #0d1423);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 23px;
-  margin-bottom: 20px;
-  box-shadow: 0 15px 45px rgba(0,0,0,.18);
+select:focus,input:focus{
+  border-color:#65aaff;
+  box-shadow:0 0 0 3px rgba(40,120,255,.15);
 }
-
-.panel h2, .card h2 { margin-top: 0; }
-
-.subtext {
-  color: var(--muted);
-  line-height: 1.8;
+button{
+  font-family:inherit;
+  font-size:15px;
+  font-weight:800;
+  padding:12px 17px;
+  min-height:44px;
+  border:0;
+  border-radius:11px;
+  cursor:pointer;
 }
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 15px;
+button:disabled{opacity:.6;cursor:wait}
+.primary{
+  width:100%;
+  margin-top:17px;
+  background:linear-gradient(135deg,#2878ff,#135bd8);
+  color:white;
 }
-
-.field-wide { grid-column: 1 / -1; }
-
-label {
-  display: block;
-  color: #d9e2f0;
-  font-weight: 700;
-  margin-bottom: 8px;
+.secondary{
+  background:#17243a;
+  border:1px solid #314460;
+  color:#e4efff;
 }
-
-select, input[type="text"] {
-  width: 100%;
-  min-height: 48px;
-  padding: 12px;
-  color: #fff;
-  background: #080e1b;
-  border: 1px solid #334158;
-  border-radius: 12px;
-  font-size: 16px;
-  outline: none;
+.results-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:17px;
 }
-
-select:focus, input:focus {
-  border-color: #65aaff;
-  box-shadow: 0 0 0 3px rgba(40,120,255,.15);
+.results-head h2{margin:0}
+.badge{
+  font-size:12px;
+  background:#172238;
+  color:#c6d6ee;
+  border-radius:30px;
+  padding:7px 10px;
 }
-
-button {
-  font-family: inherit;
-  font-size: 15px;
-  font-weight: 800;
-  padding: 12px 17px;
-  min-height: 44px;
-  border: 0;
-  border-radius: 11px;
-  cursor: pointer;
+.message{
+  padding:15px;
+  line-height:1.9;
+  background:#0b1322;
+  border:1px solid var(--line);
+  border-radius:13px;
+  margin:13px 0;
 }
-
-button:disabled { opacity: .6; cursor: wait; }
-
-.primary {
-  width: 100%;
-  margin-top: 17px;
-  color: white;
-  background: linear-gradient(135deg, #2878ff, #135bd8);
+.message.error{
+  background:rgba(127,29,29,.15);
+  border-color:#7f1d1d;
+  color:#fecaca;
 }
-
-.secondary {
-  color: #e4efff;
-  background: #17243a;
-  border: 1px solid #314460;
+.message.success{
+  background:rgba(22,163,74,.1);
+  border-color:#166534;
+  color:#bbf7d0;
 }
-
-.results-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 16px;
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
 }
-
-.results-head h2 { margin: 0; }
-
-.badge {
-  background: #172238;
-  color: #c6d6ee;
-  padding: 7px 10px;
-  border-radius: 30px;
-  font-size: 12px;
+.card{
+  min-width:0;
+  padding:17px;
+  border:1px solid #253247;
+  border-radius:15px;
+  background:#0a1220;
 }
-
-.message {
-  padding: 15px;
-  line-height: 1.9;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  background: #0b1322;
-  margin: 13px 0;
+.card h3{font-size:17px;line-height:1.7;margin:0 0 8px}
+.card p{color:var(--muted);line-height:1.8;overflow-wrap:anywhere}
+.card a{margin-top:auto}
+.tag{
+  display:inline-block;
+  padding:5px 9px;
+  font-size:12px;
+  border-radius:30px;
+  background:#142b4d;
+  border:1px solid #254a7a;
+  color:#b6d8ff;
+  margin-bottom:10px;
 }
-
-.message.error {
-  background: rgba(127,29,29,.15);
-  border-color: #7f1d1d;
-  color: #fecaca;
+.video-card{display:flex;flex-direction:column;gap:10px}
+.video-thumb{
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  background:#111827;
+  border-radius:10px;
 }
-
-.message.success {
-  background: rgba(22,163,74,.1);
-  border-color: #166534;
-  color: #bbf7d0;
+.video-link,.source-link{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:white;
+  text-decoration:none;
+  font-weight:800;
+  padding:11px;
+  background:#b91c1c;
+  border-radius:10px;
 }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 14px;
+.source-link{background:#1d4ed8}
+.section-title{margin:28px 0 15px}
+.action-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:18px;
 }
-
-.card {
-  min-width: 0;
-  padding: 17px;
-  border: 1px solid #253247;
-  border-radius: 15px;
-  background: #0a1220;
+.action-row a{flex:1;min-width:180px}
+.summary-card,.quiz-card,.test-links{
+  margin-top:22px;
+  padding:20px;
+  border:1px solid #2a3d59;
+  border-radius:17px;
+  background:linear-gradient(150deg,#101b2e,#0c1321);
 }
-
-.card h3 {
-  font-size: 17px;
-  line-height: 1.7;
-  margin: 0 0 8px;
-  overflow-wrap: anywhere;
+.summary-card h2,.quiz-card h2,.test-links h2{margin-top:0}
+.summary-card p,.quiz-card .subtitle,.test-links p{
+  color:var(--muted);
+  line-height:1.9;
 }
-
-.card p {
-  color: var(--muted);
-  line-height: 1.8;
+.summary-content{margin-top:16px;line-height:1.9}
+.source-group{margin-top:20px}
+.source-group h3{color:#9bc7ff}
+.test-link-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
 }
-
-.tag {
-  display: inline-block;
-  margin-bottom: 10px;
-  padding: 5px 9px;
-  font-size: 12px;
-  border-radius: 30px;
-  background: #142b4d;
-  color: #b6d8ff;
+.test-link{
+  display:block;
+  padding:14px;
+  color:#e8f1ff;
+  border:1px solid #2b405e;
+  border-radius:12px;
+  text-decoration:none;
+  background:#0b1424;
+  line-height:1.7;
 }
-
-.video-card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.test-link strong{display:block;color:#8fc2ff;margin-bottom:5px}
+.test-link span{color:#aab8cd;font-size:13px}
+.question{
+  padding:16px;
+  margin-bottom:14px;
+  border:1px solid #2d3a50;
+  background:#0d1524;
+  border-radius:12px;
 }
-
-.video-thumb {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  background: #111827;
-  border-radius: 10px;
+.question h3{font-size:17px;line-height:1.8;margin-top:0}
+.option{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:11px;
+  margin:8px 0;
+  border:1px solid #334158;
+  border-radius:10px;
+  background:#121c2d;
+  cursor:pointer;
+  line-height:1.7;
 }
-
-.video-link, .web-link {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 11px;
-  border-radius: 10px;
-  color: white;
-  text-decoration: none;
-  font-weight: 800;
-  background: #b91c1c;
-  margin-top: auto;
+.option input{width:auto;min-height:0;margin-top:5px}
+.option.correct{border-color:#16a34a;background:rgba(22,163,74,.15)}
+.option.wrong{border-color:#dc2626;background:rgba(220,38,38,.15)}
+.feedback{
+  display:none;
+  margin-top:10px;
+  padding:11px;
+  border:1px solid #24583c;
+  border-radius:10px;
+  background:#10251d;
+  color:#c9f7d7;
+  line-height:1.8;
 }
-
-.web-link { background: #1d4ed8; }
-
-.section-title { margin: 28px 0 15px; }
-
-.action-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
+.quiz-result{
+  display:none;
+  margin-top:15px;
+  padding:18px;
+  text-align:center;
+  background:#101d31;
+  border:1px solid #2b466b;
+  border-radius:13px;
 }
-
-.action-row a {
-  flex: 1;
-  min-width: 180px;
-  text-align: center;
+.quiz-result strong{display:block;font-size:28px;margin:10px}
+.score-meter{
+  height:9px;
+  background:#253247;
+  border-radius:30px;
+  overflow:hidden;
+  margin:14px 0;
 }
-
-.test-links, .summary-card, .quiz-card {
-  margin-top: 22px;
-  padding: 21px;
-  border: 1px solid #2a3d59;
-  border-radius: 17px;
-  background: linear-gradient(150deg, #101b2e, #0c1321);
+.score-fill{
+  height:100%;
+  background:linear-gradient(90deg,#2563eb,#22c55e);
 }
-
-.test-links p, .summary-card p, .quiz-card .subtitle {
-  color: var(--muted);
-  line-height: 1.9;
+.progress-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin:16px 0 22px;
 }
-
-.test-link-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 12px;
+.progress-stat{
+  padding:15px;
+  background:#0a1220;
+  border:1px solid #253247;
+  border-radius:13px;
 }
-
-.test-link {
-  display: block;
-  padding: 14px;
-  color: #e8f1ff;
-  border: 1px solid #2b405e;
-  border-radius: 12px;
-  background: #0b1424;
-  line-height: 1.8;
-  text-decoration: none;
+.progress-stat span{display:block;color:var(--muted);font-size:13px;line-height:1.7}
+.progress-stat strong{display:block;font-size:25px;margin-top:6px}
+.progress-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:13px 0;
+  border-bottom:1px solid #253247;
 }
-
-.test-link strong {
-  display: block;
-  color: #8fc2ff;
-  margin-bottom: 5px;
+.progress-item h3{margin:0 0 5px;font-size:15px}
+.progress-item p{margin:0;color:var(--muted);font-size:12px;line-height:1.8}
+.progress-score{
+  text-align:center;
+  flex-shrink:0;
+  padding:9px;
+  border-radius:10px;
+  background:#11233c;
+  border:1px solid #2d4d7b;
+  color:#b7d9ff;
+  font-weight:800;
 }
-
-.test-link span {
-  display: block;
-  color: #aab8cd;
-  font-size: 13px;
+.small{font-size:12px;color:#8e9ab0;line-height:1.8}
+.spinner{
+  display:inline-block;
+  width:17px;
+  height:17px;
+  border:3px solid #50617c;
+  border-top-color:white;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
 }
-
-.summary-content {
-  line-height: 1.9;
-  margin-top: 16px;
+@keyframes spin{to{transform:rotate(360deg)}}
+footer{
+  text-align:center;
+  color:#8491a6;
+  border-top:1px solid #1e293b;
+  padding:27px 15px;
+  line-height:1.9;
 }
-
-.summary-content h3 { color: #9bc7ff; }
-.summary-content li { margin: 7px 0; }
-
-.summary-term {
-  padding: 12px;
-  border: 1px solid #273b57;
-  border-radius: 10px;
-  margin: 9px 0;
-}
-
-.summary-term strong { color: #9bc7ff; }
-
-.question {
-  padding: 16px;
-  margin-bottom: 14px;
-  border: 1px solid #2d3a50;
-  background: #0d1524;
-  border-radius: 12px;
-}
-
-.question h3 {
-  font-size: 17px;
-  line-height: 1.8;
-  margin: 0 0 12px;
-}
-
-.option {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 11px;
-  margin: 8px 0;
-  border: 1px solid #334158;
-  border-radius: 10px;
-  background: #121c2d;
-  line-height: 1.7;
-  cursor: pointer;
-}
-
-.option input {
-  margin-top: 5px;
-  flex-shrink: 0;
-}
-
-.option.correct {
-  border-color: #16a34a;
-  background: rgba(22,163,74,.15);
-}
-
-.option.wrong {
-  border-color: #dc2626;
-  background: rgba(220,38,38,.15);
-}
-
-.feedback {
-  display: none;
-  margin-top: 10px;
-  padding: 12px;
-  border: 1px solid #24583c;
-  border-radius: 10px;
-  background: #10251d;
-  color: #c9f7d7;
-  line-height: 1.8;
-}
-
-.quiz-result {
-  display: none;
-  margin-top: 15px;
-  padding: 18px;
-  border: 1px solid #2b466b;
-  border-radius: 13px;
-  text-align: center;
-  background: #101d31;
-}
-
-.quiz-result strong {
-  display: block;
-  font-size: 28px;
-  margin: 10px 0;
-}
-
-.progress-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0,1fr));
-  gap: 12px;
-  margin: 15px 0 22px;
-}
-
-.progress-stat {
-  padding: 15px;
-  background: #0a1220;
-  border: 1px solid #253247;
-  border-radius: 13px;
-}
-
-.progress-stat span {
-  display: block;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.7;
-}
-
-.progress-stat strong {
-  display: block;
-  font-size: 25px;
-  margin-top: 6px;
-}
-
-.progress-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 0;
-  border-bottom: 1px solid #253247;
-}
-
-.progress-item h3 { margin: 0 0 5px; font-size: 15px; }
-.progress-item p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
-
-.progress-score {
-  flex-shrink: 0;
-  padding: 9px;
-  border-radius: 10px;
-  background: #11233c;
-  border: 1px solid #2d4d7b;
-  color: #b7d9ff;
-  text-align: center;
-  font-weight: 800;
-}
-
-.small { font-size: 12px; color: #8e9ab0; line-height: 1.8; }
-
-.spinner {
-  display: inline-block;
-  width: 17px;
-  height: 17px;
-  border: 3px solid #50617c;
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin .8s linear infinite;
-  vertical-align: middle;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-footer {
-  text-align: center;
-  color: #8491a6;
-  border-top: 1px solid #1e293b;
-  padding: 27px 15px;
-  line-height: 1.9;
-}
-
-@media(max-width:680px) {
-  .form-grid, .grid, .test-link-grid { grid-template-columns: 1fr; }
-  .field-wide { grid-column: auto; }
-  .panel, .summary-card, .quiz-card, .test-links { padding: 17px; }
-  .hero { padding: 28px 5px; }
-  .header-inner { min-height: 65px; }
-  .logo { font-size: 22px; }
-  .header-link { padding: 8px 10px; font-size: 13px; }
-  .progress-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  .progress-item { align-items: flex-start; }
+@media(max-width:680px){
+  .form-grid,.grid,.test-link-grid{grid-template-columns:1fr}
+  .field-wide{grid-column:auto}
+  .panel,.summary-card,.quiz-card,.test-links{padding:17px}
+  .hero{padding:25px 5px}
+  .header-inner{min-height:65px}
+  .logo{font-size:22px}
+  .header-link{padding:8px 10px;font-size:13px}
+  .progress-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .progress-item{align-items:flex-start}
 }
 </style>
 </head>
@@ -521,14 +380,13 @@ footer {
     <div class="hero-badge">📚 منصتك التعليمية</div>
     <h1 id="welcomeTitle">تعلّم • افهم • <span>اختبر نفسك</span></h1>
     <p id="welcomeText">
-      اختر صفك ومادتك واكتب اسم الدرس. سنبحث عن الشروحات والاختبارات
-      ونساعدك على تلخيص أهم المعلومات ومتابعة تقدمك.
+      اختر صفك ومادتك واسم الدرس للبحث عن الشروحات والملخصات والاختبارات.
     </p>
   </section>
 
   <section class="panel" id="searchPanel">
     <h2>📚 اختر درسك</h2>
-    <p class="subtext">اختر الفصل والصف والمادة للحصول على نتائج أدق.</p>
+    <p class="subtext">اختر الفصل والصف والمادة لتحصل على نتائج أدق.</p>
 
     <div class="form-grid">
       <div>
@@ -539,7 +397,6 @@ footer {
           <option>الفصل الثاني</option>
         </select>
       </div>
-
       <div>
         <label for="grade">الصف</label>
         <select id="grade">
@@ -552,7 +409,6 @@ footer {
           <option>الصف الثاني عشر</option>
         </select>
       </div>
-
       <div class="field-wide">
         <label for="subject">المادة</label>
         <select id="subject">
@@ -567,29 +423,25 @@ footer {
           <option>معلومات عامة</option>
         </select>
       </div>
-
       <div class="field-wide">
         <label for="lessonInput">اسم الدرس</label>
         <input id="lessonInput" type="text"
-          placeholder="مثال: قوانين نيوتن" autocomplete="off">
+          placeholder="مثال: المعادلات التربيعية" autocomplete="off">
       </div>
     </div>
 
     <button class="primary" id="searchButton" type="button">
       🔎 ابحث عن الدرس
     </button>
-    <p class="small">تستطيع الضغط على Enter بعد كتابة اسم الدرس.</p>
   </section>
 
   <section class="panel" id="resultsPanel" aria-live="polite">
     <div class="results-head">
       <h2>🎯 نتائج البحث</h2>
-      <span id="resultCount" class="badge">بانتظار البحث</span>
+      <span class="badge" id="resultCount">بانتظار البحث</span>
     </div>
     <div id="results">
-      <div class="message">
-        اكتب اسم الدرس ثم اضغط «ابحث عن الدرس».
-      </div>
+      <div class="message">اكتب اسم الدرس ثم اضغط «ابحث عن الدرس».</div>
     </div>
   </section>
 
@@ -599,8 +451,7 @@ footer {
       <span class="badge">محفوظ على هذا الجهاز</span>
     </div>
     <p class="subtext">
-      تابع محاولاتك ومتوسط درجاتك وأفضل نتيجة.
-      السجل محفوظ في هذا المتصفح فقط.
+      تظهر هنا محاولاتك ومتوسط درجاتك وأفضل نتيجة. السجل محفوظ في هذا المتصفح فقط.
     </p>
     <div id="progressStats" class="progress-grid"></div>
     <div id="progressHistory"></div>
@@ -620,193 +471,142 @@ footer {
 const $ = id => document.getElementById(id);
 
 let appSettings = {};
-let searchSequence = 0;
 let lastLocalLessons = [];
 let lastVideos = [];
 let currentQuiz = [];
 let currentQuizContext = null;
-let currentQuizMode = 'local';
-let hasSavedCurrentResult = false;
+let currentQuizMode = 'lesson';
+let hasSavedQuiz = false;
+let searchSequence = 0;
 
-const PROGRESS_KEY = 'shrh_progress_history_v1';
+const HISTORY_KEY = 'shrh_progress_history_v1';
 
 const quizBanks = [
   {
-    keys: ['قوانين نيوتن', 'قانون نيوتن', 'newton law'],
+    keys: ['قوانين نيوتن','قانون نيوتن','newton law'],
     questions: [
       {
-        question: 'ما العلاقة التي يعبّر عنها قانون نيوتن الثاني؟',
-        options: [
-          'القوة = الكتلة × التسارع',
-          'القوة = المسافة × الزمن',
-          'القوة = الكتلة ÷ السرعة'
-        ],
-        answer: 0,
-        explanation: 'قانون نيوتن الثاني يكتب F = m × a.'
+        question:'ما العلاقة التي يعبّر عنها قانون نيوتن الثاني؟',
+        options:['القوة = الكتلة × التسارع','القوة = المسافة × الزمن','القوة = الكتلة ÷ الزمن'],
+        answer:0,
+        explanation:'قانون نيوتن الثاني يكتب F = m × a.'
       },
       {
-        question: 'إذا كانت القوة المحصلة صفرًا، فإن الجسم الساكن:',
-        options: [
-          'يبقى ساكنًا',
-          'يتسارع دائمًا',
-          'تزداد كتلته'
-        ],
-        answer: 0,
-        explanation: 'هذا يوافق قانون نيوتن الأول.'
+        question:'إذا كانت القوة المحصلة صفرًا، فإن الجسم الساكن:',
+        options:['يبقى ساكنًا','يتسارع دائمًا','تزداد كتلته'],
+        answer:0,
+        explanation:'هذا يوافق قانون نيوتن الأول.'
       },
       {
-        question: 'أي قانون يصف الفعل ورد الفعل؟',
-        options: [
-          'قانون نيوتن الأول',
-          'قانون نيوتن الثاني',
-          'قانون نيوتن الثالث'
-        ],
-        answer: 2,
-        explanation: 'لكل فعل رد فعل مساوٍ له في المقدار ومعاكس له في الاتجاه.'
+        question:'أي قانون يصف الفعل ورد الفعل؟',
+        options:['الأول','الثاني','الثالث'],
+        answer:2,
+        explanation:'لكل فعل رد فعل مساوٍ له في المقدار ومعاكس له في الاتجاه.'
       },
       {
-        question: 'ما وحدة قياس القوة؟',
-        options: ['الجول', 'النيوتن', 'الواط'],
-        answer: 1,
-        explanation: 'تقاس القوة بوحدة النيوتن.'
+        question:'ما وحدة قياس القوة؟',
+        options:['الجول','النيوتن','الواط'],
+        answer:1,
+        explanation:'تقاس القوة بوحدة النيوتن.'
       },
       {
-        question: 'إذا زادت الكتلة وبقيت القوة ثابتة، فإن التسارع:',
-        options: ['يزداد', 'يقل', 'يبقى نفسه دائمًا'],
-        answer: 1,
-        explanation: 'التسارع يساوي القوة المحصلة مقسومة على الكتلة.'
+        question:'إذا زادت الكتلة وبقيت القوة ثابتة، فإن التسارع:',
+        options:['يزداد','يقل','لا يتغير'],
+        answer:1,
+        explanation:'التسارع يساوي القوة المحصلة مقسومة على الكتلة.'
       }
     ]
   },
   {
-    keys: ['الحركة', 'السرعة', 'التسارع', 'motion', 'speed'],
-    questions: [
+    keys:['المعادلات التربيعية','المعادلة التربيعية','quadratic equation'],
+    questions:[
       {
-        question: 'كيف نحسب السرعة المتوسطة؟',
-        options: [
-          'المسافة ÷ الزمن',
-          'الزمن ÷ المسافة',
-          'الكتلة × التسارع'
-        ],
-        answer: 0,
-        explanation: 'السرعة المتوسطة تساوي المسافة مقسومة على الزمن.'
+        question:'ما الصورة العامة للمعادلة التربيعية؟',
+        options:['ax² + bx + c = 0 حيث a لا تساوي صفرًا','ax + b = 0 فقط','x³ + 1 = 0 دائمًا'],
+        answer:0,
+        explanation:'يجب أن يكون أعلى أس للمتغير هو 2، وأن لا يساوي معامل x² صفرًا.'
       },
       {
-        question: 'ما وحدة السرعة الشائعة في النظام الدولي؟',
-        options: ['متر/ثانية', 'نيوتن', 'كيلوجرام'],
-        answer: 0,
-        explanation: 'تقاس السرعة بالمتر لكل ثانية.'
+        question:'ما قيمة المميز في المعادلة ax² + bx + c = 0؟',
+        options:['b² − 4ac','a + b + c','b − 2a'],
+        answer:0,
+        explanation:'المميز هو Δ = b² − 4ac ويساعد على تحديد طبيعة الجذور.'
       },
       {
-        question: 'ماذا يعني التسارع؟',
-        options: [
-          'تغير السرعة مع الزمن',
-          'المسافة فقط',
-          'ثبات الموقع دائمًا'
-        ],
-        answer: 0,
-        explanation: 'التسارع هو معدل تغير السرعة بالنسبة إلى الزمن.'
+        question:'إذا كان المميز أكبر من صفر، فكم جذرًا حقيقيًا مختلفًا يوجد؟',
+        options:['جذر حقيقي واحد','جذران حقيقيان مختلفان','لا توجد جذور حقيقية'],
+        answer:1,
+        explanation:'عندما يكون المميز موجبًا، توجد جذران حقيقيان مختلفان.'
       },
       {
-        question: 'إذا قطعت مسافة أكبر في الزمن نفسه، فإن السرعة المتوسطة:',
-        options: ['تقل', 'تزداد', 'تصبح صفرًا'],
-        answer: 1,
-        explanation: 'زيادة المسافة مع ثبات الزمن تعني زيادة السرعة المتوسطة.'
+        question:'إذا كان المميز يساوي صفرًا، فإن الجذرين:',
+        options:['حقيقيان ومتساويان','حقيقيان مختلفان','غير حقيقيين دائمًا'],
+        answer:0,
+        explanation:'عندما يساوي المميز صفرًا، يكون الجذر الحقيقي مكررًا.'
+      },
+      {
+        question:'في المعادلة x² − 5x + 6 = 0، ما الجذران؟',
+        options:['1 و6','2 و3','−2 و−3'],
+        answer:1,
+        explanation:'يمكن تحليلها إلى (x − 2)(x − 3) = 0.'
       }
     ]
   },
   {
-    keys: ['الذرة', 'تركيب الذرة', 'atom'],
-    questions: [
+    keys:['الحركة','السرعة','التسارع','motion','speed'],
+    questions:[
       {
-        question: 'أين توجد البروتونات والنيوترونات؟',
-        options: ['في النواة', 'في الهواء', 'خارج الذرة'],
-        answer: 0,
-        explanation: 'توجد البروتونات والنيوترونات داخل نواة الذرة.'
+        question:'كيف نحسب السرعة المتوسطة؟',
+        options:['المسافة ÷ الزمن','الزمن ÷ المسافة','الكتلة × التسارع'],
+        answer:0,
+        explanation:'السرعة المتوسطة تساوي المسافة المقطوعة مقسومة على الزمن.'
       },
       {
-        question: 'ما شحنة الإلكترون؟',
-        options: ['موجبة', 'سالبة', 'متعادلة'],
-        answer: 1,
-        explanation: 'الإلكترون جسيم ذو شحنة سالبة.'
+        question:'ما وحدة السرعة في النظام الدولي؟',
+        options:['متر/ثانية','نيوتن','كيلوجرام'],
+        answer:0,
+        explanation:'الوحدة الشائعة للسرعة هي متر لكل ثانية.'
       },
       {
-        question: 'ما شحنة البروتون؟',
-        options: ['موجبة', 'سالبة', 'متعادلة'],
-        answer: 0,
-        explanation: 'يحمل البروتون شحنة موجبة.'
+        question:'ماذا يعني التسارع؟',
+        options:['تغير السرعة مع الزمن','المسافة فقط','ثبات الموقع دائمًا'],
+        answer:0,
+        explanation:'التسارع هو معدل تغير السرعة بالنسبة إلى الزمن.'
       },
       {
-        question: 'أي جسيم متعادل كهربائيًا؟',
-        options: ['الإلكترون', 'البروتون', 'النيوترون'],
-        answer: 2,
-        explanation: 'النيوترون لا يحمل شحنة كهربائية.'
+        question:'إذا قطعت مسافة أكبر خلال الزمن نفسه، فإن السرعة المتوسطة:',
+        options:['تقل','تزداد','تصبح صفرًا'],
+        answer:1,
+        explanation:'زيادة المسافة مع ثبات الزمن تعني زيادة السرعة المتوسطة.'
       }
     ]
   },
   {
-    keys: ['المعادلات', 'حل المعادلة', 'equation', 'algebra'],
-    questions: [
+    keys:['الذرة','تركيب الذرة','atom'],
+    questions:[
       {
-        question: 'إذا كان x + 5 = 12، فما قيمة x؟',
-        options: ['5', '7', '17'],
-        answer: 1,
-        explanation: 'نطرح 5 من الطرفين، فيكون x = 7.'
+        question:'أين توجد البروتونات والنيوترونات؟',
+        options:['في النواة','في الهواء','خارج الذرة'],
+        answer:0,
+        explanation:'توجد البروتونات والنيوترونات في نواة الذرة.'
       },
       {
-        question: 'إذا كان 3x = 18، فما قيمة x؟',
-        options: ['6', '15', '21'],
-        answer: 0,
-        explanation: 'نقسم الطرفين على 3، فيكون x = 6.'
+        question:'ما شحنة الإلكترون؟',
+        options:['موجبة','سالبة','متعادلة'],
+        answer:1,
+        explanation:'الإلكترون جسيم ذو شحنة سالبة.'
       },
       {
-        question: 'ما العملية العكسية للجمع؟',
-        options: ['الطرح', 'الضرب', 'الجمع'],
-        answer: 0,
-        explanation: 'الطرح هو العملية العكسية للجمع.'
+        question:'ما شحنة البروتون؟',
+        options:['موجبة','سالبة','متعادلة'],
+        answer:0,
+        explanation:'يحمل البروتون شحنة كهربائية موجبة.'
       },
       {
-        question: 'إذا كان 2x + 1 = 9، فما قيمة x؟',
-        options: ['4', '5', '8'],
-        answer: 0,
-        explanation: 'نطرح 1 ثم نقسم على 2، فيكون x = 4.'
-      }
-    ]
-  },
-  {
-    keys: ['الماضي البسيط', 'past simple'],
-    questions: [
-      {
-        question: 'أي جملة مكتوبة بالماضي البسيط؟',
-        options: [
-          'I played football yesterday.',
-          'I play football every day.',
-          'I am playing now.'
-        ],
-        answer: 0,
-        explanation: 'Played هي صيغة الماضي من play.'
-      },
-      {
-        question: 'ما الماضي من الفعل go؟',
-        options: ['goed', 'went', 'going'],
-        answer: 1,
-        explanation: 'ماضي go هو went.'
-      },
-      {
-        question: 'ما معنى yesterday؟',
-        options: ['غدًا', 'أمس', 'الآن'],
-        answer: 1,
-        explanation: 'Yesterday تعني أمس.'
-      },
-      {
-        question: 'كيف ننفي غالبًا فعلًا عاديًا في الماضي؟',
-        options: [
-          'did not + الفعل الأساسي',
-          'does not + فعل الماضي',
-          'am not + الفعل الماضي'
-        ],
-        answer: 0,
-        explanation: 'نستخدم did not ثم الفعل في صورته الأساسية.'
+        question:'أي جسيم متعادل كهربائيًا؟',
+        options:['الإلكترون','البروتون','النيوترون'],
+        answer:2,
+        explanation:'النيوترون لا يحمل شحنة كهربائية.'
       }
     ]
   }
@@ -814,26 +614,26 @@ const quizBanks = [
 
 const subjectBanks = [
   {
-    subject: 'الرياضيات',
-    questions: [
+    subject:'الرياضيات',
+    questions:[
       {question:'ما ناتج 7 × 8؟',options:['54','56','64'],answer:1,explanation:'7 × 8 = 56.'},
-      {question:'ما متوسط 2 و4 و6؟',options:['3','4','6'],answer:1,explanation:'(2 + 4 + 6) ÷ 3 = 4.'},
+      {question:'ما متوسط الأعداد 2 و4 و6؟',options:['3','4','6'],answer:1,explanation:'(2 + 4 + 6) ÷ 3 = 4.'},
       {question:'ما ناتج 15% من 100؟',options:['10','15','25'],answer:1,explanation:'15% من 100 تساوي 15.'},
-      {question:'إذا كان x − 3 = 9، فما قيمة x؟',options:['6','12','27'],answer:1,explanation:'نضيف 3 إلى الطرفين، فتكون x = 12.'}
+      {question:'إذا كان x − 3 = 9، فما قيمة x؟',options:['6','12','27'],answer:1,explanation:'نضيف 3 إلى الطرفين فيكون x = 12.'}
     ]
   },
   {
-    subject: 'الفيزياء',
-    questions: [
+    subject:'الفيزياء',
+    questions:[
       {question:'ما وحدة قياس الكتلة؟',options:['الكيلوجرام','النيوتن','الفولت'],answer:0,explanation:'تقاس الكتلة بالكيلوجرام.'},
       {question:'ما وحدة قياس القوة؟',options:['الجول','النيوتن','الأمبير'],answer:1,explanation:'وحدة القوة هي النيوتن.'},
       {question:'ما وحدة قياس الطاقة؟',options:['الجول','المتر','الثانية'],answer:0,explanation:'تقاس الطاقة بالجول.'},
-      {question:'ما الذي يحتاجه المصباح ليضيء في دائرة بسيطة؟',options:['دائرة مكتملة ومصدر طاقة','سلك مقطوع','دائرة مفتوحة'],answer:0,explanation:'يجب أن تكون الدائرة مكتملة كي يمر التيار.'}
+      {question:'ماذا يحتاج المصباح ليضيء في دائرة بسيطة؟',options:['دائرة مكتملة ومصدر طاقة','سلك مقطوع','دائرة مفتوحة'],answer:0,explanation:'يجب أن تكون الدائرة مكتملة كي يمر التيار.'}
     ]
   },
   {
-    subject: 'الكيمياء',
-    questions: [
+    subject:'الكيمياء',
+    questions:[
       {question:'ما الرمز الكيميائي للأكسجين؟',options:['O','Ox','Og'],answer:0,explanation:'رمز الأكسجين هو O.'},
       {question:'ما الجسيم ذو الشحنة السالبة؟',options:['الإلكترون','البروتون','النيوترون'],answer:0,explanation:'الإلكترون سالب الشحنة.'},
       {question:'أين توجد البروتونات؟',options:['في النواة','خارج الذرة فقط','في الهواء'],answer:0,explanation:'توجد البروتونات في نواة الذرة.'},
@@ -841,103 +641,86 @@ const subjectBanks = [
     ]
   },
   {
-    subject: 'الأحياء',
-    questions: [
+    subject:'الأحياء',
+    questions:[
       {question:'ما الوحدة الأساسية للحياة؟',options:['الخلية','الصخر','الماء'],answer:0,explanation:'الخلية هي الوحدة الأساسية للحياة.'},
       {question:'ما وظيفة القلب الأساسية؟',options:['ضخ الدم','هضم الطعام','امتصاص الضوء'],answer:0,explanation:'يضخ القلب الدم إلى أنحاء الجسم.'},
-      {question:'ما العملية التي يستخدم فيها النبات الضوء لصنع الغذاء؟',options:['البناء الضوئي','الهضم','التكاثف'],answer:0,explanation:'يصنع النبات السكريات بعملية البناء الضوئي.'},
-      {question:'أي جزء من النبات يمتص الماء من التربة؟',options:['الجذور','الأزهار فقط','الثمار فقط'],answer:0,explanation:'تمتص الجذور الماء والأملاح من التربة.'}
+      {question:'ما العملية التي يستخدم فيها النبات الضوء لصنع الغذاء؟',options:['البناء الضوئي','الهضم','التكاثف'],answer:0,explanation:'يصنع النبات السكريات خلال البناء الضوئي.'},
+      {question:'أي جزء من النبات يمتص الماء من التربة؟',options:['الجذور','الأزهار فقط','الثمار فقط'],answer:0,explanation:'تمتص الجذور الماء والأملاح المعدنية من التربة.'}
     ]
   }
 ];
 
-function esc(value) {
-  const el = document.createElement('span');
-  el.textContent = String(value ?? '');
-  return el.innerHTML;
+function escapeHTML(value){
+  const element=document.createElement('span');
+  element.textContent=String(value??'');
+  return element.innerHTML;
 }
 
-function normalize(value) {
-  return String(value ?? '')
+function normalizeText(value){
+  return String(value??'')
     .toLocaleLowerCase('ar')
-    .replace(/[\u064B-\u065F\u0670]/g, '')
-    .replace(/[أإآ]/g, 'ا')
-    .replace(/ى/g, 'ي')
+    .replace(/[\u064B-\u065F\u0670]/g,'')
+    .replace(/[أإآ]/g,'ا')
+    .replace(/ى/g,'ي')
+    .replace(/\s+/g,' ')
     .trim();
 }
 
-async function api(url, options = {}) {
-  const response = await fetch(url, options);
+async function api(url,options={}){
+  const response=await fetch(url,options);
   let data;
-
-  try {
-    data = await response.json();
-  } catch {
-    throw new Error('استجاب الخادم ببيانات غير متوقعة.');
-  }
-
-  if (!response.ok) {
-    throw new Error(data.message || `فشل الطلب: ${response.status}`);
-  }
-
+  try{data=await response.json();}
+  catch{throw new Error('استجاب الخادم ببيانات غير متوقعة.');}
+  if(!response.ok) throw new Error(data.message||`فشل الطلب (${response.status})`);
   return data;
 }
 
-function getContext() {
+function getContext(){
   return {
-    semester: $('semester').value.trim(),
-    grade: $('grade').value.trim(),
-    subject: $('subject').value.trim(),
-    lesson: $('lessonInput').value.trim()
+    semester:$('semester').value.trim(),
+    grade:$('grade').value.trim(),
+    subject:$('subject').value.trim(),
+    lesson:$('lessonInput').value.trim()
   };
 }
 
-async function loadSettings() {
-  try {
-    const data = await api('/api/settings');
-    appSettings = data.settings || {};
-
-    if (appSettings.site_title) {
-      document.title = appSettings.site_title;
+async function loadSettings(){
+  try{
+    const data=await api('/api/settings');
+    appSettings=data.settings||{};
+    if(appSettings.site_title) document.title=appSettings.site_title;
+    if(appSettings.welcome_text) $('welcomeText').textContent=appSettings.welcome_text;
+    if(appSettings.footer_text) $('footerText').textContent=appSettings.footer_text;
+    if(appSettings.site_enabled==='false'){
+      $('searchButton').disabled=true;
+      $('results').innerHTML='<div class="message">الموقع متوقف مؤقتًا.</div>';
     }
-
-    if (appSettings.welcome_text) {
-      $('welcomeText').textContent = appSettings.welcome_text;
-    }
-
-    if (appSettings.footer_text) {
-      $('footerText').textContent = appSettings.footer_text;
-    }
-
-    if (appSettings.site_enabled === 'false') {
-      $('searchButton').disabled = true;
-      $('results').innerHTML =
-        '<div class="message">الموقع متوقف مؤقتًا.</div>';
-    }
-  } catch (error) {
-    console.warn('تعذر تحميل الإعدادات:', error.message);
+  }catch(error){
+    console.warn('تعذر تحميل الإعدادات:',error.message);
   }
 }
 
-async function registerVisit() {
-  try {
-    if (sessionStorage.getItem('shrh_visit_counted') === '1') return;
-    await fetch('/api/stats/visit', { method: 'POST' });
-    sessionStorage.setItem('shrh_visit_counted', '1');
-  } catch (error) {
-    console.warn(error.message);
-  }
+async function registerVisit(){
+  try{
+    if(sessionStorage.getItem('shrh_visit_counted')==='1') return;
+    await fetch('/api/stats/visit',{method:'POST'});
+    sessionStorage.setItem('shrh_visit_counted','1');
+  }catch{}
 }
 
-async function registerSearch() {
-  try {
-    await fetch('/api/stats/search', { method: 'POST' });
-  } catch (error) {
-    console.warn(error.message);
-  }
+async function registerSearch(){
+  try{
+    await fetch('/api/stats/search',{method:'POST'});
+  }catch{}
 }
 
-function makeQuery(context, suffix = 'شرح') {
+function setLoading(loading){
+  $('searchButton').disabled=loading;
+  $('searchButton').textContent=loading?'⏳ جاري البحث...':'🔎 ابحث عن الدرس';
+}
+
+function buildQuery(context,suffix='شرح'){
   return [
     context.grade,
     context.subject,
@@ -947,727 +730,527 @@ function makeQuery(context, suffix = 'شرح') {
   ].filter(Boolean).join(' ');
 }
 
-async function findLocalLessons(context) {
-  try {
-    const data = await api('/api/lessons');
-    const items = Array.isArray(data.items) ? data.items : [];
-    const term = normalize(context.lesson);
+async function searchLocalLessons(context){
+  try{
+    const data=await api('/api/lessons');
+    const items=Array.isArray(data.items)?data.items:[];
+    const term=normalizeText(context.lesson);
 
-    return items.filter(item => {
-      const title = normalize(item.title);
-      const matchesTitle = title.includes(term);
-      const matchesGrade =
-        !context.grade || !item.grade || item.grade === context.grade;
-      const matchesSubject =
-        !context.subject || !item.subject || item.subject === context.subject;
-      const matchesSemester =
-        !context.semester || !item.semester ||
-        item.semester === context.semester;
+    return items.filter(item=>{
+      const title=normalizeText(item.title);
+      const matchesTitle=title.includes(term);
+      const matchesGrade=!context.grade||!item.grade||item.grade===context.grade;
+      const matchesSubject=!context.subject||!item.subject||item.subject===context.subject;
+      const matchesSemester=!context.semester||!item.semester||item.semester===context.semester;
 
-      return matchesTitle && matchesGrade &&
-        matchesSubject && matchesSemester;
+      return matchesTitle&&matchesGrade&&matchesSubject&&matchesSemester;
     });
-  } catch (error) {
-    console.warn('تعذر قراءة الدروس المخزنة:', error.message);
+  }catch(error){
+    console.warn('تعذر البحث في الدروس المضافة:',error.message);
     return [];
   }
 }
 
-function renderLocalLessons(items) {
-  if (!items.length) return '';
+function renderLocalLessons(items){
+  if(!items.length) return '';
 
   return `
     <h2 class="section-title">📚 دروس مضافة في المنصة</h2>
     <div class="grid">
-      ${items.map(item => `
+      ${items.map(item=>`
         <article class="card">
-          <span class="tag">${esc(
-            [item.grade, item.subject, item.semester]
-              .filter(Boolean).join(' • ') || 'درس'
-          )}</span>
-          <h3>${esc(item.title)}</h3>
-          <p>${esc(item.description || item.summary || 'درس من محتوى المنصة.')}</p>
-          ${
-            item.video_url
-              ? `<a class="web-link" target="_blank" rel="noopener noreferrer"
-                    href="${esc(item.video_url)}">▶️ مشاهدة الدرس</a>`
-              : ''
-          }
+          <span class="tag">${escapeHTML([item.grade,item.subject,item.semester].filter(Boolean).join(' • ')||'درس')}</span>
+          <h3>${escapeHTML(item.title)}</h3>
+          <p>${escapeHTML(item.description||item.summary||'درس من محتوى المنصة.')}</p>
+          ${item.video_url?`<a class="source-link" href="${escapeHTML(item.video_url)}" target="_blank" rel="noopener noreferrer">▶️ مشاهدة الدرس</a>`:''}
         </article>
       `).join('')}
     </div>`;
 }
 
-async function searchYouTube(query) {
-  const data = await api(
-    '/api/youtube-search?q=' + encodeURIComponent(query)
-  );
-
-  return (Array.isArray(data.items) ? data.items : [])
-    .map(item => ({
-      videoId: item.videoId || item.id?.videoId || '',
-      title: item.title || item.snippet?.title || 'شرح الدرس',
-      channel: item.channel || item.snippet?.channelTitle || 'YouTube',
-      description: item.description || item.snippet?.description || '',
-      thumbnail: item.thumbnail ||
-        item.snippet?.thumbnails?.medium?.url ||
-        item.snippet?.thumbnails?.high?.url || ''
-    }))
-    .filter(item => item.videoId);
+function normalizeVideo(item){
+  return {
+    videoId:item?.videoId||item?.id?.videoId||'',
+    title:item?.title||item?.snippet?.title||'شرح الدرس',
+    channel:item?.channel||item?.snippet?.channelTitle||'YouTube',
+    thumbnail:item?.thumbnail||item?.snippet?.thumbnails?.medium?.url||item?.snippet?.thumbnails?.high?.url||''
+  };
 }
 
-function renderVideos(videos) {
-  if (!videos.length) {
+async function searchYouTube(query){
+  const data=await api('/api/youtube-search?q='+encodeURIComponent(query));
+  return (Array.isArray(data.items)?data.items:[])
+    .map(normalizeVideo)
+    .filter(video=>video.videoId);
+}
+
+function renderVideos(videos){
+  if(!videos.length){
     return '<div class="message">لم يتم العثور على فيديوهات من YouTube لهذه العبارة.</div>';
   }
 
   return `
     <h2 class="section-title">🎥 شروحات من YouTube</h2>
     <div class="grid">
-      ${videos.map(video => `
+      ${videos.map(video=>`
         <article class="card video-card">
-          ${
-            video.thumbnail
-              ? `<img class="video-thumb"
-                  src="${esc(video.thumbnail)}"
-                  alt="صورة الفيديو" loading="lazy">`
-              : ''
-          }
-          <h3>${esc(video.title)}</h3>
-          <p>📺 ${esc(video.channel)}</p>
-          <a class="video-link"
-            target="_blank" rel="noopener noreferrer"
-            href="https://www.youtube.com/watch?v=${encodeURIComponent(video.videoId)}">
-            ▶️ شاهد الشرح
-          </a>
+          ${video.thumbnail?`<img class="video-thumb" src="${escapeHTML(video.thumbnail)}" alt="صورة الفيديو" loading="lazy">`:''}
+          <h3>${escapeHTML(video.title)}</h3>
+          <p>📺 ${escapeHTML(video.channel)}</p>
+          <a class="video-link" href="https://www.youtube.com/watch?v=${encodeURIComponent(video.videoId)}" target="_blank" rel="noopener noreferrer">▶️ شاهد الشرح</a>
         </article>
       `).join('')}
     </div>`;
 }
 
-function renderWebLinks(context) {
-  const query = makeQuery(context);
-  const google = 'https://www.google.com/search?q=' + encodeURIComponent(query);
-  const youtube = 'https://www.youtube.com/results?search_query=' +
-    encodeURIComponent(query);
+function renderWebSearch(context){
+  const google='https://www.google.com/search?q='+encodeURIComponent(buildQuery(context));
+  const youtube='https://www.youtube.com/results?search_query='+encodeURIComponent(buildQuery(context));
 
   return `
     <div class="action-row">
-      <a class="web-link" href="${google}" target="_blank"
-        rel="noopener noreferrer">🌐 البحث في الويب</a>
-      <a class="video-link" href="${youtube}" target="_blank"
-        rel="noopener noreferrer">▶️ بحث YouTube</a>
+      <a class="source-link" href="${google}" target="_blank" rel="noopener noreferrer">🌐 البحث في Google</a>
+      <a class="video-link" href="${youtube}" target="_blank" rel="noopener noreferrer">▶️ بحث YouTube</a>
     </div>`;
 }
 
-function renderExternalTests(context) {
-  const terms = [
-    context.grade,
-    context.subject,
-    context.lesson
-  ].filter(Boolean).join(' ');
-
-  const searches = [
-    ['📝 اختبارات إلكترونية', 'ابحث عن اختبارات تفاعلية', 'اختبار إلكتروني'],
-    ['✅ أسئلة مع الحل', 'تدريبات وإجابات للمراجعة', 'أسئلة وتمارين مع الحل'],
-    ['📄 اختبارات PDF', 'نماذج قابلة للتحميل والطباعة', 'اختبار PDF'],
-    ['✍️ أوراق عمل', 'تدريبات إضافية على الدرس', 'ورقة عمل تدريبات']
+/* روابط بحث Google المباشرة للملخصات والاختبارات */
+function renderTestLinks(context){
+  const base=[context.grade,context.subject,context.lesson].filter(Boolean).join(' ');
+  const options=[
+    ['📘 ملخصات الدرس','ابحث عن ملخصات وشروحات',`${base} ملخص الدرس شرح مبسط`],
+    ['📝 اختبارات إلكترونية','ابحث عن نماذج اختبار تفاعلية',`${base} اختبار إلكتروني`],
+    ['✅ أسئلة مع الحل','تدريبات وإجابات للمراجعة',`${base} أسئلة وتمارين مع الحل`],
+    ['📄 اختبارات PDF','نماذج قابلة للتحميل والطباعة',`${base} اختبار PDF`],
+    ['✍️ أوراق عمل','تمارين إضافية على الدرس',`${base} ورقة عمل تدريبات`]
   ];
 
   return `
     <section class="test-links">
-      <h2>🔎 اختبارات إضافية عن الدرس</h2>
-      <p>روابط بحث Google حسب الصف والمادة والدرس. تحقّق من ملاءمة النتائج لمنهجك.</p>
+      <h2>🔎 اختبارات وملخصات إضافية</h2>
+      <p>اختر نوع المصدر الذي تريد البحث عنه. روابط Google تفتح نتائج البحث، وليست اختبارات تمت مراجعتها مسبقًا.</p>
       <div class="test-link-grid">
-        ${searches.map(item => {
-          const url = 'https://www.google.com/search?q=' +
-            encodeURIComponent(`${terms} ${item[2]}`);
-          return `
-            <a class="test-link" href="${url}" target="_blank"
-              rel="noopener noreferrer">
-              <strong>${item[0]}</strong>
-              <span>${item[1]}</span>
-            </a>`;
-        }).join('')}
+        ${options.map(option=>`
+          <a class="test-link" href="https://www.google.com/search?q=${encodeURIComponent(option[2])}" target="_blank" rel="noopener noreferrer">
+            <strong>${option[0]}</strong>
+            <span>${option[1]}</span>
+          </a>
+        `).join('')}
       </div>
     </section>`;
 }
 
-function renderSummarySection() {
+function googleResultsHTML(title,items,emptyText){
+  const safeItems=(Array.isArray(items)?items:[]).filter(item=>{
+    try{
+      const url=new URL(item.link);
+      return url.protocol==='https:'||url.protocol==='http:';
+    }catch{return false;}
+  });
+
+  if(!safeItems.length){
+    return `<div class="source-group"><h3>${escapeHTML(title)}</h3><div class="message">${escapeHTML(emptyText)}</div></div>`;
+  }
+
+  return `
+    <div class="source-group">
+      <h3>${escapeHTML(title)}</h3>
+      <div class="grid">
+        ${safeItems.map(item=>`
+          <article class="card">
+            <h3>${escapeHTML(item.title||'نتيجة البحث')}</h3>
+            <p>${escapeHTML(item.snippet||'افتح المصدر لقراءة التفاصيل.')}</p>
+            <p class="small">${escapeHTML(item.displayLink||'')}</p>
+            <a class="source-link" href="${escapeHTML(item.link)}" target="_blank" rel="noopener noreferrer">📖 افتح المصدر</a>
+          </article>
+        `).join('')}
+      </div>
+    </div>`;
+}
+
+/*
+  يبحث هذا القسم عبر المسار /api/google-search في الخادم.
+  عند عدم تهيئة هذا المسار، يستطيع الطالب استخدام روابط Google
+  المباشرة الموجودة في قسم "اختبارات وملخصات إضافية".
+*/
+function renderSummarySection(){
   return `
     <section class="summary-card">
-      <h2>📘 ملخص الدرس الذكي</h2>
-      <p>أنشئ ملخصًا بالعربية يتضمن الفكرة الأساسية والنقاط المهمة والمصطلحات والأمثلة وأسئلة للمراجعة.</p>
-      <button class="secondary" id="generateSummaryButton" type="button">
-        ✨ أنشئ ملخص الدرس
-      </button>
+      <h2>📘 ملخصات الدرس من Google</h2>
+      <p>نبحث عن ملخصات الدرس ومصادر المراجعة حسب الصف والمادة واسم الدرس.</p>
+      <button class="secondary" id="generateSummaryButton" type="button">🔎 ابحث عن ملخصات الدرس</button>
       <div id="summaryMessage" aria-live="polite"></div>
       <div id="summaryContent" class="summary-content"></div>
     </section>`;
 }
 
-function renderSummary(summary) {
-  const list = items => Array.isArray(items) && items.length
-    ? `<ul>${items.map(item => `<li>${esc(item)}</li>`).join('')}</ul>`
-    : '<p class="small">لا توجد عناصر في هذا القسم.</p>';
+async function generateSummary(context){
+  const button=$('generateSummaryButton');
+  const message=$('summaryMessage');
+  const content=$('summaryContent');
 
-  const terms = Array.isArray(summary.terms) ? summary.terms : [];
+  if(!button||!message||!content) return;
 
-  return `
-    <h3>${esc(summary.title || 'ملخص الدرس')}</h3>
-    <p>${esc(summary.overview || '')}</p>
-    <h3>⭐ أهم النقاط</h3>
-    ${list(summary.keyPoints)}
-    <h3>📖 المصطلحات الأساسية</h3>
-    ${
-      terms.length
-        ? terms.map(term => `
-          <div class="summary-term">
-            <strong>${esc(term.term || '')}</strong><br>
-            ${esc(term.definition || '')}
-          </div>`).join('')
-        : '<p class="small">لا توجد مصطلحات مضافة.</p>'
-    }
-    <h3>💡 أمثلة للتوضيح</h3>
-    ${list(summary.examples)}
-    <h3>🧠 أسئلة للمراجعة</h3>
-    ${list(summary.reviewQuestions)}
-    <p class="small">راجع الملخص مع كتابك المدرسي للتأكد من التفاصيل.</p>
-    <button class="secondary" id="copySummaryButton" type="button">
-      📋 نسخ الملخص
-    </button>`;
-}
+  button.disabled=true;
+  button.textContent='⏳ جاري البحث في Google...';
+  message.textContent='';
+  content.innerHTML='';
 
-async function generateSummary(context) {
-  const button = $('generateSummaryButton');
-  const message = $('summaryMessage');
-  const content = $('summaryContent');
-  if (!button || !message || !content) return;
+  try{
+    const base=[context.grade,context.subject,context.semester,context.lesson]
+      .filter(Boolean).join(' ');
 
-  button.disabled = true;
-  button.textContent = '⏳ جاري إعداد الملخص...';
-  message.innerHTML = '<div class="message">نجهز أهم الأفكار للدرس.</div>';
-  content.innerHTML = '';
+    const [summaryData,testData]=await Promise.all([
+      api('/api/google-search?q='+encodeURIComponent(base+' ملخص الدرس شرح مبسط')),
+      api('/api/google-search?q='+encodeURIComponent(base+' اختبارات أسئلة مع الحل PDF'))
+    ]);
 
-  try {
-    const sources = [
-      ...lastLocalLessons.map(item => ({
-        title: item.title || '',
-        description: item.description || item.summary || ''
-      })),
-      ...lastVideos.map(item => ({
-        title: item.title || '',
-        description: item.description || ''
-      }))
-    ].slice(0, 5);
+    content.innerHTML=
+      googleResultsHTML('📘 ملخصات الدرس',summaryData.items,'لم نجد ملخصات مناسبة.')+
+      googleResultsHTML('📝 اختبارات وأسئلة',testData.items,'لم نجد اختبارات مناسبة.');
 
-    const data = await api('/api/summary/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...context, sources })
-    });
-
-    if (!data.summary || !data.summary.overview) {
-      throw new Error('لم يصل ملخص كامل من الخادم.');
-    }
-
-    const summary = data.summary;
-    content.innerHTML = renderSummary(summary);
-
-    const plainText = [
-      summary.title || context.lesson,
-      summary.overview || '',
-      'أهم النقاط:',
-      ...(summary.keyPoints || []).map(item => '• ' + item),
-      'المصطلحات:',
-      ...(summary.terms || []).map(item =>
-        `${item.term}: ${item.definition}`),
-      'الأمثلة:',
-      ...(summary.examples || []).map(item => '• ' + item),
-      'أسئلة المراجعة:',
-      ...(summary.reviewQuestions || []).map(item => '• ' + item)
-    ].join('\n');
-
-    message.innerHTML =
-      '<div class="message success">تم إنشاء الملخص.</div>';
-
-    $('copySummaryButton').addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(plainText);
-        $('copySummaryButton').textContent = '✅ تم نسخ الملخص';
-      } catch {
-        message.innerHTML =
-          '<div class="message error">تعذر النسخ تلقائيًا؛ حدد النص وانسخه يدويًا.</div>';
-      }
-    });
-
-  } catch (error) {
-    message.innerHTML = `
+    message.innerHTML='<div class="message success">هذه نتائج بحث من Google. افتح المصدر لقراءة الملخص أو حل الاختبار؛ الموقع لا يقرأ النص الكامل للمصدر تلقائيًا.</div>';
+  }catch(error){
+    message.innerHTML=`
       <div class="message error">
-        ⚠️ ${esc(error.message || 'تعذر إنشاء الملخص.')}
-        <br><span class="small">
-          تأكد من إضافة مسار /api/summary/generate في server.js
-          وإعداد OPENAI_API_KEY في Render.
-        </span>
+        ⚠️ ${escapeHTML(error.message||'تعذر البحث في Google.')}
+        <br>
+        <span class="small">يحتاج البحث المباشر داخل الصفحة إلى مسار /api/google-search في server.js وإعدادات Google Search في Render. يمكنك استخدام روابط البحث المباشرة أسفل الصفحة مؤقتًا.</span>
       </div>`;
-  } finally {
-    button.disabled = false;
-    button.textContent = '✨ أنشئ ملخص الدرس';
+  }finally{
+    button.disabled=false;
+    button.textContent='🔎 ابحث عن ملخصات الدرس';
   }
 }
 
-function buildQuiz(context) {
-  const lesson = normalize(context.lesson);
-  const exact = quizBanks.find(bank => bank.keys.some(key => {
-    const k = normalize(key);
-    return lesson.includes(k) || (k.includes(lesson) && lesson.length >= 5);
+function buildQuiz(context){
+  const lesson=normalizeText(context.lesson);
+  const bank=quizBanks.find(item=>item.keys.some(key=>{
+    const k=normalizeText(key);
+    return lesson.includes(k)||(k.includes(lesson)&&lesson.length>=5);
   }));
 
-  if (exact) {
-    return {
-      mode: 'lesson',
-      questions: exact.questions.map(q => ({...q, options:[...q.options]}))
-    };
+  if(bank){
+    return {mode:'lesson',questions:bank.questions.map(q=>({...q,options:[...q.options]}))};
   }
 
-  const subject = normalize(context.subject);
-  const bank = subjectBanks.find(item =>
-    subject.includes(normalize(item.subject))
-  );
+  const subject=normalizeText(context.subject);
+  const subjectBank=subjectBanks.find(item=>{
+    const s=normalizeText(item.subject);
+    return subject===s||subject.includes(s);
+  });
 
-  if (bank) {
-    return {
-      mode: 'subject',
-      questions: bank.questions.map(q => ({...q, options:[...q.options]}))
-    };
+  if(subjectBank){
+    return {mode:'subject',questions:subjectBank.questions.map(q=>({...q,options:[...q.options]}))};
   }
 
   return {
-    mode: 'general',
-    questions: [
-      {
-        question: 'ما أفضل طريقة لفهم درس جديد؟',
-        options: [
-          'فهم الفكرة ثم تطبيق أمثلة',
-          'حفظ العنوان فقط',
-          'تجاوز الشرح'
-        ],
-        answer: 0,
-        explanation: 'فهم الفكرة ثم التدرب يساعد على التعلم.'
-      },
-      {
-        question: 'إذا لم تفهم خطوة في الحل، ماذا تفعل؟',
-        options: [
-          'أراجع الخطوة وأبحث عن سببها',
-          'أتجاهلها',
-          'أختار جوابًا عشوائيًا'
-        ],
-        answer: 0,
-        explanation: 'مراجعة الخطوات تساعد على اكتشاف الأخطاء.'
-      },
-      {
-        question: 'ما الذي يساعد على تثبيت المعلومات؟',
-        options: [
-          'التدرب ومراجعة الأخطاء',
-          'قراءة العنوان فقط',
-          'عدم المراجعة'
-        ],
-        answer: 0,
-        explanation: 'الاختبارات والتدرب تساعد على استرجاع المعلومات.'
-      },
-      {
-        question: 'قبل الإجابة عن السؤال، الأفضل أن:',
-        options: [
-          'أقرأ السؤال جيدًا',
-          'أتجاهل المطلوب',
-          'أجيب دون قراءة'
-        ],
-        answer: 0,
-        explanation: 'حدد المطلوب قبل اختيار الإجابة.'
-      }
+    mode:'general',
+    questions:[
+      {question:`ما أفضل طريقة لفهم درس «${context.lesson}»؟`,options:['فهم الفكرة ثم حل أمثلة','حفظ العنوان فقط','تجاوز الشرح'],answer:0,explanation:'ابدأ بفهم الفكرة، ثم طبّق على أمثلة.'},
+      {question:'إذا لم تفهم خطوة في الحل، ماذا تفعل؟',options:['أراجع الخطوة وأبحث عن سببها','أتجاهلها','أختار عشوائيًا'],answer:0,explanation:'مراجعة الخطوات تساعد على اكتشاف الأخطاء.'},
+      {question:'ما الذي يساعد على تثبيت المعلومات؟',options:['حل أسئلة ومراجعة الأخطاء','قراءة العنوان فقط','عدم المراجعة'],answer:0,explanation:'التدرب ومراجعة الأخطاء يساعدان على التعلم.'},
+      {question:'قبل الإجابة عن السؤال، الأفضل أن:',options:['أقرأ المطلوب جيدًا','أتجاهل الكلمات المهمة','أجيب دون قراءة'],answer:0,explanation:'اقرأ السؤال وحدد المطلوب قبل الإجابة.'}
     ]
   };
 }
 
-function renderQuiz(context, override = null) {
-  const quiz = override || buildQuiz(context);
-  currentQuiz = quiz.questions;
-  currentQuizContext = {...context};
-  currentQuizMode = quiz.mode || 'local';
-  hasSavedCurrentResult = false;
+function renderQuiz(context){
+  const quiz=buildQuiz(context);
+  currentQuiz=quiz.questions;
+  currentQuizContext={...context};
+  currentQuizMode=quiz.mode;
+  hasSavedQuiz=false;
 
-  const note = quiz.mode === 'ai'
-    ? 'تم إعداد هذه الأسئلة بالذكاء الاصطناعي. راجع شرح الدرس عند الحاجة.'
-    : quiz.mode === 'lesson'
-      ? 'هذه الأسئلة مرتبطة بموضوع الدرس من بنك الأسئلة المتاح.'
-      : quiz.mode === 'subject'
-        ? `هذا تدريب عام في مادة ${context.subject}، وليس اختبارًا خاصًا بهذا الدرس.`
-        : 'لم يتوفر بنك أسئلة لهذا الدرس بعد؛ هذا تدريب عام على مهارات المذاكرة.';
+  const note=quiz.mode==='lesson'
+    ?'هذه الأسئلة مرتبطة بموضوع الدرس من بنك الأسئلة المتاح.'
+    :quiz.mode==='subject'
+      ?`هذا تدريب عام في مادة ${context.subject} وليس اختبارًا خاصًا بالدرس.`
+      :'لم يتوفر بنك خاص بهذا الدرس؛ هذا تدريب عام على مهارات المذاكرة.';
 
   return `
-    <div class="quiz-card" id="quizCard">
+    <section class="quiz-card" id="quizCard">
       <h2>🧠 اختبر نفسك</h2>
       <p class="subtitle">
-        الدرس: <b>${esc(context.lesson)}</b><br>
-        ${esc(context.grade)} • ${esc(context.subject)}<br>
-        ${esc(note)}
+        الدرس: <b>${escapeHTML(context.lesson)}</b><br>
+        ${escapeHTML(context.grade)} • ${escapeHTML(context.subject)}<br>
+        ${escapeHTML(note)}
       </p>
-      <button class="secondary" id="generateAIQuiz" type="button">
-        ✨ أنشئ اختبارًا بالذكاء الاصطناعي
-      </button>
-      <div id="aiQuizMessage" aria-live="polite"></div>
-
-      ${currentQuiz.map((q, i) => `
-        <div class="question" id="question-${i}">
-          <h3>${i + 1}. ${esc(q.question)}</h3>
-          ${q.options.map((option, j) => `
+      <button class="secondary" id="googleQuizButton" type="button">🔎 ابحث عن اختبارات من Google</button>
+      <div id="googleQuizMessage"></div>
+      <div id="googleQuizResults"></div>
+      ${currentQuiz.map((question,i)=>`
+        <div class="question">
+          <h3>${i+1}. ${escapeHTML(question.question)}</h3>
+          ${question.options.map((option,j)=>`
             <label class="option" id="option-${i}-${j}">
               <input type="radio" name="question-${i}" value="${j}">
-              <span>${esc(option)}</span>
+              <span>${escapeHTML(option)}</span>
             </label>
           `).join('')}
           <div class="feedback" id="feedback-${i}"></div>
         </div>
       `).join('')}
-
-      <button class="primary" id="submitQuiz" type="button">
-        ✅ تصحيح الإجابات
-      </button>
+      <button class="primary" id="submitQuiz" type="button">✅ تصحيح الإجابات</button>
       <div class="quiz-result" id="quizResult"></div>
-    </div>`;
+    </section>`;
 }
 
-function attachQuizControls(context) {
-  $('submitQuiz')?.addEventListener('click', gradeQuiz);
-  $('generateAIQuiz')?.addEventListener('click', () => generateAIQuiz(context));
-}
+async function searchGoogleTests(context){
+  const button=$('googleQuizButton');
+  const message=$('googleQuizMessage');
+  const results=$('googleQuizResults');
+  if(!button||!message||!results) return;
 
-async function generateAIQuiz(context) {
-  const button = $('generateAIQuiz');
-  const message = $('aiQuizMessage');
-  if (!button || !message) return;
+  button.disabled=true;
+  button.textContent='⏳ جاري البحث...';
+  message.textContent='نبحث عن اختبارات وأسئلة إضافية.';
 
-  button.disabled = true;
-  button.textContent = '⏳ جاري إنشاء الاختبار...';
-  message.innerHTML = '<div class="message">جاري إنشاء أسئلة تناسب الدرس.</div>';
+  try{
+    const query=[context.grade,context.subject,context.semester,context.lesson,'اختبار أسئلة مع الحل']
+      .filter(Boolean).join(' ');
 
-  try {
-    const sources = [
-      ...lastLocalLessons.map(item => ({
-        title: item.title || '',
-        description: item.description || item.summary || ''
-      })),
-      ...lastVideos.map(item => ({
-        title: item.title || '',
-        description: item.description || ''
-      }))
-    ].slice(0, 5);
+    const data=await api('/api/google-search?q='+encodeURIComponent(query));
 
-    const data = await api('/api/quiz/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...context, sources })
-    });
+    results.innerHTML=googleResultsHTML(
+      '🔎 اختبارات إضافية من Google',
+      data.items,
+      'لم نجد نتائج مناسبة.'
+    );
 
-    if (!Array.isArray(data.questions) || data.questions.length < 3) {
-      throw new Error('لم تصل أسئلة كافية من الخادم.');
-    }
-
-    $('quizContainer').innerHTML = renderQuiz(context, {
-      mode: 'ai',
-      questions: data.questions
-    });
-
-    attachQuizControls(context);
-
-  } catch (error) {
-    const currentMessage = $('aiQuizMessage');
-    const currentButton = $('generateAIQuiz');
-
-    if (currentMessage) {
-      currentMessage.innerHTML = `
-        <div class="message error">
-          ⚠️ ${esc(error.message || 'تعذر إنشاء الاختبار.')}
-          <br><span class="small">
-            تأكد من إضافة مسار /api/quiz/generate
-            وإعداد OPENAI_API_KEY في Render.
-          </span>
-        </div>`;
-    }
-
-    if (currentButton) {
-      currentButton.disabled = false;
-      currentButton.textContent = '✨ أعد محاولة إنشاء اختبار';
-    }
+    message.innerHTML='<div class="message success">اختر أحد المصادر لمتابعة التدريبات.</div>';
+  }catch(error){
+    message.innerHTML=`
+      <div class="message error">
+        ${escapeHTML(error.message||'تعذر البحث في Google.')}
+        <br>
+        <a href="https://www.google.com/search?q=${encodeURIComponent([context.grade,context.subject,context.lesson,'اختبار مع الحل'].filter(Boolean).join(' '))}" target="_blank" rel="noopener noreferrer">افتح بحث Google المباشر بدلًا من ذلك</a>
+      </div>`;
+  }finally{
+    button.disabled=false;
+    button.textContent='🔎 ابحث عن اختبارات من Google';
   }
 }
 
-function readHistory() {
-  try {
-    const data = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '[]');
-    return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
+function getHistory(){
+  try{
+    const history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
+    return Array.isArray(history)?history:[];
+  }catch{return [];}
 }
 
-function saveResult(record) {
-  try {
-    const history = readHistory();
-    history.unshift({...record, date:new Date().toISOString()});
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(history.slice(0, 50)));
+function saveHistory(record){
+  try{
+    const history=getHistory();
+    history.unshift({...record,date:new Date().toISOString()});
+    localStorage.setItem(HISTORY_KEY,JSON.stringify(history.slice(0,50)));
     renderProgress();
-  } catch (error) {
-    console.warn('تعذر حفظ النتيجة:', error.message);
+  }catch(error){
+    console.warn('تعذر حفظ النتيجة:',error.message);
   }
 }
 
-function renderProgress() {
-  const history = readHistory();
-  const attempts = history.length;
-  const average = attempts
-    ? Math.round(history.reduce((sum, x) => sum + Number(x.percentage || 0), 0) / attempts)
-    : 0;
-  const best = attempts
-    ? Math.max(...history.map(x => Number(x.percentage || 0)))
-    : 0;
+function renderProgress(){
+  const history=getHistory();
+  const count=history.length;
+  const average=count?Math.round(history.reduce((sum,item)=>sum+Number(item.percentage||0),0)/count):0;
+  const best=count?Math.max(...history.map(item=>Number(item.percentage||0))):0;
+  const lessonCount=new Set(history.map(item=>`${item.grade}|${item.subject}|${item.lesson}`)).size;
 
-  const unique = new Set(history.map(x =>
-    `${x.grade}|${x.subject}|${x.lesson}`
-  )).size;
-
-  const stats = [
-    ['🧪 المحاولات', attempts],
-    ['📈 متوسط الدرجات', average + '%'],
-    ['🏆 أفضل نتيجة', best + '%'],
-    ['📚 دروس اختبرتها', unique]
+  const stats=[
+    ['🧪 المحاولات',count],
+    ['📈 متوسط الدرجات',average+'%'],
+    ['🏆 أفضل نتيجة',best+'%'],
+    ['📚 دروس مختبرة',lessonCount]
   ];
 
-  $('progressStats').innerHTML = stats.map(item => `
+  $('progressStats').innerHTML=stats.map(item=>`
     <div class="progress-stat">
       <span>${item[0]}</span>
       <strong>${item[1]}</strong>
     </div>
   `).join('');
 
-  if (!history.length) {
-    $('progressHistory').innerHTML = `
-      <div class="message">
-        لا توجد نتائج بعد. أكمل اختبارًا واضغط «تصحيح الإجابات» لتظهر نتائجك هنا.
-      </div>`;
+  if(!history.length){
+    $('progressHistory').innerHTML='<div class="message">لا توجد نتائج بعد. أكمل اختبارًا واضغط «تصحيح الإجابات» لتظهر هنا.</div>';
     return;
   }
 
-  $('progressHistory').innerHTML = `
+  $('progressHistory').innerHTML=`
     <h3 class="section-title">آخر المحاولات</h3>
-    ${history.slice(0, 10).map(item => {
-      const date = item.date ? new Date(item.date) : null;
-      const dateText = date && !Number.isNaN(date.getTime())
-        ? date.toLocaleString('ar-OM')
-        : '';
+    ${history.slice(0,10).map(item=>{
+      const date=item.date?new Date(item.date):null;
+      const dateText=date&&!Number.isNaN(date.getTime())
+        ?date.toLocaleString('ar-OM')
+        :'';
 
       return `
         <div class="progress-item">
           <div>
-            <h3>${esc(item.lesson || 'اختبار')}</h3>
-            <p>${esc([item.grade, item.subject].filter(Boolean).join(' • '))}
-              ${dateText ? ' · ' + esc(dateText) : ''}
-            </p>
+            <h3>${escapeHTML(item.lesson||'اختبار')}</h3>
+            <p>${escapeHTML([item.grade,item.subject].filter(Boolean).join(' • '))}${dateText?' · '+escapeHTML(dateText):''}</p>
           </div>
           <div class="progress-score">
-            ${Number(item.score || 0)} / ${Number(item.total || 0)}<br>
-            ${Number(item.percentage || 0)}%
+            ${Number(item.score||0)} / ${Number(item.total||0)}<br>
+            ${Number(item.percentage||0)}%
           </div>
         </div>`;
     }).join('')}`;
 }
 
-function clearProgress() {
-  if (!confirm('هل تريد مسح سجل النتائج المحفوظ في هذا المتصفح؟')) return;
-  localStorage.removeItem(PROGRESS_KEY);
+function clearProgress(){
+  if(!confirm('هل تريد مسح سجل النتائج المحفوظ في هذا المتصفح؟')) return;
+  localStorage.removeItem(HISTORY_KEY);
   renderProgress();
 }
 
-function resetQuiz() {
-  document.querySelectorAll('#quizCard input[type="radio"]')
-    .forEach(input => { input.checked = false; });
+function gradeQuiz(){
+  let score=0;
+  let unanswered=0;
 
-  document.querySelectorAll('#quizCard .option')
-    .forEach(option => option.classList.remove('correct', 'wrong'));
+  currentQuiz.forEach((question,i)=>{
+    const selected=document.querySelector(`input[name="question-${i}"]:checked`);
+    if(!selected) unanswered++;
 
-  document.querySelectorAll('#quizCard .feedback')
-    .forEach(item => {
-      item.style.display = 'none';
-      item.textContent = '';
-    });
+    question.options.forEach((_,j)=>{
+      const option=$('option-'+i+'-'+j);
+      option.classList.remove('correct','wrong');
 
-  $('quizResult').style.display = 'none';
-  $('quizResult').innerHTML = '';
-  $('submitQuiz').disabled = false;
-  hasSavedCurrentResult = false;
-}
+      if(j===question.answer) option.classList.add('correct');
 
-function gradeQuiz() {
-  let score = 0;
-  let unanswered = 0;
-
-  currentQuiz.forEach((question, i) => {
-    const selected = document.querySelector(
-      `input[name="question-${i}"]:checked`
-    );
-
-    if (!selected) unanswered++;
-
-    question.options.forEach((option, j) => {
-      const label = $('option-' + i + '-' + j);
-      label.classList.remove('correct', 'wrong');
-
-      if (j === question.answer) label.classList.add('correct');
-
-      if (selected && Number(selected.value) === j &&
-          j !== question.answer) {
-        label.classList.add('wrong');
+      if(selected&&Number(selected.value)===j&&j!==question.answer){
+        option.classList.add('wrong');
       }
     });
 
-    if (selected && Number(selected.value) === question.answer) score++;
+    if(selected&&Number(selected.value)===question.answer) score++;
 
-    const feedback = $('feedback-' + i);
-    feedback.style.display = 'block';
-    feedback.innerHTML =
-      `<b>الإجابة الصحيحة: ${esc(question.options[question.answer])}</b>` +
-      (question.explanation ? `<br>${esc(question.explanation)}` : '');
+    const feedback=$('feedback-'+i);
+    feedback.style.display='block';
+    feedback.innerHTML=`<b>الإجابة الصحيحة: ${escapeHTML(question.options[question.answer])}</b>${question.explanation?'<br>'+escapeHTML(question.explanation):''}`;
   });
 
-  const percentage = Math.round(score / currentQuiz.length * 100);
-  const encouragement = percentage === 100
-    ? 'ممتاز! أجبت عن جميع الأسئلة بشكل صحيح 👏'
-    : percentage >= 70
-      ? 'أحسنت! نتيجتك جيدة، وراجع الإجابات التي أخطأت فيها.'
-      : percentage >= 40
-        ? 'بداية جيدة! راجع التصحيح ثم جرّب مرة أخرى.'
-        : 'لا بأس، راجع الشرح وحاول مرة أخرى.';
+  const percentage=Math.round(score/currentQuiz.length*100);
+  const advice=percentage===100
+    ?'ممتاز! أجبت عن جميع الأسئلة بشكل صحيح 👏'
+    :percentage>=70
+      ?'أحسنت! نتيجتك جيدة، وراجع ما أخطأت فيه.'
+      :percentage>=40
+        ?'بداية جيدة! راجع الإجابات وحاول مرة أخرى.'
+        :'لا بأس، راجع الشرح وتدرّب من جديد.';
 
-  const result = $('quizResult');
-  result.style.display = 'block';
-  result.innerHTML = `
+  const result=$('quizResult');
+  result.style.display='block';
+  result.innerHTML=`
     <div>نتيجتك النهائية</div>
     <strong>${score} من ${currentQuiz.length} (${percentage}%)</strong>
-    <div>${encouragement}</div>
-    ${unanswered ? `<p class="small">أسئلة لم تجب عنها: ${unanswered}</p>` : ''}
+    <div class="score-meter"><div class="score-fill" style="width:${percentage}%"></div></div>
+    <div>${advice}</div>
+    ${unanswered?`<p class="small">أسئلة بلا إجابة: ${unanswered}</p>`:''}
     <p class="small">تم حفظ النتيجة في سجل هذا المتصفح.</p>
     <button class="secondary" id="retryQuiz" type="button">🔄 أعد الاختبار</button>`;
 
-  if (!hasSavedCurrentResult && currentQuizContext) {
-    saveResult({
-      lesson: currentQuizContext.lesson,
-      grade: currentQuizContext.grade,
-      subject: currentQuizContext.subject,
-      semester: currentQuizContext.semester,
+  if(!hasSavedQuiz&&currentQuizContext){
+    saveHistory({
+      lesson:currentQuizContext.lesson,
+      grade:currentQuizContext.grade,
+      subject:currentQuizContext.subject,
+      semester:currentQuizContext.semester,
       score,
-      total: currentQuiz.length,
+      total:currentQuiz.length,
       percentage,
-      mode: currentQuizMode
+      mode:currentQuizMode
     });
-
-    hasSavedCurrentResult = true;
+    hasSavedQuiz=true;
   }
 
-  $('submitQuiz').disabled = true;
-  $('retryQuiz').addEventListener('click', resetQuiz);
-  result.scrollIntoView({behavior:'smooth', block:'nearest'});
+  $('submitQuiz').disabled=true;
+  $('retryQuiz').addEventListener('click',resetQuiz);
+  result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-async function searchLesson() {
-  const sequence = ++searchSequence;
-  const context = getContext();
+function resetQuiz(){
+  document.querySelectorAll('#quizCard input[type="radio"]').forEach(input=>input.checked=false);
+  document.querySelectorAll('#quizCard .option').forEach(item=>item.classList.remove('correct','wrong'));
+  document.querySelectorAll('#quizCard .feedback').forEach(item=>{
+    item.style.display='none';
+    item.textContent='';
+  });
+  $('quizResult').style.display='none';
+  $('quizResult').innerHTML='';
+  $('submitQuiz').disabled=false;
+  hasSavedQuiz=false;
+}
 
-  if (!context.lesson) {
-    $('results').innerHTML =
-      '<div class="message error">اكتب اسم الدرس أولًا.</div>';
-    $('resultCount').textContent = 'اسم الدرس مطلوب';
+async function searchLesson(){
+  const sequence=++searchSequence;
+  const context=getContext();
+
+  if(!context.lesson){
+    $('results').innerHTML='<div class="message error">اكتب اسم الدرس أولًا.</div>';
+    $('resultCount').textContent='اسم الدرس مطلوب';
     $('lessonInput').focus();
     return;
   }
 
-  $('searchButton').disabled = true;
-  $('searchButton').innerHTML = '<span class="spinner"></span> جاري البحث...';
-  $('resultCount').textContent = 'جاري البحث';
-  $('results').innerHTML =
-    '<div class="message">جاري البحث عن الدرس والفيديوهات...</div>';
+  setLoading(true);
+  $('resultCount').textContent='جاري البحث';
+  $('results').innerHTML='<div class="message"><span class="spinner"></span> جاري البحث في الدروس وYouTube...</div>';
 
   await registerSearch();
 
-  const query = makeQuery(context);
-  let lessons = [];
-  let videos = [];
-  let videoError = '';
+  const query=buildQuery(context);
+  let lessons=[];
+  let videos=[];
+  let videoError='';
 
-  const lessonPromise = findLocalLessons(context).then(items => {
-    lessons = items;
-  });
+  await Promise.all([
+    searchLocalLessons(context).then(items=>{lessons=items;}),
+    searchYouTube(query).then(items=>{videos=items;}).catch(error=>{videoError=error.message;})
+  ]);
 
-  const videoPromise = appSettings.youtube_enabled === 'false'
-    ? Promise.resolve()
-    : searchYouTube(query).then(items => {
-        videos = items;
-      }).catch(error => {
-        videoError = error.message;
-      });
+  if(sequence!==searchSequence) return;
 
-  await Promise.all([lessonPromise, videoPromise]);
+  lastLocalLessons=lessons;
+  lastVideos=videos;
 
-  if (sequence !== searchSequence) return;
+  let html='';
 
-  lastLocalLessons = lessons;
-  lastVideos = videos;
-
-  let html = '';
-
-  if (!lessons.length) {
-    html += '<div class="message">لم يتم العثور على درس مضاف بهذه العبارة. يمكنك متابعة الشروحات الخارجية وروابط الاختبارات.</div>';
-  } else {
-    html += renderLocalLessons(lessons);
+  if(lessons.length){
+    html+=renderLocalLessons(lessons);
+  }else{
+    html+='<div class="message">لم نجد درسًا مضافًا بهذه العبارة؛ جرّب الشروحات الخارجية وروابط البحث.</div>';
   }
 
-  if (appSettings.youtube_enabled !== 'false') {
-    if (videos.length) {
-      html += renderVideos(videos);
-    } else {
-      html += `<div class="message ${videoError ? 'error' : ''}">
-        ${videoError
-          ? 'تعذر البحث في YouTube: ' + esc(videoError)
-          : 'لم يتم العثور على فيديوهات لهذه العبارة.'}
-      </div>`;
-    }
+  if(videos.length){
+    html+=renderVideos(videos);
+  }else{
+    html+=`<div class="message ${videoError?'error':''}">${videoError?'تعذر البحث في YouTube: '+escapeHTML(videoError):'لم يتم العثور على فيديوهات بهذه العبارة.'}</div>`;
   }
 
-  html += renderWebLinks(context);
-  html += renderSummarySection();
-  html += `<div id="quizContainer">${renderQuiz(context)}</div>`;
-  html += renderExternalTests(context);
+  html+=renderWebSearch(context);
+  html+=renderSummarySection();
+  html+=renderQuiz(context);
+  html+=renderTestLinks(context);
 
-  $('results').innerHTML = html;
-  $('resultCount').textContent = `${lessons.length} درس · ${videos.length} فيديو`;
+  $('results').innerHTML=html;
+  $('resultCount').textContent=`${lessons.length} درس · ${videos.length} فيديو`;
 
-  attachQuizControls(context);
-  $('generateSummaryButton').addEventListener(
-    'click', () => generateSummary(context)
-  );
+  $('generateSummaryButton').addEventListener('click',()=>generateSummary(context));
+  $('googleQuizButton').addEventListener('click',()=>searchGoogleTests(context));
+  $('submitQuiz').addEventListener('click',gradeQuiz);
 
-  $('resultsPanel').scrollIntoView({behavior:'smooth', block:'start'});
-
-  $('searchButton').disabled = false;
-  $('searchButton').textContent = '🔎 ابحث عن الدرس';
+  $('resultsPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  setLoading(false);
 }
 
-$('searchButton').addEventListener('click', searchLesson);
+$('searchButton').addEventListener('click',searchLesson);
 
-$('lessonInput').addEventListener('keydown', event => {
-  if (event.key === 'Enter') searchLesson();
+$('lessonInput').addEventListener('keydown',event=>{
+  if(event.key==='Enter') searchLesson();
 });
 
-$('clearProgressButton').addEventListener('click', clearProgress);
+$('clearProgressButton').addEventListener('click',clearProgress);
 
 renderProgress();
 loadSettings();
